@@ -74,7 +74,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
     const res = await result.json()
     console.log("🚀 ~ file: detail-manga.tsx:41 ~ handleRating ~ res:", res)
     if (res.message) {
-      const [mangaResult, userRatingResult] = await Promise.all([fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${router.query.mangaHref}`), fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/user_rating?href=${manga.href}`)])
+      const [mangaResult, userRatingResult] = await Promise.all([fetch(`${process.env.HOST_URL}/api/manga/${router.query.mangaHref}`), fetch(`${process.env.HOST_URL}/api/user/user_rating?href=${manga.href}`)])
       const [mangaRes, userRatingRes]: [MangaResponse, UserRatingResponse] = await Promise.all([mangaResult.json(), userRatingResult.json()])
       if (mangaRes.data && userRatingRes.data) {
         dispatch(addOrUpdateManga(mangaRes.data))
@@ -193,7 +193,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
               <div className="text-sm text-center select-none">
                 <CommentCount shortname={shortName} config={
                   {
-                    url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
+                    url: process.env.HOST_URL + router.asPath,
                     identifier: manga!.href,
                     title: manga!.name,
                   }

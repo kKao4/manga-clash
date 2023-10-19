@@ -24,10 +24,10 @@ import { RootState } from "@/store";
 
 export const getServerSideProps: GetServerSideProps<{ manga: MangaResponse, popularMangas: MangasResponse, user: UserResponse, userRating: UserRatingResponse }> = async (context) => {
   const [mangaRes, popularMangasRes, userRes, userRatingRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${context.params?.mangaHref}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/user_rating?href=${context.params?.mangaHref}&token=${context.req.cookies.token}`)
+    fetch(`${process.env.HOST_URL}/api/manga/${context.params?.mangaHref}`),
+    fetch(`${process.env.HOST_URL}/api/popular_mangas`),
+    fetch(`${process.env.HOST_URL}/api/user/account?token=${context.req.cookies.token}`),
+    fetch(`${process.env.HOST_URL}/api/user/user_rating?href=${context.params?.mangaHref}&token=${context.req.cookies.token}`)
   ])
   const [manga, popularMangas, user, userRating] = await Promise.all([mangaRes.json(), popularMangasRes.json(), userRes.json(), userRatingRes.json()])
   if (!manga.data) {
@@ -115,7 +115,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
                 <div className="mt-8">
                   <DiscussionEmbed shortname="manga-clash-disqus-com" config={
                     {
-                      url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
+                      url: process.env.HOST_URL + router.asPath,
                       identifier: mangaState.href,
                       title: mangaState.name,
                     }

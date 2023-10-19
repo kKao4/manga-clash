@@ -18,9 +18,9 @@ export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, po
   sort = sort ?? "latest";
   page = page ?? "1";
   const [mangasRes, popularMangasRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?page=${page}&sort=${sort}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+    fetch(`${process.env.HOST_URL}/api/all_mangas?page=${page}&sort=${sort}`),
+    fetch(`${process.env.HOST_URL}/api/popular_mangas`),
+    fetch(`${process.env.HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ])
   const [mangas, popularMangas, user] = await Promise.all([mangasRes.json(), popularMangasRes.json(), userRes.json()])
   console.log("🚀 ~ file: manga.tsx:27 ~ user.message:", user.message)

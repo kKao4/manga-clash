@@ -35,7 +35,7 @@ export default function AddManga() {
             setAuthor("")
             setMangaImage(undefined)
             setIsLoading(false)
-            window.open(`${process.env.NEXT_PUBLIC_HOST_URL}/manga/${res.data.href}`, "_blank")
+            window.open(`${process.env.HOST_URL}/manga/${res.data.href}`, "_blank")
           } else if (res.error) {
             alert(res.error)
             setIsLoading(false)
