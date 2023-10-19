@@ -47,7 +47,7 @@ export default function SignUp() {
               e.preventDefault()
               setIsLoading(true)
               const formData = new FormData(e.currentTarget)
-              const res = await fetch(`${HOST_URL}/api/sign_up`, {
+              const res = await fetch(`/api/sign_up`, {
                 method: "POST",
                 body: formData
               })
@@ -135,7 +135,7 @@ export default function SignUp() {
             className="bg-[url(../assets/bg-search.jpg)] w-[650px] px-32 pt-7 pb-12 space-y-4"
           >
             <p className="text-2xl font-bold text-center">Đã đăng ký thành công!</p>
-            <p className="text-center">Please <span className="font-bold cursor-pointer text-main-green hover:text-second-green" onClick={() => {
+            <p className="text-center">Vùi lòng <span className="font-bold cursor-pointer text-main-green hover:text-second-green" onClick={() => {
               setSignedUp(false)
               dispatch(toggleSignUp(false))
               dispatch(toggleSignIn(true))

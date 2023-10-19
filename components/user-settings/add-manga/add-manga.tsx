@@ -22,7 +22,7 @@ export default function AddManga() {
           if (mangaImage) {
             formData.append("image", mangaImage)
           }
-          const result = await fetch(`${HOST_URL}/api/admin/add_manga`, {
+          const result = await fetch(`/api/admin/add_manga`, {
             method: "POST",
             body: formData
           })
@@ -35,7 +35,7 @@ export default function AddManga() {
             setAuthor("")
             setMangaImage(undefined)
             setIsLoading(false)
-            window.open(`${HOST_URL}/manga/${res.data.href}`, "_blank")
+            window.open(`${process.env.NEXT_PUBLIC_HOST_URL}/manga/${res.data.href}`, "_blank")
           } else if (res.error) {
             alert(res.error)
             setIsLoading(false)

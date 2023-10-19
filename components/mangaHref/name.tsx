@@ -36,7 +36,7 @@ export default function Name({ mangaState }: { mangaState: typeof initialMangaSt
               className="flex flex-row place-content-center gap-x-2"
               onSubmit={async (e) => {
                 e.preventDefault()
-                const result = await fetch(`${HOST_URL}/api/admin/delete_manga?href=${mangaState.href}`)
+                const result = await fetch(`/api/admin/delete_manga?href=${mangaState.href}`)
                 const res = await result.json()
                 console.log("🚀 ~ file: name.tsx:39 ~ onSubmit={ ~ res:", res)
                 if (res.message) {

@@ -1,6 +1,6 @@
 import blankProfile from "@/assets/blank-profile-picture_640.webp"
 import { UserType } from "@/models/user"
-import { HOST_URL, UserResponse, emailReg, passwordReg, usernameReg } from "@/type"
+import {  UserResponse, emailReg, passwordReg, usernameReg } from "@/type"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
@@ -11,7 +11,7 @@ import { setUser } from "@/features/UserSlice"
 import { ClipLoader, PuffLoader } from "react-spinners"
 
 export async function fetchUser() {
-  const result = await fetch(`${HOST_URL}/api/user/account`)
+  const result = await fetch(`/api/user/account`)
   const res = await result.json()
   return res
 }
@@ -57,7 +57,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
               setIsLoadingProfilePicture(true)
               const formData = new FormData(e.currentTarget)
               // console.log("🚀 ~ file: account.tsx:21 ~ <formonSubmit={ ~ formData:", [...formData])
-              const result = await fetch(`${HOST_URL}/api/user/actions/update/profile_picture`, {
+              const result = await fetch(`/api/user/actions/update/profile_picture`, {
                 method: "POST",
                 body: formData
               })
@@ -102,7 +102,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           e.preventDefault()
           setIsLoadingUsername(true)
           setUsername("")
-          const result = await fetch(`${HOST_URL}/api/user/actions/update/username`, {
+          const result = await fetch(`/api/user/actions/update/username`, {
             method: "POST",
             body: JSON.stringify({
               username: username
@@ -149,7 +149,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           e.preventDefault()
           setIsLoadingEmail(true)
           setEmail("")
-          const result = await fetch(`${HOST_URL}/api/user/actions/update/email`, {
+          const result = await fetch(`/api/user/actions/update/email`, {
             method: "POST",
             body: JSON.stringify({
               email: email
@@ -193,7 +193,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
         <Row header="Thay Đổi Mật Khẩu" valid={passwordValid && passwordRepeatValid} isLoading={isLoadingPassword} handleOnSubmit={async (e) => {
           e.preventDefault()
           setIsLoadingPassword(true)
-          const result = await fetch(`${HOST_URL}/api/user/actions/update/password`, {
+          const result = await fetch(`/api/user/actions/update/password`, {
             method: "POST",
             body: JSON.stringify({
               oldPassword: oldPassword,

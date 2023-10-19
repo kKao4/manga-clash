@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { selectResetPassword, toggleResetPassword } from "@/features/GlobalSlice"
 import { useState, useEffect } from "react"
 import Input from "./input"
-import { HOST_URL, emailReg } from "@/type"
+import {  emailReg } from "@/type"
 import CloseButton from "./close-button"
 
 export default function ResetPassword() {
@@ -34,7 +34,7 @@ export default function ResetPassword() {
           onSubmit={async (e) => {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)
-            const result = await fetch(`${HOST_URL}/api/user/reset_password`, {
+            const result = await fetch(`/api/user/reset_password`, {
               method: "POST",
               body: formData
             })
@@ -72,7 +72,7 @@ export default function ResetPassword() {
               </button>
             </>
           ) : (
-            <p className="text-xl font-bold text-center uppercase">Please check your email to reset your password</p>
+            <p className="text-xl font-bold text-center uppercase">Vùi lòng kiểm tra email để nhận được hướng dẫn lấy lại mật khẩu</p>
           )}
         </form>
       </div>

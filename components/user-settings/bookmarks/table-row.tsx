@@ -1,4 +1,4 @@
-import { HOST_URL, mangasPerPage } from "@/type";
+import {  mangasPerPage } from "@/type";
 import Image from "next/image";
 import { parseISO, formatDistanceToNowStrict, formatDistanceToNow, format } from "date-fns"
 import newGif from "@/assets/new.gif"
@@ -67,17 +67,17 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
           <button
             className="flex flex-row px-3 py-1.5 mx-auto text-sm text-white bg-red-500 rounded"
             onClick={async () => {
-              const result1 = await fetch(`${HOST_URL}/api/user/actions/bookmark/${manga.href}`);
+              const result1 = await fetch(`/api/user/actions/bookmark/${manga.href}`);
               const res1 = await result1.json()
               console.log("🚀 ~ file: info-box.tsx:63 ~ onClick={ ~ res:", res1)
               if (bookmarkState.page > Math.ceil((mangasLength - 1) / mangasPerPage)) {
                 router.replace(router.pathname + "?page=" + (bookmarkState.page - 1) + `${router.query.name ? `&name=${router.query.name}` : ""}`, "", { scroll: false, shallow: true })
-                const mangasBookmarkResult = await fetch(`${HOST_URL}/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&name=${bookmarkState.name}`)
+                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&name=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               } else {
                 // router.replace(router.asPath, "", { scroll: false })
-                const mangasBookmarkResult = await fetch(`${HOST_URL}/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page}&name=${bookmarkState.name}`)
+                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page}&name=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               }

@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { selectSignIn, toggleSignIn, toggleResetPassword } from "@/features/GlobalSlice"
-import { NormalResponse, HOST_URL, emailReg, passwordReg, UserResponse } from "@/type"
+import { NormalResponse,  emailReg, passwordReg, UserResponse } from "@/type"
 import Input from "./input"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
@@ -40,14 +40,14 @@ export default function SignIn() {
             e.preventDefault()
             setIsLoading(true)
             const formData = new FormData(e.currentTarget)
-            const res = await fetch(`${HOST_URL}/api/sign_in`, {
+            const res = await fetch(`/api/sign_in`, {
               method: "POST",
               body: formData
             })
             const result: NormalResponse = await res.json()
             console.log("🚀 ~ file: sign-in.tsx:48 ~ onSubmit={ ~ res:", result)
             if (result.message) {
-              const userResult = await fetch(`${HOST_URL}/api/user/account`)
+              const userResult = await fetch(`/api/user/account`)
               const userRes = await userResult.json()
               dispatch(setUser(userRes.data))
               setIsLoading(false)

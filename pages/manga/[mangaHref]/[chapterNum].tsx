@@ -5,7 +5,7 @@ import Image from "next/image"
 import Menu from "@/components/chapterNum/menu"
 import { useState, useEffect } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
-import { ChapterResponse, ChaptersResponse, HOST_URL, UserResponse } from "@/type"
+import { ChapterResponse, ChaptersResponse,  UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
 import { useSelector, useDispatch } from "react-redux"
 import { DiscussionEmbed } from 'disqus-react';
@@ -16,9 +16,9 @@ import { toggleDarkMode } from "@/features/GlobalSlice"
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
   const [chapterRes, chaptersRes, userRes] = await Promise.all([
-    fetch(`${HOST_URL}/api/manga/${mangaHref}/${chapterNum}`),
-    fetch(`${HOST_URL}/api/manga/${mangaHref}/all_chapters`),
-    fetch(`${HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/${chapterNum}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/all_chapters`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ]);
   const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
   console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
@@ -92,7 +92,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
                   title="Bookmark this manga"
                   onClick={async () => {
-                    const result = await fetch(`${HOST_URL}/api/user/actions/bookmark/${router.query.mangaHref}`)
+                    const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`)
                     const res = await result.json();
                     setBookmark(b => !b)
                     console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
@@ -129,7 +129,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 shortname="manga-clash-disqus-com"
                 config={
                   {
-                    url: HOST_URL + router.asPath,
+                    url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
                     identifier: chapter.data?.href + "-chapter-" + chapter.data?.chapter.num,
                     title: chapter.data?.name + " - Chapter " + chapter.data?.chapter.num,
                   }

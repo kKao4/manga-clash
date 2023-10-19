@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react"
 import { MangaType } from "@/models/manga"
-import { HOST_URL, MangaResponse, tagsArray } from "@/type"
+import {  MangaResponse, tagsArray } from "@/type"
 import { useDispatch, useSelector } from "react-redux"
 import { addOrUpdateManga } from "@/features/mangaHref/MangaSlice"
 import { selectAdminMode, toggleAdminMode } from "@/features/GlobalSlice"
@@ -56,7 +56,7 @@ export default function ImageAndDetailManga({
         if (file) {
           formData.append("image", file)
         }
-        const result = await fetch(`${HOST_URL}/api/admin/update_manga`, {
+        const result = await fetch(`/api/admin/update_manga`, {
           method: "POST",
           body: formData
         })
@@ -64,7 +64,7 @@ export default function ImageAndDetailManga({
         const res = await result.json()
         console.log("🚀 ~ file: image-and-detail-manga.tsx:57 ~ onSubmit={ ~ res:", res)
         if (res.message) {
-          const mangaResult = await fetch(`${HOST_URL}/api/manga/${res.data.href}`)
+          const mangaResult = await fetch(`/api/manga/${res.data.href}`)
           const mangaRes: MangaResponse = await mangaResult.json()
           if (mangaRes.data) {
             dispatch(addOrUpdateManga(mangaRes.data))

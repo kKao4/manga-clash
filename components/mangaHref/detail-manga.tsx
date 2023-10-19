@@ -1,4 +1,4 @@
-import { HOST_URL, MangaResponse, StarType, UserRatingResponse, UserResponse } from "@/type"
+import {  MangaResponse, StarType, UserRatingResponse, UserResponse } from "@/type"
 import TagsDetailManga from "./tags-detail-manga";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react"
@@ -47,7 +47,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
     }
   }, [manga, userState])
   const handleBookmark = async () => {
-    const result = await fetch(`${HOST_URL}/api/user/actions/bookmark/${router.query.mangaHref}`);
+    const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`);
     const res = await result.json()
     console.log("🚀 ~ file: detail-manga.tsx:23 ~ handleBookmark ~ res:", res)
     if (!res.message.includes("Bookmark")) {
@@ -61,7 +61,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
   }
   const handleRating = async (num: StarType) => {
     setIsLoadingUserRating(true)
-    const result = await fetch(`${HOST_URL}/api/user/actions/rating/star`, {
+    const result = await fetch(`/api/user/actions/rating/star`, {
       method: "POST",
       body: JSON.stringify({
         star: num,
@@ -74,7 +74,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
     const res = await result.json()
     console.log("🚀 ~ file: detail-manga.tsx:41 ~ handleRating ~ res:", res)
     if (res.message) {
-      const [mangaResult, userRatingResult] = await Promise.all([fetch(`${HOST_URL}/api/manga/${router.query.mangaHref}`), fetch(`${HOST_URL}/api/user/user_rating?href=${manga.href}`)])
+      const [mangaResult, userRatingResult] = await Promise.all([fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${router.query.mangaHref}`), fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/user_rating?href=${manga.href}`)])
       const [mangaRes, userRatingRes]: [MangaResponse, UserRatingResponse] = await Promise.all([mangaResult.json(), userRatingResult.json()])
       if (mangaRes.data && userRatingRes.data) {
         dispatch(addOrUpdateManga(mangaRes.data))

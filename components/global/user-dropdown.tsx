@@ -1,4 +1,4 @@
-import { HOST_URL, UserResponse } from "@/type";
+import {  UserResponse } from "@/type";
 import { useRouter } from "next/router";
 import { setMenu } from "@/features/user-settings/UserSettingsSlice";
 import { useDispatch } from "react-redux";
@@ -59,7 +59,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
             </Link>
           )}
           <div className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none" onClick={async () => {
-            const result = await fetch(`${HOST_URL}/api/user/log_out`)
+            const result = await fetch(`/api/user/log_out`)
             const res = await result.json()
             console.log("🚀 ~ file: user-menu.tsx:15:", res)
             if (res.message === "Logged Out") {

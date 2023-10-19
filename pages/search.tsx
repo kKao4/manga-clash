@@ -4,7 +4,7 @@ import OrderNavigation from "@/components/global/order-navigation";
 import MangaBox from "@/components/search/manga-box";
 import Paginate from "@/components/global/paginate";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import { MangasResponse, HOST_URL, UserResponse } from "@/type";
+import { MangasResponse,  UserResponse } from "@/type";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
@@ -33,8 +33,8 @@ export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, us
     query += `&tags=${tags}`
   }
   const [mangasRes, userRes] = await Promise.all([
-    fetch(`${HOST_URL}/api/all_mangas?${query}`),
-    fetch(`${HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?${query}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ])
   const [mangas, user] = await Promise.all([mangasRes.json(), userRes.json()])
   console.log("🚀 ~ file: search.tsx:42 ~ user.message:", user.message)

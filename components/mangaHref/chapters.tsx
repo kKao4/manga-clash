@@ -78,7 +78,7 @@ export default function Chapters({
               onSubmit={async (e) => {
                 e.preventDefault()
                 setIsDeletingChapters(true)
-                const result = await fetch(`${HOST_URL}/api/admin/delete_chapters?href=${mangaState.href}`, {
+                const result = await fetch(`/api/admin/delete_chapters?href=${mangaState.href}`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export default function Chapters({
                 if (res.message) {
                   setCheckedChapters([])
                   setIsOpenDeleteModal(false)
-                  const mangaResult = await fetch(`${HOST_URL}/api/manga/${mangaState.href}`)
+                  const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
                   const mangaRes = await mangaResult.json()
                   setChapters(mangaRes.data.chapters)
                   setIsDeletingChapters(false)
@@ -150,7 +150,7 @@ export default function Chapters({
                 formData.append("images", files[i])
               }
             }
-            const result = await fetch(`${HOST_URL}/api/admin/add_and_update_chapter?href=${mangaState.href}`, {
+            const result = await fetch(`/api/admin/add_and_update_chapter?href=${mangaState.href}`, {
               method: "POST",
               body: formData
             })
@@ -160,7 +160,7 @@ export default function Chapters({
               setNum("")
               setChapterDescription("")
               setFiles(null)
-              const mangaResult = await fetch(`${HOST_URL}/api/manga/${mangaState.href}`)
+              const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
               const mangaRes = await mangaResult.json()
               setChapters(mangaRes.data.chapters)
               setIsAddingChapter(false)

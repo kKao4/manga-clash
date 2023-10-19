@@ -1,4 +1,4 @@
-import { HOST_URL, passwordReg } from "@/type"
+import {  passwordReg } from "@/type"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Head from "next/head"
@@ -23,7 +23,7 @@ const Page = () => {
               e.preventDefault()
               const formData = new FormData(e.currentTarget)
               const resetToken = router.query.resetToken
-              const result = await fetch(`${HOST_URL}/api/reset/${resetToken}`, {
+              const result = await fetch(`/api/reset/${resetToken}`, {
                 method: "POST",
                 body: formData
               })
