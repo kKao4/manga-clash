@@ -193,7 +193,7 @@ export default function DetailManga({ manga, chapters }: { manga: MangaType, cha
               <div className="text-sm text-center select-none">
                 <CommentCount shortname={shortName} config={
                   {
-                    url: HOST_URL + router.asPath,
+                    url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
                     identifier: manga!.href,
                     title: manga!.name,
                   }
