@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+mongoose.set('strictQuery', true);
+
 const RatingSchema = new mongoose.Schema({
   stars: {
     type: [

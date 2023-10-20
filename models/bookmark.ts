@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+mongoose.set('strictQuery', true);
+
 const BookmarkSchema = new mongoose.Schema({
   mangaId: {
     type: Schema.Types.ObjectId,

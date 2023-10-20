@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+mongoose.set('strictQuery', true);
+
 const chapterSchema = new mongoose.Schema(
   {
     num: {

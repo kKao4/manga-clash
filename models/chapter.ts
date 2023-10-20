@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+mongoose.set('strictQuery', true);
+
 const ChapterSchema = new mongoose.Schema(
   {
     mangaId: {

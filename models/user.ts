@@ -1,6 +1,8 @@
 import { emailReg, usernameReg } from "@/type";
 import mongoose, { Schema } from "mongoose";
 
+mongoose.set('strictQuery', true);
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
