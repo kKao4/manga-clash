@@ -84,7 +84,7 @@ export default async function handler(
       }
     }
   } catch (err: any) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 }

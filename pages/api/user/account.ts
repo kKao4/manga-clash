@@ -20,12 +20,12 @@ export default async function handler(
         }
         // console.log("🚀 ~ file: account.ts:18 ~ token:", token)
         const { user } = await auth(token as string);
-        let data = { ...user };
-        data = data._doc;
-        // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
-        delete data.password;
-        // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
         if (user) {
+          let data = { ...user };
+          data = data._doc;
+          // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
+          delete data.password;
+          // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
           res.status(200).json({ message: "Verified", data: data });
         } else {
           res.status(200).json({ error: "Invalid Token" });
@@ -33,7 +33,7 @@ export default async function handler(
       }
     }
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }
