@@ -16,9 +16,9 @@ import { toggleDarkMode } from "@/features/GlobalSlice"
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
   const [chapterRes, chaptersRes, userRes] = await Promise.all([
-    fetch(`${process.env.HOST_URL}/api/manga/${mangaHref}/${chapterNum}`),
-    fetch(`${process.env.HOST_URL}/api/manga/${mangaHref}/all_chapters`),
-    fetch(`${process.env.HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/${chapterNum}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/all_chapters`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ]);
   const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
   console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
@@ -129,7 +129,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 shortname="manga-clash-disqus-com"
                 config={
                   {
-                    url: process.env.HOST_URL + router.asPath,
+                    url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
                     identifier: chapter.data?.href + "-chapter-" + chapter.data?.chapter.num,
                     title: chapter.data?.name + " - Chapter " + chapter.data?.chapter.num,
                   }

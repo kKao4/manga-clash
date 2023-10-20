@@ -25,10 +25,10 @@ export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasRespo
   name = name ?? ""
   time = time ?? "oneWeek"
   const [popularMangasRes, mangasRes, userRes, chartRes] = await Promise.all([
-    fetch(`${process.env.HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&page=${pageBookmark}&name=${name}`),
-    fetch(`${process.env.HOST_URL}/api/user/account?token=${token}`),
-    fetch(`${process.env.HOST_URL}/api/admin/chart?token=${token}&time=${time}&page=${pageChart}&name=${name}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&page=${pageBookmark}&name=${name}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${token}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&page=${pageChart}&name=${name}`)
   ])
   const [popularMangas, mangas, user, chart] = await Promise.all([popularMangasRes.json(), mangasRes.json(), userRes.json(), chartRes.json()])
   console.log("🚀 ~ file: user-settings.tsx:28 ~ user.message:", user.message)

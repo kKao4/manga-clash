@@ -57,7 +57,7 @@ export default async function handler(
               <p>Email: <a href="mailto:${email}">${email}</a></p>
               <p>If this was a mistake, just ignore this email and nothing will happen.</p>
               <p>To reset your password, visit the following address:</p>
-              <a href="${process.env.HOST_URL}/reset/${resetPasswordToken}">${process.env.HOST_URL}/reset/${resetPasswordToken}</a>`,
+              <a href="${process.env.NEXT_PUBLIC_HOST_URL}/reset/${resetPasswordToken}">${process.env.NEXT_PUBLIC_HOST_URL}/reset/${resetPasswordToken}</a>`,
             });
             res.status(200).json({ message: "Email Sent" });
           } else {
