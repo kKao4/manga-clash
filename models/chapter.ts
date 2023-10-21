@@ -29,6 +29,10 @@ const ChapterSchema = new mongoose.Schema(
           imagesPath: {
             type: [
               {
+                order: {
+                  type: Number,
+                  required: true,
+                },
                 url: {
                   type: String,
                   default: "",

@@ -92,23 +92,26 @@ export default async function handler(
                   // });
                   //store images in cloudinary
                   const processArray = async (array: any) => {
-                    const promises = array.map(async (image: any) => {
-                      if (fields.num) {
-                        const result = await cloudinary.uploader.upload(
-                          image.filepath,
-                          {
-                            public_id: `${
-                              image.originalFilename
-                            }_${new Date().toISOString()}`,
-                            folder: `mangas/${manga._id}/chapter ${fields.num[0]}`,
-                          }
-                        );
-                        arrayImagesPath.push({
-                          url: result.url,
-                          publicId: result.public_id,
-                        });
+                    const promises = array.map(
+                      async (image: any, i: number) => {
+                        if (fields.num) {
+                          const result = await cloudinary.uploader.upload(
+                            image.filepath,
+                            {
+                              public_id: `${
+                                image.originalFilename
+                              }_${new Date().toISOString()}`,
+                              folder: `mangas/${manga._id}/chapter-${fields.num[0]}`,
+                            }
+                          );
+                          arrayImagesPath.push({
+                            order: i + 1,
+                            url: result.url,
+                            publicId: result.public_id,
+                          });
+                        }
                       }
-                    });
+                    );
                     await Promise.all(promises);
                   };
                   await processArray(files.images);

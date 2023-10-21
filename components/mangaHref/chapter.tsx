@@ -16,7 +16,7 @@ export default function Chapter({
   return (
     <label
       htmlFor={chapter.num}
-      className={` relative rounded flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 place-content-start sm:place-content-center`}
+      className={`relative rounded flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 place-content-start sm:place-content-center`}
     >
       <Link
         href={`/manga/${mangaHref}/chapter-${chapter.num}`}

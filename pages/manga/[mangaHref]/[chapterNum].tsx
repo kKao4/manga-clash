@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { DiscussionEmbed } from 'disqus-react';
 import Title from "@/components/global/title"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { toggleDarkMode } from "@/features/GlobalSlice"
+import { selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
@@ -39,19 +39,20 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const router = useRouter()
   const dispatch = useDispatch()
   const [bookmark, setBookmark] = useState<boolean>(false)
-  // Set User
   const userState = useSelector(selectUserState)
+  const darkMode = useSelector(selectDarkMode)
+  // Set User
   useEffect(() => {
     if (user.data) {
       dispatch(setUser(user.data))
     }
   }, [dispatch, user])
   // Set Theme Based On Window Theme
-  useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      dispatch(toggleDarkMode(true))
-    }
-  }, [dispatch])
+  // useEffect(() => {
+  //   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  //     dispatch(toggleDarkMode(true))
+  //   }
+  // }, [dispatch])
   // Set Bookmark
   useEffect(() => {
     if (chapter.data && userState) {
@@ -117,7 +118,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
             {/* images chapter */}
             <div className="max-w-[960px] mx-auto py-4 sm:py-8 xl:py-12 flex flex-col">
               {chapter.data?.chapter.imagesPath.map((c) => {
-                return <Image key={c.publicId} className="block w-full h-auto mx-auto border border-gray-200" sizes="100vw" src={c.url} alt="" width={960} height={1360} quality={100} />
+                return <Image key={c.publicId} className={`block w-full h-auto mx-auto ${darkMode ? "" : "border border-gray-200"}`} sizes="100vw" src={c.url} alt="" width={960} height={1360} quality={100} />
               })}
             </div>
             <Menu chapters={chapters.data} />

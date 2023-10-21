@@ -14,7 +14,7 @@ export const initialGlobalState: {
   showSignIn: false,
   showResetPassword: false,
   adminMode: false,
-  darkMode: false,
+  darkMode: true,
 };
 
 export type Order = (typeof initialGlobalState)["sort"];
