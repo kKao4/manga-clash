@@ -14,7 +14,7 @@ export default function Chart() {
       <div className="space-y-2">
         <div className="flex flex-row">
           <select
-            className="focus:outline-none px-2 py-1 bg-gray-150 rounded-md"
+            className="px-2 py-1 rounded-md focus:outline-none bg-gray-150"
             value={chartState.time}
             onChange={(e) => {
               dispatch(setTimeChart(e.target.value))
@@ -42,7 +42,7 @@ export default function Chart() {
           <thead>
             <tr className="bg-[#ebebeb]">
               <th className="py-2 font-bold text-center">Hạng</th>
-              <th className="font-bold text-center w-8/12">Tên truyện</th>
+              <th className="w-8/12 font-bold text-center">Tên truyện</th>
               <th className="font-bold text-center">Lượt xem<p>({chartState.time === "oneWeek" ? "7 ngày" : chartState.time === "oneMonth" ? "30 ngày" : chartState.time === "threeMonth" ? "90 ngày" : "mọi lúc"})</p></th>
             </tr>
           </thead>
@@ -55,7 +55,7 @@ export default function Chart() {
                   </td>
                   {/* image and name */}
                   <td className="flex flex-row p-2.5 pr-0 text-sm gap-x-4">
-                    <Image src={manga.image} alt="" width={80} height={144} />
+                    <Image src={manga.image.url} alt="" width={80} height={144} />
                     <Link
                       href={`/manga/${manga.href}`}
                       className="font-bold transition-colors cursor-pointer hover:text-second-green"
