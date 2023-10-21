@@ -13,7 +13,7 @@ export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType
             })}
           </>
         ) : (
-          <p className="text-center">Không có bộ truyện nào khớp với yêu cầu tìm kiếm, vui lòng thử lại</p> // TODO - 
+          <p className="text-center col-span-full">Không có bộ truyện nào khớp với yêu cầu tìm kiếm, vui lòng thử lại</p> // TODO - 
         )}
       </div>
       <div className="flex justify-center">
