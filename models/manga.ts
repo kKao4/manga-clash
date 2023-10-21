@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
 const chapterSchema = new mongoose.Schema(
   {
@@ -51,8 +51,17 @@ const MangaSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
-      default: "",
+      type: {
+        url: {
+          type: String,
+          default: "",
+        },
+        publicId: {
+          type: String,
+          default: "",
+        },
+      },
+      default: { url: "", publicId: "" },
     },
     rating: {
       type: {

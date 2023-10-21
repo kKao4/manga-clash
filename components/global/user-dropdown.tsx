@@ -16,7 +16,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
       {/* profile picture */}
       <div className="flex w-8 h-8 overflow-hidden border rounded-full place-items-center">
         {user?.profilePicture ? (
-          <Image src={user.profilePicture?.startsWith("blob") ? user.profilePicture : `/${user.profilePicture}`} alt="profile picture" width={32} height={32} />
+          <Image src={user.profilePicture.url} alt="profile picture" width={32} height={32} />
         ) : (
           <Image src={blankProfile} alt="" />
         )}

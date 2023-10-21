@@ -1,21 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
-import { Types } from "mongoose";
+import { UserType } from "@/models/user";
 
-export const initialUserState: {
-  _id: string;
-  username: string;
-  email: string;
-  role: "user" | "admin";
-  bookmarks: Types.ObjectId[];
-  profilePicture: string;
-} = {
+export const initialUserState: Omit<UserType, "password"> = {
   _id: "",
   username: "",
   email: "",
   role: "user",
   bookmarks: [],
-  profilePicture: "",
+  profilePicture: {
+    url: "",
+    publicId: "",
+  },
 };
 
 export const userSlice = createSlice({

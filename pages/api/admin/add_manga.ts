@@ -1,13 +1,13 @@
 import dbConnect from "@/lib/dbConnect";
 import { NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
-import fs from "fs";
 import Manga from "@/models/manga";
 import { auth } from "@/lib/auth";
 import { toLowerCaseNonAccentVietnamese } from "@/lib/vietnamese";
 import { MangaResponse } from "@/type";
 import { checkFile } from "@/lib/checkExtension";
-import e from "express";
+import { v2 as cloudinary } from "cloudinary";
+import { Types } from "mongoose";
 
 export const config = {
   api: {
@@ -15,6 +15,12 @@ export const config = {
     sizeLimit: "1mb",
   },
 };
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -51,16 +57,36 @@ export default async function handler(
                   .trim()
                   .replace(/[^a-zA-Z0-9 ]/g, "")
                   .replace(/\s+/g, "-");
-                const newPath = newHref + "_" + files.image[0].originalFilename;
-                const oldPath = files.image[0].filepath;
-                await fs.promises.rename(oldPath, "./public/" + newPath);
+                const newObjectId = new Types.ObjectId();
+                console.log(
+                  "🚀 ~ file: add_manga.ts:61 ~ newObjectId:",
+                  newObjectId
+                );
+                // store image in local storage
+                // const newPath = newHref + "_" + files.image[0].originalFilename;
+                // const oldPath = files.image[0].filepath;
+                // await fs.promises.rename(oldPath, "./public/" + newPath);
+                // store image in cloudinary
+                const result = await cloudinary.uploader.upload(
+                  files.image[0].filepath,
+                  {
+                    public_id: newObjectId as unknown as string,
+                    folder: ("mangas/" + newObjectId) as unknown as string,
+                  }
+                );
+                console.log("🚀 ~ file: add_manga.ts:68 ~ result:", result);
+                // TODO: store image with it's public_id
                 const newManga = new Manga({
-                  name: fields.name[0],
-                  otherName: fields.otherName[0],
+                  _id: newObjectId,
+                  name: fields.name![0],
+                  otherName: fields.otherName![0],
                   href: newHref,
-                  author: fields.author[0],
-                  image: files.image ? newPath : "",
-                  description: fields.description[0],
+                  author: fields.author![0],
+                  image: {
+                    url: result.url,
+                    publicId: result.public_id,
+                  },
+                  description: fields.description![0],
                   tags: fields.tags,
                 });
                 await newManga.save();

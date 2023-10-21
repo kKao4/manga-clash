@@ -1,11 +1,11 @@
-import {  MangaResponse, MangasResponse, UserRatingResponse, UserResponse } from "@/type";
+import { MangaResponse, MangasResponse, UserRatingResponse, UserResponse } from "@/type";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Navigation from "@/components/global/navigation";
 import MenuFootBox from "@/components/global/menu-foot-box";
 import BodyBox from "@/components/global/body-box";
 import Title from "@/components/global/title";
 import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
-import { useState } from "react"
+import { useRef, useState } from "react"
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +49,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
   const mangaState = useSelector((state: RootState) => selectMangaState(state, manga.data!._id))
   const userState = useSelector(selectUserState)
   const [description, setDescription] = useState<string>("")
+  const commentsRef = useRef<HTMLDivElement>(null)
   // Add Manga
   useEffect(() => {
     dispatch(addOrUpdateManga(manga.data!))
@@ -78,8 +79,14 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
       const sortedChapters = [...chapters].sort((a, b) => Number(a.num) - Number(b.num))
       setChapters(sortedChapters as any)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chaptersOrder])
+  // scroll to comments
+  const handleScroll = () => {
+    if (commentsRef.current) {
+      commentsRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }
   // Title For Page
   const title = `Đọc ${mangaState?.name} - Manga Clash`
 
@@ -101,19 +108,35 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
             {/* manga's name */}
             <Name mangaState={mangaState} />
             {/* image and detail manga */}
-            <ImageAndDetailManga mangaState={mangaState} chapters={chapters} description={description} setDescription={setDescription} />
+            <ImageAndDetailManga
+              mangaState={mangaState}
+              chapters={chapters}
+              description={description}
+              setDescription={setDescription}
+              handleScroll={handleScroll}
+            />
           </MenuFootBox>
           <BodyBox>
             <div className="basis-9/12">
               {/* summary */}
-              <Summary mangaState={mangaState} description={description} setDescription={setDescription} />
+              <Summary
+                mangaState={mangaState}
+                description={description}
+                setDescription={setDescription}
+              />
               {/* chapters */}
-              <Chapters mangaState={mangaState as any} chaptersOrder={chaptersOrder} chapters={chapters as any} handleChangeChaptersOrder={handleChangeChaptersOrder} setChapters={setChapters} />
+              <Chapters
+                mangaState={mangaState as any}
+                chaptersOrder={chaptersOrder}
+                chapters={chapters as any}
+                handleChangeChaptersOrder={handleChangeChaptersOrder}
+                setChapters={setChapters}
+              />
               {/* comments */}
-              <article id="comments" className="mb-4">
+              <div ref={commentsRef} className="mb-4">
                 <Title content="BÌNH LUẬN" order={false} />
                 <div className="mt-8">
-                  <DiscussionEmbed shortname="manga-clash-disqus-com" config={
+                  <DiscussionEmbed shortname="manga-clash-disqus-com" data-scrollbar config={
                     {
                       url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
                       identifier: mangaState.href,
@@ -121,7 +144,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
                     }
                   } />
                 </div>
-              </article>
+              </div>
             </div>
             {/* popular mangas */}
             <MangasBoxesPopular mangas={popularMangas.data} />

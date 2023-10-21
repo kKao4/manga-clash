@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
 const ChapterSchema = new mongoose.Schema(
   {
@@ -27,7 +27,18 @@ const ChapterSchema = new mongoose.Schema(
             default: "",
           },
           imagesPath: {
-            type: [String],
+            type: [
+              {
+                url: {
+                  type: String,
+                  default: "",
+                },
+                publicId: {
+                  type: String,
+                  default: "",
+                },
+              },
+            ],
             default: [],
           },
           updatedAt: {

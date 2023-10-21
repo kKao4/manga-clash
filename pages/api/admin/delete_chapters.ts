@@ -5,6 +5,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import Manga from "@/models/manga";
 import { NormalResponse } from "@/type";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,8 +37,19 @@ export default async function handler(
                   chapter.chapters.forEach(
                     async (obj: ChapterType["chapters"][number]) => {
                       if (c === obj.num) {
+                        // delete images in local storage
+                        // obj.imagesPath.forEach(async (imagePath) => {
+                        //   await fs.promises.unlink("./public/" + imagePath);
+                        // });
+                        // delete images in cloudinary
                         obj.imagesPath.forEach(async (imagePath) => {
-                          await fs.promises.unlink("./public/" + imagePath);
+                          const result = await cloudinary.uploader.destroy(
+                            imagePath.publicId
+                          );
+                          console.log(
+                            "🚀 ~ file: delete_chapters.ts:47 ~ obj.imagesPath.forEach ~ result:",
+                            result
+                          );
                         });
                         const newChapters = chapter.chapters.filter(
                           (a: any) => a.num !== c

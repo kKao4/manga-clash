@@ -6,12 +6,19 @@ import fs from "fs";
 import { auth } from "@/lib/auth";
 import { NormalResponse } from "@/type";
 import { checkFile } from "@/lib/checkExtension";
+import { v2 as cloudinary } from "cloudinary";
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,13 +37,28 @@ export default async function handler(
             const [fields, files] = await form.parse(req);
             if (files.profilePicture) {
               if (checkFile(files.profilePicture[0].originalFilename)) {
-                const data = fs.readFileSync(files.profilePicture[0].filepath);
-                fs.writeFileSync(
-                  `./public/${_id}_${files.profilePicture[0].originalFilename}`,
-                  data
+                // store image in local storage
+                // const data = fs.readFileSync(files.profilePicture[0].filepath);
+                // fs.writeFileSync(
+                //   `./public/${_id}_${files.profilePicture[0].originalFilename}`,
+                //   data
+                // );
+                // const user = await User.findById(_id);
+                // user.profilePicture = `${_id}_${files.profilePicture[0].originalFilename}`;
+
+                // store image in cloudinary
+                const result = await cloudinary.uploader.upload(
+                  files.profilePicture[0].filepath,
+                  { public_id: user._id, folder: "user-profile-pictures" }
                 );
-                const user = await User.findById(_id);
-                user.profilePicture = `${_id}_${files.profilePicture[0].originalFilename}`;
+                console.log(
+                  "🚀 ~ file: profile_picture.ts:54 ~ result:",
+                  result
+                );
+                user.profilePicture = {
+                  url: result.url,
+                  publicId: result.public_id,
+                };
                 await user.save();
                 res.status(200).json({ message: "Uploaded Profile Picture" });
               } else {

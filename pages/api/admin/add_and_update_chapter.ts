@@ -7,12 +7,19 @@ import Chapter, { ChapterType } from "@/models/chapter";
 import Manga from "@/models/manga";
 import fs from "fs";
 import { checkFile } from "@/lib/checkExtension";
+import { v2 as cloudinary } from "cloudinary";
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -50,33 +57,62 @@ export default async function handler(
                   }
                 });
                 if (validImages) {
-                  let arrayImagesPath: string[] = [];
-                  // save images
-                  files.images.forEach(async (image) => {
-                    if (image.originalFilename && fields.num) {
-                      const newPath =
-                        manga.href +
-                        "-chapter-" +
-                        fields.num[0] +
-                        "_" +
-                        image.originalFilename;
-                      // add file name to array of files name
-                      arrayImagesPath.push(newPath);
-                      await fs.promises.rename(
-                        image.filepath,
-                        "./public/" + newPath
-                      );
-                    }
-                  });
+                  let arrayImagesPath: any[] = [];
+                  // store images in local storage
+                  // files.images.forEach(async (image) => {
+                  //   if (image.originalFilename && fields.num) {
+                  //     const newPath =
+                  //       manga.href +
+                  //       "-chapter-" +
+                  //       fields.num[0] +
+                  //       "_" +
+                  //       image.originalFilename;
+                  //     // add file name to array of files name
+                  //     arrayImagesPath.push(newPath);
+                  //     await fs.promises.rename(
+                  //       image.filepath,
+                  //       "./public/" + newPath
+                  //     );
+                  //   }
+                  // });
+                  // store images in cloudinary
+                  // await files.images.forEach(async (image) => {
+                  //   if (fields.num) {
+                  //     const result = await cloudinary.uploader.upload(
+                  //       image.filepath,
+                  //       {
+                  //         public_id: `${
+                  //           image.originalFilename
+                  //         }_${new Date().toISOString()}`,
+                  //         folder: `mangas/${manga._id}/chapter ${fields.num[0]}`,
+                  //       }
+                  //     );
+                  // arrayImagesPath.push(result.url);
+                  //   }
+                  // });
+                  //store images in cloudinary
+                  const processArray = async (array: any) => {
+                    const promises = array.map(async (image: any) => {
+                      if (fields.num) {
+                        const result = await cloudinary.uploader.upload(
+                          image.filepath,
+                          {
+                            public_id: `${
+                              image.originalFilename
+                            }_${new Date().toISOString()}`,
+                            folder: `mangas/${manga._id}/chapter ${fields.num[0]}`,
+                          }
+                        );
+                        arrayImagesPath.push({
+                          url: result.url,
+                          publicId: result.public_id,
+                        });
+                      }
+                    });
+                    await Promise.all(promises);
+                  };
+                  await processArray(files.images);
                   if (chapter) {
-                    // let exist = false;
-                    // chapter.chapters.forEach(
-                    //   (c: ChapterType["chapters"][number]) => {
-                    //     if (fields.num && c.num === fields.num[0]) {
-                    //       exist = true;
-                    //     }
-                    //   }
-                    // );
                     const exist = chapter.chapters.some(
                       (c: ChapterType["chapters"][number]) =>
                         fields.num && c.num === fields.num[0]

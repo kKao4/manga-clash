@@ -1,7 +1,6 @@
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useRef, useState } from "react"
 import { MangaResponse, tagsArray } from "@/type"
-import { HOST_URL } from "@/type"
 import { PropagateLoader } from "react-spinners"
 
 export default function AddManga() {
@@ -12,6 +11,7 @@ export default function AddManga() {
   const [tags, setTags] = useState<string[]>([])
   const [description, setDescription] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const fileRef = useRef<HTMLInputElement>(null)
   return (
     <>
       <div className="flex flex-col">
@@ -34,6 +34,10 @@ export default function AddManga() {
             setDescription("")
             setAuthor("")
             setMangaImage(undefined)
+            // delete file for input
+            if (fileRef.current) {
+              fileRef.current.value = ""
+            }
             setIsLoading(false)
             window.open(`${process.env.NEXT_PUBLIC_HOST_URL}/manga/${res.data.href}`, "_blank")
           } else if (res.error) {
@@ -47,6 +51,7 @@ export default function AddManga() {
               <input
                 className="hidden"
                 type="file"
+                ref={fileRef}
                 onChange={(e) => {
                   if (e.target.files) {
                     setMangaImage(e.target.files[0])

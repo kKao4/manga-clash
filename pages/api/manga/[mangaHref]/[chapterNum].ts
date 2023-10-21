@@ -21,14 +21,17 @@ export default async function handler(
         const manga = await Manga.findOne({ href: mangaHref });
         if (manga) {
           const chapter = await Chapter.findOne({ mangaId: manga._id });
+          // console.log("🚀 ~ file: [chapterNum].ts:24 ~ chapter:", chapter)
           const view = await View.findOne({ mangaId: manga._id });
+          // console.log("🚀 ~ file: [chapterNum].ts:25 ~ view:", view)
           if (chapter && chapterNum && !Array.isArray(chapterNum)) {
             const num = chapterNum.split("-")[1];
-            console.log("🚀 ~ file: [chapterNum].ts:22 ~ chapter:", chapter);
+            // console.log("🚀 ~ file: [chapterNum].ts:22 ~ chapter:", chapter);
             // find the data for the chapter
             const data = chapter.chapters.find(
               (c: ChapterType["chapters"][number]) => c.num === num
             );
+            // console.log("🚀 ~ file: [chapterNum].ts:26 ~ data:", data);
             // update or create view collection
             if (view) {
               view.views.push({
@@ -58,7 +61,15 @@ export default async function handler(
             // update views for manga
             manga.views.value = view.views.length;
             await manga.save();
-            // console.log("🚀 ~ file: [chapterNum].ts:26 ~ data:", data);
+            console.log("THIS IS: ", {
+              message: "Fetched Chapter",
+              data: {
+                name: manga.name,
+                _id: manga._id,
+                href: manga.href,
+                chapter: data,
+              },
+            });
             res.status(200).json({
               message: "Fetched Chapter",
               data: {

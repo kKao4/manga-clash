@@ -10,12 +10,19 @@ import { checkFile } from "@/lib/checkExtension";
 import Rating from "@/models/rating";
 import Chapter from "@/models/chapter";
 import Bookmark from "@/models/bookmark";
+import { v2 as cloudinary } from "cloudinary";
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -79,11 +86,26 @@ export default async function handler(
                 // save image
                 if (files.image) {
                   if (checkFile(files.image[0].originalFilename)) {
-                    const oldPath = files.image[0].filepath;
-                    const newPath =
-                      newHref + "_" + files.image[0].originalFilename;
-                    manga.image = newPath;
-                    await fs.promises.rename(oldPath, "./public/" + newPath);
+                    // store image in local storage
+                    // const oldPath = files.image[0].filepath;
+                    // const newPath =
+                    //   newHref + "_" + files.image[0].originalFilename;
+                    // manga.image = newPath;
+                    // await fs.promises.rename(oldPath, "./public/" + newPath);
+
+                    // store image in cloudinary
+                    const result = await cloudinary.uploader.upload(
+                      files.image[0].filepath,
+                      { public_id: manga._id, folder: "/mangas/" + manga._id }
+                    );
+                    console.log(
+                      "🚀 ~ file: update_manga.ts:101 ~ result:",
+                      result
+                    );
+                    manga.image = {
+                      url: result.url,
+                      publicId: result.public_id,
+                    };
                   } else {
                     res
                       .status(400)

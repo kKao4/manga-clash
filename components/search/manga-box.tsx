@@ -14,7 +14,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           {manga.image ? (
             <Image
               className="w-full h-full transition-transform duration-550 group-hover/image:scale-110"
-              src={`/${manga.image}`}
+              src={manga.image.url}
               alt=""
               width="100"
               height="144"

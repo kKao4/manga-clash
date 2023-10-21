@@ -28,6 +28,7 @@ export default function Chapters({
   const [checkedChapters, setCheckedChapters] = useState<string[]>([])
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   const [isDeletingChapters, setIsDeletingChapters] = useState<boolean>(false)
+  const fileRef = useRef<HTMLInputElement>(null)
   // Get localStorage For This Manga
   useEffect(() => {
     const storedArray = localStorage.getItem(`${mangaState.href}`)
@@ -163,6 +164,9 @@ export default function Chapters({
               const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
               const mangaRes = await mangaResult.json()
               setChapters(mangaRes.data.chapters)
+              if (fileRef.current) {
+                fileRef.current.value = ""
+              }
               setIsAddingChapter(false)
             } else if (res.error) {
               alert(res.error)
@@ -190,6 +194,7 @@ export default function Chapters({
             <input
               id="chapters-image"
               type="file"
+              ref={fileRef}
               className="hidden"
               multiple
               onChange={(e) => setFiles(e.target.files)}

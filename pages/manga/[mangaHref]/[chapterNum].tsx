@@ -5,7 +5,7 @@ import Image from "next/image"
 import Menu from "@/components/chapterNum/menu"
 import { useState, useEffect } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
-import { ChapterResponse, ChaptersResponse,  UserResponse } from "@/type"
+import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
 import { useSelector, useDispatch } from "react-redux"
 import { DiscussionEmbed } from 'disqus-react';
@@ -23,8 +23,7 @@ export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, 
   const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
   console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
   console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
-  console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.data)
-  //FIXME - chapter.data.chapter is undefined
+  console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
   if (!chapters.data || !chapter.data.chapter) {
     return {
       redirect: {
@@ -75,6 +74,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
   return (
     <>
+      {/* TODO: add admin mode to delete chapter */}
       <UserMenu user={userState} />
       <div className="dark:bg-neutral-800">
         <BodyBox>
@@ -117,7 +117,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
             {/* images chapter */}
             <div className="max-w-[960px] mx-auto py-4 sm:py-8 xl:py-12 flex flex-col">
               {chapter.data?.chapter.imagesPath.map((c) => {
-                return <Image key={c} className="block w-full h-auto mx-auto" sizes="100vw" src={`/${c}`} alt="" width={960} height={1360} quality={100} />
+                return <Image key={c.publicId} className="block w-full h-auto mx-auto border border-gray-200" sizes="100vw" src={c.url} alt="" width={960} height={1360} quality={100} />
               })}
             </div>
             <Menu chapters={chapters.data} />

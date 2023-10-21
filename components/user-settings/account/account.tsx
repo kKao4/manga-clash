@@ -1,8 +1,8 @@
 import blankProfile from "@/assets/blank-profile-picture_640.webp"
 import { UserType } from "@/models/user"
-import {  UserResponse, emailReg, passwordReg, usernameReg } from "@/type"
+import { UserResponse, emailReg, passwordReg, usernameReg } from "@/type"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/router"
 import Row from "./row"
 import Input from "./input"
@@ -35,6 +35,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
   const [isLoadingUsername, setIsLoadingUsername] = useState<boolean>(false)
   const [isLoadingEmail, setIsLoadingEmail] = useState<boolean>(false)
   const [isLoadingPassword, setIsLoadingPassword] = useState<boolean>(false)
+  const fileRef = useRef<HTMLInputElement>(null)
   return (
     <>
       <div className="flex flex-col">
@@ -44,7 +45,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
             {!user?.profilePicture ? (
               <Image src={blankProfile} alt="" />
             ) : (
-              <Image className="object-contain" src={user.profilePicture?.startsWith("blob") ? user.profilePicture : `/${user.profilePicture}`} alt="" width="640" height="640" quality={100} />
+              <Image className="object-contain" src={user.profilePicture.url} alt="" width="640" height="640" quality={100} />
             )}
             <div className={`${isLoadingProfilePicture ? "block" : "hidden"} absolute w-[191px] h-[191px] bg-black/50 flex justify-center items-center`}>
               <ClipLoader color="#ffffff" size={40} />
@@ -67,6 +68,10 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                 const res = await fetchUser()
                 dispatch((setUser(res.data)))
                 setIsLoadingProfilePicture(false)
+                setFile(null)
+                if (fileRef.current) {
+                  fileRef.current.value = ""
+                }
                 // router.replace(router.asPath, "", { scroll: false })
               } else if (res.error) {
                 alert(res.error)
@@ -77,6 +82,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                 <input
                   className="hidden"
                   type="file"
+                  ref={fileRef}
                   name="profilePicture"
                   onChange={(e) => {
                     if (e.target.files) {

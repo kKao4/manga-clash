@@ -17,7 +17,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
       <tr className="border-b border-neutral-300">
         {/* image and name */}
         <td className="flex flex-row p-4 pr-0 text-sm gap-x-4">
-          <Image src={`/${manga.image}`} alt="" width={80} height={144} />
+          <Image src={manga.image.url} alt="" width={80} height={144} />
           <Link
             href={`/manga/${manga.href}`}
             className="font-bold transition-colors cursor-pointer hover:text-second-green"
