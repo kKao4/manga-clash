@@ -171,10 +171,6 @@ export default function Chapters({
             } else if (res.error) {
               alert(res.error)
               setIsAddingChapter(false)
-            } else {
-              alert(result)
-              console.log("🚀 ~ file: chapters.tsx:176 ~ onSubmit={ ~ result:", result)
-              setIsAddingChapter(false)
             }
           }}
         >
