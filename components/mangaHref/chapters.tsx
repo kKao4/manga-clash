@@ -171,6 +171,9 @@ export default function Chapters({
             } else if (res.error) {
               alert(res.error)
               setIsAddingChapter(false)
+            } else {
+              alert(res)
+              setIsAddingChapter(false)
             }
           }}
         >
