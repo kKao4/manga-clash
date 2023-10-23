@@ -2,19 +2,21 @@ import { useEffect, useRef, useState } from "react"
 import Title from "../global/title"
 import { useSelector, useDispatch } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
-import { HOST_URL } from "@/type"
 import { MangaType } from "@/models/manga"
 import { PulseLoader } from "react-spinners"
 import Chapter from "./chapter"
 import ShowMore from "./show-more"
 import { BeatLoader } from "react-spinners"
+import dynamic from "next/dynamic"
+const DynamicUploadWidget = dynamic(() => import("./upload-widget"), {
+  loading: () => <p>LOADING...</p>
+})
 
 export default function Chapters({
   mangaState, chaptersOrder, chapters, handleChangeChaptersOrder, setChapters
 }: {
   mangaState: MangaType, chaptersOrder: "latest" | "earliest", chapters: MangaType["chapters"], handleChangeChaptersOrder: () => void, setChapters: any
 }) {
-  const dispatch = useDispatch()
   const adminMode = useSelector(selectAdminMode)
   const showMoreChaptersRef = useRef<HTMLDivElement>(null)
   const [isAddingChapter, setIsAddingChapter] = useState<boolean>(false)
@@ -28,6 +30,10 @@ export default function Chapters({
   const [checkedChapters, setCheckedChapters] = useState<string[]>([])
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   const [isDeletingChapters, setIsDeletingChapters] = useState<boolean>(false)
+  const [arrayChapter, setArrayChapter] = useState<any[]>([])
+  useEffect(() => {
+    console.log("🚀 ~ file: chapters.tsx:31 ~ arrayChapter:", arrayChapter)
+  }, [arrayChapter])
   const fileRef = useRef<HTMLInputElement>(null)
   // Get localStorage For This Manga
   useEffect(() => {
@@ -66,6 +72,7 @@ export default function Chapters({
       <Title content="CHAPTERS" order={false}>
         {checkedChapters.length ? (
           <div className="relative">
+            {/* TODO: make admin components lazy loading */}
             {/* delete chapters button */}
             <button
               className="px-2.5 py-2 transition-colors rounded-md group hover:bg-red-500"
@@ -142,36 +149,64 @@ export default function Chapters({
           className={`${isOpenAddChapter ? "scale-100 -translate-y-full opacity-100" : "opacity-0 scale-0 -translate-y-1/2 -translate-x-1/2"} grid grid-cols-2 gap-x-3 px-3 absolute transition-all duration-200 w-full sm:w-[300px] h-[160px] rounded-md shadow border-2 border-second-green bg-white z-10 content-evenly top-2`}
           onSubmit={async (e) => {
             e.preventDefault()
-            setIsAddingChapter(true)
+            // setIsAddingChapter(true)
             const formData = new FormData()
             formData.append("num", num)
             formData.append("description", chapterDescription)
             if (files) {
-              for (let i = 0; i < files.length; i++) {
-                formData.append("images", files[i])
-              }
+              // for (let i = 0; i < files.length; i++) {
+              //   formData.append("images", files[i])
+              // }
+              // let arrayPromise = []
+              // for (let i = 0; i < files.length; i++) {
+              //   console.log(1)
+              //   arrayPromise.push(async () => {
+              //     const form = new FormData()
+              //     form.append("file", files[i])
+              //     form.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET as string)
+              //     form.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string)
+              //     const result = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/:resource_type/upload`, {
+              //       method: "POST",
+              //       body: form
+              //     })
+
+              //     console.log("🚀 ~ file: chapters.tsx:165 ~ arrayPromise.push ~ result:", result)
+              //   })
+              // }
+              // await Promise.all(arrayPromise)
+              const form = new FormData()
+              form.append("file", files[0])
+              form.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET as string)
+              form.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string)
+              // console.log("🚀 ~ file: chapters.tsx:183 ~ process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY)
+              const result = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`, {
+                method: "POST",
+                body: form,
+                // mode: "no-cors"
+              })
+              console.log("🚀 ~ file: chapters.tsx:181 ~ onSubmit={ ~ result:", result)
             }
-            const result = await fetch(`/api/admin/add_and_update_chapter?href=${mangaState.href}`, {
-              method: "POST",
-              body: formData
-            })
-            const res = await result.json()
-            console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
-            if (res.message) {
-              setNum("")
-              setChapterDescription("")
-              setFiles(null)
-              const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
-              const mangaRes = await mangaResult.json()
-              setChapters(mangaRes.data.chapters)
-              if (fileRef.current) {
-                fileRef.current.value = ""
-              }
-              setIsAddingChapter(false)
-            } else if (res.error) {
-              alert(res.error)
-              setIsAddingChapter(false)
-            }
+            // const result = await fetch(`/api/admin/add_and_update_chapter?href=${mangaState.href}`, {
+            //   method: "POST",
+            //   body: formData
+            // })
+            // const res = await result.json()
+            // console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
+            // if (res.message) {
+            //   setNum("")
+            //   setChapterDescription("")
+            //   setFiles(null)
+            //   const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
+            //   const mangaRes = await mangaResult.json()
+            //   setChapters(mangaRes.data.chapters)
+            //   if (fileRef.current) {
+            //     fileRef.current.value = ""
+            //   }
+            //   setIsAddingChapter(false)
+            // } else if (res.error) {
+            //   alert(res.error)
+            //   setIsAddingChapter(false)
+            // }
           }}
         >
           <div className="col-span-1 space-y-1">
@@ -277,6 +312,7 @@ export default function Chapters({
           }
         }} />
       )}
+      {/* <DynamicUploadWidget num={num} mangaState={mangaState} setArrayChapter={setArrayChapter} /> */}
     </>
   )
 }

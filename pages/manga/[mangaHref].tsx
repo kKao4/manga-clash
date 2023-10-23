@@ -136,7 +136,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
               <div ref={commentsRef} className="mb-4">
                 <Title content="BÌNH LUẬN" order={false} />
                 <div className="mt-8">
-                  <DiscussionEmbed shortname="manga-clash-disqus-com" data-scrollbar config={
+                  <DiscussionEmbed shortname="manga-clash-disqus-com" config={
                     {
                       url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
                       identifier: mangaState.href,

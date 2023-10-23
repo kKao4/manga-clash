@@ -5,9 +5,9 @@ import { NormalResponse } from "@/type";
 import { auth } from "@/lib/auth";
 import Chapter, { ChapterType } from "@/models/chapter";
 import Manga from "@/models/manga";
-import fs from "fs";
 import { checkFile } from "@/lib/checkExtension";
 import { v2 as cloudinary } from "cloudinary";
+import { cloudinaryConfig } from "@/lib/cloudinaryConfig";
 
 export const config = {
   api: {
@@ -15,11 +15,7 @@ export const config = {
   },
 };
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+cloudinaryConfig();
 
 export default async function handler(
   req: NextApiRequest,
