@@ -1,8 +1,5 @@
 import { useSelector } from "react-redux"
 import { selectDarkMode } from "@/features/GlobalSlice"
-import { useEffect } from "react"
-import Scrollbar from 'smooth-scrollbar';
-import OverscrollPlugin from 'smooth-scrollbar/plugins/overscroll';
 
 export default function DarkMode({ children }: { children: React.ReactNode }) {
   // useEffect(() => {
@@ -18,7 +15,7 @@ export default function DarkMode({ children }: { children: React.ReactNode }) {
   // })
   const darkMode = useSelector(selectDarkMode)
   return (
-    <div className={`${darkMode ? "dark" : "light"} overflow-auto max-h-screen`}>
+    <div className={`${darkMode ? "dark" : "light"}`}>
       {children}
     </div>
   )

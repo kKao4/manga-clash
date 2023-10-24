@@ -39,7 +39,6 @@ export default function OrderButton({
     <OrderRipples>
       <Link
         href={`/${search ? "search" : "manga"}/?${query}`}
-        scroll={false}
         className={`${(content === "Lượt Xem" && sort === "views") ||
           (content === "Mới Cập Nhật" && sort === "latest") ||
           (content === "A-Z" && sort === "a-z") ||
