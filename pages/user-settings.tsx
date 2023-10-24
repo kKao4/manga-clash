@@ -1,6 +1,6 @@
 import BodyBox from "@/components/global/body-box"
 import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
-import { ChartResponse,  MangasResponse, UserResponse } from "@/type"
+import { ChartResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
 import { useEffect } from "react"
@@ -11,11 +11,18 @@ import { selectUserSettingsState, setMenu } from "@/features/user-settings/UserS
 import Account from "@/components/user-settings/account/account"
 import UserMenu from "@/components/global/user-menu"
 import { useRouter } from "next/router"
-import AddManga from "@/components/user-settings/add-manga/add-manga"
+import dynamic from "next/dynamic"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import Chart from "@/components/user-settings/chart/chart"
 import { setMangasBookmark, selectBookmarkState, setSearchName, setPageBookmark } from "@/features/user-settings/BookmarkSlice"
 import { selectChartState, setMangasChart, setPageChart } from "@/features/user-settings/ChartSlice"
+const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+})
+const DynamicChart = dynamic(() => import("@/components/user-settings/chart/chart"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+})
 
 export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {
   const token = context.req.cookies.token
@@ -132,9 +139,9 @@ const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsTyp
               ) : userSettingsState.menu === "account" ? (
                 <Account user={userState} />
               ) : userSettingsState.menu === "addManga" ? (
-                <AddManga />
+                <DynamicAddManga />
               ) : (
-                <Chart />
+                <DynamicChart />
               )}
             </div>
           </div>
