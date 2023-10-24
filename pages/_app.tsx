@@ -15,6 +15,7 @@ import NProgress from "nprogress"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import DarkMode from "@/components/global/dark-mode"
+import { Analytics } from '@vercel/analytics/react';
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <ResetPassword />
             <MenuTop />
             {getLayout(<Component {...pageProps} />)}
+            <Analytics />
           </div>
           <Footer />
         </DarkMode>

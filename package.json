@@ -15,6 +15,7 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@uidotdev/usehooks": "^2.3.0",
+    "@vercel/analytics": "^1.1.1",
     "autoprefixer": "10.4.15",
     "cloudinary": "^1.41.0",
     "cookie": "^0.5.0",
