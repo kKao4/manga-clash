@@ -1,12 +1,12 @@
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/dbConnect";
-import { NormalResponse } from "@/type";
+import { SignatureResponse } from "@/type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v2 as cloudinary } from "cloudinary";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<SignatureResponse>
 ) {
   try {
     await dbConnect();
@@ -15,7 +15,7 @@ export default async function handler(
       case "GET": {
         const token = req.cookies.token;
         const { id, num } = req.query;
-        // console.log("🚀 ~ file: sign_up_load_widget.ts:18 ~ req.query:", req.query)
+        console.log("🚀 ~ file: sign_up_load_widget.ts:18 ~ req.query:", req.query)
         if (token) {
           const { user } = await auth(token as string);
           if (user && user.role === "admin") {
@@ -33,7 +33,7 @@ export default async function handler(
               data: {
                 timestamp: timestamp,
                 signature: signature,
-                apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+                apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string,
               },
             });
           } else {

@@ -41,6 +41,8 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const [bookmark, setBookmark] = useState<boolean>(false)
   const userState = useSelector(selectUserState)
   const darkMode = useSelector(selectDarkMode)
+  const [prevChapter, setPrevChapter] = useState<string>("1")
+  const [nextChapter, setNextChapter] = useState<string>("1")
   // Set User
   useEffect(() => {
     if (user.data) {
@@ -72,6 +74,18 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       localStorage.setItem(`${chapter.data?.href}`, JSON.stringify([chapter.data?.chapter.num.toString()]))
     }
   }, [chapter])
+  // set prev/next chapter
+  useEffect(() => {
+    const index = chapters.data!.chapters.indexOf(chapter.data!.chapter.num)
+    console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
+    setPrevChapter(chapters.data!.chapters[index + 1])
+    setNextChapter(chapters.data!.chapters[index - 1])
+    if (index === 0) {
+      setNextChapter(chapters.data!.chapters[chapters.data!.chapters.length - 1])
+    } else if (index === chapters.data!.chapters.length - 1) {
+      setPrevChapter(chapters.data!.chapters[0])
+    }
+  }, [chapter, chapters])
   // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
   return (
     <>
@@ -114,14 +128,14 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 </button>
               </div>
             </div>
-            <Menu chapters={chapters.data} />
+            <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
             {/* images chapter */}
             <div className="max-w-[960px] mx-auto py-4 sm:py-8 xl:py-12 flex flex-col">
               {chapter.data?.chapter.imagesPath.map((c) => {
                 return <Image key={c.publicId} className={`block w-full h-auto mx-auto ${darkMode ? "" : "border border-gray-200"}`} sizes="100vw" src={c.url} alt="" width={960} height={1360} quality={100} />
               })}
             </div>
-            <Menu chapters={chapters.data} />
+            <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
             <div className="mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapter.data?.chapter.num}"`} order={false} />
             </div>

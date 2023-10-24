@@ -18,7 +18,7 @@ export default function DarkMode({ children }: { children: React.ReactNode }) {
   // })
   const darkMode = useSelector(selectDarkMode)
   return (
-    <div className={`${darkMode ? "dark" : "light"} overflow-auto max-h-screen`} data-scrollbar>
+    <div className={`${darkMode ? "dark" : "light"} overflow-auto max-h-screen`}>
       {children}
     </div>
   )

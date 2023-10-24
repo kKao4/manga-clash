@@ -72,7 +72,6 @@ export default async function handler(
                   }
                 );
                 console.log("🚀 ~ file: add_manga.ts:68 ~ result:", result);
-                // TODO: store image with it's public_id
                 const newManga = new Manga({
                   _id: newObjectId,
                   name: fields.name![0],

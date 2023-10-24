@@ -3,13 +3,20 @@ import Title from "../global/title"
 import { useSelector, useDispatch } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { MangaType } from "@/models/manga"
-import { PulseLoader } from "react-spinners"
 import Chapter from "./chapter"
 import ShowMore from "./show-more"
-import { BeatLoader } from "react-spinners"
 import dynamic from "next/dynamic"
-const DynamicUploadWidget = dynamic(() => import("./upload-widget"), {
-  loading: () => <p>LOADING...</p>
+const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+})
+const DynamicAdminAddChapterModal = dynamic(() => import("./admin/admin-add-chapters-modal"), {
+  ssr: false,
+  // loading: () => <p>Loading...</p>
+})
+const DynamicAdminDeleteChapters = dynamic(() => import("./admin/admin-delete-chapters"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
 })
 
 export default function Chapters({
@@ -19,22 +26,15 @@ export default function Chapters({
 }) {
   const adminMode = useSelector(selectAdminMode)
   const showMoreChaptersRef = useRef<HTMLDivElement>(null)
-  const [isAddingChapter, setIsAddingChapter] = useState<boolean>(false)
   const [isOpenAddChapter, setIsOpenAddChapter] = useState<boolean>(false)
-  const [chapterDescription, setChapterDescription] = useState<string>("")
-  const [files, setFiles] = useState<FileList | null>(null)
-  const [num, setNum] = useState<string>("")
-  const [validChapterMessage, setValidChapterMessage] = useState<string>("")
   const [showMoreChapter, setShowMoreChapter] = useState<boolean>(false)
   const [readChapters, setReadChapters] = useState<string[]>()
   const [checkedChapters, setCheckedChapters] = useState<string[]>([])
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   const [isDeletingChapters, setIsDeletingChapters] = useState<boolean>(false)
-  const [arrayChapter, setArrayChapter] = useState<any[]>([])
-  useEffect(() => {
-    console.log("🚀 ~ file: chapters.tsx:31 ~ arrayChapter:", arrayChapter)
-  }, [arrayChapter])
-  const fileRef = useRef<HTMLInputElement>(null)
+  // useEffect(() => {
+  //   arrayImages.sort((a, b) => Number(a.name.slice(0, a.name.indexOf("."))) - Number(b.name.slice(0, b.name.indexOf("."))))
+  //   setArrayImages(arrayImages)
+  // }, [arrayImages])
   // Get localStorage For This Manga
   useEffect(() => {
     const storedArray = localStorage.getItem(`${mangaState.href}`)
@@ -45,91 +45,18 @@ export default function Chapters({
       }
     }
   }, [mangaState])
-  // set valid num message
-  useEffect(() => {
-    if (!num || Number(num) < 0) {
-      setValidChapterMessage("Không hợp lệ")
-    } else if (chapters?.find((c) => c.num === num)) {
-      setValidChapterMessage("Chapter đã tồn tại")
-    } else {
-      setValidChapterMessage("")
-    }
-  }, [num, chapters])
-  // set biggest number chapter is default value
-  useEffect(() => {
-    if (chapters && chapters.length) {
-      if (chaptersOrder === "latest") {
-        setNum((Number(chapters[0].num) + 1).toString())
-      } else {
-        setNum((Number(chapters[chapters.length - 1].num) + 1).toString())
-      }
-    } else {
-      setNum("")
-    }
-  }, [chapters, chaptersOrder])
   return (
     <>
       <Title content="CHAPTERS" order={false}>
         {checkedChapters.length ? (
-          <div className="relative">
-            {/* TODO: make admin components lazy loading */}
-            {/* delete chapters button */}
-            <button
-              className="px-2.5 py-2 transition-colors rounded-md group hover:bg-red-500"
-              onClick={() => setIsOpenDeleteModal(prevState => !prevState)}
-            >
-              <svg className="h-4 transition-colors fill-red-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" /></svg>
-            </button>
-            {/* delete chapters modal */}
-            <form
-              className={`${isOpenDeleteModal ? "scale-100 -translate-y-full translate-x-0 opacity-100" : "opacity-0 scale-0 -translate-y-1/2 translate-x-1/2"} absolute transition-all shadow grid grid-cols-1 right-0 content-evenly -top-1 duration-200 z-10 border-2 w-[220px] h-[84px] bg-white rounded-md border-second-green`}
-              onSubmit={async (e) => {
-                e.preventDefault()
-                setIsDeletingChapters(true)
-                const result = await fetch(`/api/admin/delete_chapters?href=${mangaState.href}`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    chapters: checkedChapters
-                  })
-                })
-                const res = await result.json()
-                console.log("🚀 ~ file: chapters.tsx:75 ~ onSubmit={ ~ res:", res)
-                if (res.message) {
-                  setCheckedChapters([])
-                  setIsOpenDeleteModal(false)
-                  const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
-                  const mangaRes = await mangaResult.json()
-                  setChapters(mangaRes.data.chapters)
-                  setIsDeletingChapters(false)
-                } else if (res.error) {
-                  alert(res.error)
-                }
-              }}
-            >
-              <p className="font-bold text-center">Xóa {checkedChapters.length} chapter đã chọn</p>
-              <div className="mx-auto space-x-2 max-w-fit">
-                <button
-                  type="button"
-                  className="px-2 py-1 font-semibold rounded bg-neutral-200 hover:bg-neutral-300"
-                  onClick={() => setIsOpenDeleteModal(false)}
-                >
-                  Hủy
-                </button>
-                <button
-                  type="submit"
-                  className={`${isDeletingChapters ? "" : "hover:bg-black"} px-2 py-1 font-semibold text-white rounded bg-second-green`}
-                  disabled={isDeletingChapters}
-                >
-                  {isDeletingChapters ? (
-                    <BeatLoader size={9} color="#ffffff" />
-                  ) : "Xác nhận"}
-                </button>
-              </div>
-            </form>
-          </div>
+          <DynamicAdminDeleteChapters
+            setIsDeletingChapters={setIsDeletingChapters}
+            checkedChapters={checkedChapters}
+            setCheckedChapters={setCheckedChapters}
+            setChapters={setChapters}
+            isDeletingChapters={isDeletingChapters}
+            mangaState={mangaState}
+          />
         ) : ""}
         <button
           className="px-2 py-2 ml-1 transition-colors rounded-md group hover:bg-second-green"
@@ -145,137 +72,19 @@ export default function Chapters({
       </Title>
       <div className="relative">
         {/* add chapter modal */}
-        <form
-          className={`${isOpenAddChapter ? "scale-100 -translate-y-full opacity-100" : "opacity-0 scale-0 -translate-y-1/2 -translate-x-1/2"} grid grid-cols-2 gap-x-3 px-3 absolute transition-all duration-200 w-full sm:w-[300px] h-[160px] rounded-md shadow border-2 border-second-green bg-white z-10 content-evenly top-2`}
-          onSubmit={async (e) => {
-            e.preventDefault()
-            // setIsAddingChapter(true)
-            const formData = new FormData()
-            formData.append("num", num)
-            formData.append("description", chapterDescription)
-            if (files) {
-              // for (let i = 0; i < files.length; i++) {
-              //   formData.append("images", files[i])
-              // }
-              // let arrayPromise = []
-              // for (let i = 0; i < files.length; i++) {
-              //   console.log(1)
-              //   arrayPromise.push(async () => {
-              //     const form = new FormData()
-              //     form.append("file", files[i])
-              //     form.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET as string)
-              //     form.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string)
-              //     const result = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/:resource_type/upload`, {
-              //       method: "POST",
-              //       body: form
-              //     })
-
-              //     console.log("🚀 ~ file: chapters.tsx:165 ~ arrayPromise.push ~ result:", result)
-              //   })
-              // }
-              // await Promise.all(arrayPromise)
-              const form = new FormData()
-              form.append("file", files[0])
-              form.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET as string)
-              form.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string)
-              // console.log("🚀 ~ file: chapters.tsx:183 ~ process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY)
-              const result = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`, {
-                method: "POST",
-                body: form,
-                // mode: "no-cors"
-              })
-              console.log("🚀 ~ file: chapters.tsx:181 ~ onSubmit={ ~ result:", result)
-            }
-            // const result = await fetch(`/api/admin/add_and_update_chapter?href=${mangaState.href}`, {
-            //   method: "POST",
-            //   body: formData
-            // })
-            // const res = await result.json()
-            // console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
-            // if (res.message) {
-            //   setNum("")
-            //   setChapterDescription("")
-            //   setFiles(null)
-            //   const mangaResult = await fetch(`/api/manga/${mangaState.href}`)
-            //   const mangaRes = await mangaResult.json()
-            //   setChapters(mangaRes.data.chapters)
-            //   if (fileRef.current) {
-            //     fileRef.current.value = ""
-            //   }
-            //   setIsAddingChapter(false)
-            // } else if (res.error) {
-            //   alert(res.error)
-            //   setIsAddingChapter(false)
-            // }
-          }}
-        >
-          <div className="col-span-1 space-y-1">
-            <input
-              type="number"
-              min={0}
-              value={num}
-              className={`${validChapterMessage ? "border-b-red-500 text-red-500" : "border-b-gray-200 "} w-full text-center py-1 border-b focus:outline-none`}
-              onChange={(e) => setNum(e.target.value)}
-              placeholder="Chapter"
-            />
-            <p className="text-[13px] text-red-500">{validChapterMessage && validChapterMessage}</p>
-          </div>
-          <label
-            htmlFor="chapters-image"
-            className={`${files?.length ? "text-second-green border-second-green hover:bg-second-green" : "text-red-500 border-red-500 hover:bg-red-500"} flex flex-row group hover:text-white col-span-1 py-1 text-sm text-center border-2 rounded cursor-pointer gap-x-1.5 justify-center h-fit`}
-          >
-            <svg className={`h-4 ${files?.length ? "fill-second-green" : "fill-red-500"} group-hover:fill-white`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3V320c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 53 43 96 96 96H352c53 0 96-43 96-96V352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V352z" /></svg>
-            <span className="font-semibold">{files ? files.length : "0"} ảnh</span>
-            <input
-              id="chapters-image"
-              type="file"
-              ref={fileRef}
-              className="hidden"
-              multiple
-              onChange={(e) => setFiles(e.target.files)}
-            />
-          </label>
-          <input
-            type="text"
-            className="col-span-2 py-1 border-b border-gray-200 focus:outline-none h-fit"
-            placeholder="Chú thích (nếu có)"
-            value={chapterDescription}
-            onChange={(e) => setChapterDescription(e.target.value)}
+        {adminMode && (
+          <DynamicAdminAddChapterModal
+            isOpenAddChapter={isOpenAddChapter}
+            mangaState={mangaState}
+            chaptersOrder={chaptersOrder}
+            chapters={chapters}
+            setChapters={setChapters}
           />
-          <div className="flex flex-row col-span-2 place-content-center gap-x-2">
-            <button
-              type="button"
-              className="px-2 py-1 font-semibold rounded bg-neutral-200 hover:bg-neutral-300"
-              onClick={() => setIsOpenAddChapter(false)}
-            >
-              Hủy
-            </button>
-            <button
-              className={`${isAddingChapter || validChapterMessage !== "" || !files?.length ? "" : "hover:bg-black"} ${validChapterMessage === "" && files?.length ? "bg-second-green" : "bg-red-500"} px-2 py-1 font-semibold text-white rounded`}
-              disabled={isAddingChapter || validChapterMessage !== "" || !files?.length}
-            >
-              {isAddingChapter ? (
-                <PulseLoader size={8} margin={2} color="#ffffff" />
-              ) : "Xác nhận"}
-            </button>
-          </div>
-        </form>
+        )}
         <div ref={showMoreChaptersRef} className="relative py-3 grid grid-cols-1 sm:grid-cols-3 overflow-hidden max-h-[550px] transition-all duration-400">
           {/* add chapter button */}
           {adminMode && (
-            <div className="relative col-span-1">
-              <button
-                className={`hover:bg-second-green border-second-green w-full flex flex-row items-center border-2 group rounded-md justify-center gap-x-2 min-h-[64px] transition-colors`}
-                onClick={() => setIsOpenAddChapter(prevState => !prevState)}
-              >
-                <svg className={`fill-second-green group-hover:fill-white h-5 transition-colors`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg>
-                <span
-                  className={`text-second-green group-hover:text-white font-bold transition-colors`}
-                >
-                  Thêm Chapter
-                </span>
-              </button>
-            </div>
+            <DynamicAdminAddChapterButton setIsOpenAddChapter={setIsOpenAddChapter} />
           )}
           {/* chapter display */}
           {chapters?.map(chapter => {
@@ -299,7 +108,8 @@ export default function Chapters({
           {showMoreChaptersRef.current && showMoreChaptersRef.current.scrollHeight > 550 && (
             <div className="absolute w-full h-8 bottom-0 bg-gradient-to-t from-white to-[rgba(255,255,255,0)]"></div>
           )}
-        </div></div>
+        </div>
+      </div>
       {showMoreChaptersRef.current && showMoreChaptersRef.current.scrollHeight > 550 && (
         <ShowMore showMore={showMoreChapter} handleOnClick={() => {
           setShowMoreChapter(s => !s)
@@ -312,7 +122,6 @@ export default function Chapters({
           }
         }} />
       )}
-      {/* <DynamicUploadWidget num={num} mangaState={mangaState} setArrayChapter={setArrayChapter} /> */}
     </>
   )
 }

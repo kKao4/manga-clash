@@ -2,24 +2,20 @@ import { ChaptersResponse } from "@/type";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react"
 
-export default function Menu({ chapters }: { chapters: ChaptersResponse["data"] }) {
+export default function Menu({
+  chapters, prevChapter, nextChapter
+}: {
+  chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string
+}) {
   const router = useRouter()
   const [firstChapter, setFirstChapter] = useState<boolean>(false)
   const [lastChapter, setLastChapter] = useState<boolean>(false)
-  const [prevChapter, setPrevChapter] = useState<number>()
-  const [nextChapter, setNextChapter] = useState<number>()
   useEffect(() => {
     if (router.query.chapterNum && !Array.isArray(router.query.chapterNum)) {
       setFirstChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[chapters.chapters.length - 1]?.toString()))
       setLastChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[0]?.toString()))
     }
   }, [router, chapters])
-  useEffect(() => {
-    if (router.query.chapterNum && !Array.isArray(router.query.chapterNum)) {
-      setPrevChapter(Number(router.query.chapterNum.split("-")[1]) - 1)
-      setNextChapter(Number(router.query.chapterNum.split("-")[1]) + 1)
-    }
-  }, [router])
   return (
     <div className="flex flex-col sm:flex-row gap-y-2">
       {/* select chapter  */}
@@ -51,7 +47,9 @@ export default function Menu({ chapters }: { chapters: ChaptersResponse["data"] 
             <button
               className={`${firstChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}
               disabled={firstChapter}
-              onClick={() => router.push(`/manga/${router.query.mangaHref}/chapter-${prevChapter}`)}
+              onClick={() => {
+                router.push(`/manga/${router.query.mangaHref}/chapter-${prevChapter}`)
+              }}
             >
               <svg className={`${firstChapter ? "fill-neutral-300" : "fill-white"} h-3.5`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" /></svg>
               Chap trước
@@ -59,7 +57,9 @@ export default function Menu({ chapters }: { chapters: ChaptersResponse["data"] 
             <button
               className={`${lastChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}
               disabled={lastChapter}
-              onClick={() => router.push(`/manga/${router.query.mangaHref}/chapter-${nextChapter}`)}
+              onClick={() => {
+                router.push(`/manga/${router.query.mangaHref}/chapter-${nextChapter}`)
+              }}
             >
               Chap sau
               <svg className={`${lastChapter ? "fill-neutral-300" : "fill-white"} h-3.5`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" /></svg>

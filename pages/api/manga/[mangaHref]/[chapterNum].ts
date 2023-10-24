@@ -31,12 +31,6 @@ export default async function handler(
             const data = chapter.chapters.find(
               (c: ChapterType["chapters"][number]) => c.num === num
             );
-            data.imagesPath.sort(
-              (
-                a: ChapterType["chapters"][number]["imagesPath"][number],
-                b: ChapterType["chapters"][number]["imagesPath"][number]
-              ) => a.order - b.order
-            );
             // console.log("🚀 ~ file: [chapterNum].ts:26 ~ data:", data);
             // update or create view collection
             if (view) {

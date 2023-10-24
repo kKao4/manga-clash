@@ -1,11 +1,15 @@
 import { useSelector } from "react-redux"
-import TextArea from "./text-area"
+import dynamic from "next/dynamic"
 import Title from "../global/title"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Parser from "html-react-parser"
 import ShowMore from "./show-more"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
+const DynamicSummary = dynamic(() => import("./admin/admin-summary"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+})
 
 export default function Summary({ mangaState, description, setDescription }: { mangaState: typeof initialMangaState[number], description: string, setDescription: Dispatch<SetStateAction<string>> }) {
   const adminMode = useSelector(selectAdminMode)
@@ -14,9 +18,9 @@ export default function Summary({ mangaState, description, setDescription }: { m
   return (
     <>
       <Title content="TÓM TẮT" order={false} />
-      <div className={`${adminMode ? "block" : "hidden"} py-5`}>
-        <TextArea mangaState={mangaState} description={description} setDescription={setDescription} />
-      </div>
+      {adminMode && (
+        <DynamicSummary mangaState={mangaState} description={description} setDescription={setDescription} />
+      )}
       <div className={`${adminMode ? "hidden" : "block"}`}>
         <div
           ref={showMoreSummaryRef}

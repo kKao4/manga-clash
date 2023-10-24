@@ -33,37 +33,44 @@ export default async function handler(
                 chapters.forEach(async (c) => {
                   chapter.chapters.forEach(
                     async (obj: ChapterType["chapters"][number]) => {
-                      if (c === obj.num) {
-                        // delete images in local storage
-                        // obj.imagesPath.forEach(async (imagePath) => {
-                        //   await fs.promises.unlink("./public/" + imagePath);
-                        // });
-                        // delete images in cloudinary
-                        obj.imagesPath.forEach(async (imagePath) => {
-                          const result = await cloudinary.uploader.destroy(
-                            imagePath.publicId
-                          );
-                          console.log(
-                            "🚀 ~ file: delete_chapters.ts:47 ~ obj.imagesPath.forEach ~ result:",
-                            result
-                          );
-                        });
-                        const newChapters = chapter.chapters.filter(
-                          (a: any) => a.num !== c
+                      // delete images in cloudinary
+                      if (obj.num === c) {
+                        const folder = obj.imagesPath[0].publicId.slice(
+                          0,
+                          obj.imagesPath[0].publicId.lastIndexOf("/")
                         );
-                        chapter.chapters = newChapters;
+                        const result1 =
+                          await cloudinary.api.delete_resources_by_prefix(
+                            folder
+                          );
                         // console.log(
-                        //   "🚀 ~ file: delete_chapters.ts:42 ~ chapters.forEach ~ chapter.chapters:",
-                        //   chapter.chapters
+                        //   "🚀 ~ file: delete_chapters.ts:48 ~ obj.imagesPath.forEach ~ result:",
+                        //   result1
                         // );
-                        // set 2 latest chapters for manga collection
-                        manga.chapters = chapter.chapters.slice(0, 2);
-                        await chapter.save();
-                        await manga.save();
+                        const result2 = await cloudinary.api.delete_folder(
+                          folder
+                        );
+                        // console.log(
+                        //   "🚀 ~ file: delete_chapters.ts:55 ~ result2:",
+                        //   result2
+                        // );
                       }
                     }
                   );
+                  const newChapters = chapter.chapters.filter(
+                    (a: any) => a.num !== c
+                  );
+                  chapter.chapters = newChapters;
+                  // console.log(
+                  //   "🚀 ~ file: delete_chapters.ts:42 ~ chapters.forEach ~ chapter.chapters:",
+                  //   chapter.chapters
+                  // );
                 });
+                // set 2 latest chapters for manga collection
+                manga.chapters = chapter.chapters.slice(0, 2);
+                console.log("🚀 ~ file: delete_chapters.ts:64 ~ manga:", manga);
+                await chapter.save();
+                await manga.save();
                 res.status(200).json({ message: "Deleted Chapters" });
               } else {
                 res.status(400).json({ error: "Invalid Form" });

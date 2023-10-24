@@ -217,7 +217,6 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             </div>
           </div>
         </div>
-        {/* TODO: read first/last button */}
         <div className="flex flex-row justify-center xl:justify-start gap-x-2.5 -mt-4 xl:mt-0">
           <Link
             href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[chapters.length - 1].num}` : "/"}

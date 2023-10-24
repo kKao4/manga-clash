@@ -5,8 +5,6 @@ import { NormalResponse } from "@/type";
 import { auth } from "@/lib/auth";
 import Chapter, { ChapterType } from "@/models/chapter";
 import Manga from "@/models/manga";
-import { checkFile } from "@/lib/checkExtension";
-import { v2 as cloudinary } from "cloudinary";
 import { cloudinaryConfig } from "@/lib/cloudinaryConfig";
 
 export const config = {
@@ -37,136 +35,80 @@ export default async function handler(
               "🚀 ~ file: add_and_update_chapter.ts:22 ~ files:",
               files
             );
-            console.log(
-              "🚀 ~ file: add_and_update_chapter.ts:22 ~ fields:",
-              fields
-            );
-            if (fields.num && fields.description && files.images) {
+            if (fields.num && fields.description && fields.arrayImages) {
               const manga = await Manga.findOne({ href: href });
               if (manga) {
                 const chapter = await Chapter.findOne({ mangaId: manga._id });
-                // check files extension
-                let validImages = true;
-                files.images.forEach((image) => {
-                  if (!checkFile(image.originalFilename)) {
-                    validImages = false;
-                  }
+                let arrayImages: {
+                  name: string;
+                  url: string;
+                  publicId: string;
+                }[] = [];
+                // sort images by it's name
+                fields.arrayImages.forEach((image: any) => {
+                  arrayImages.push(JSON.parse(image));
                 });
-                if (validImages) {
-                  let arrayImagesPath: any[] = [];
-                  // store images in local storage
-                  // files.images.forEach(async (image) => {
-                  //   if (image.originalFilename && fields.num) {
-                  //     const newPath =
-                  //       manga.href +
-                  //       "-chapter-" +
-                  //       fields.num[0] +
-                  //       "_" +
-                  //       image.originalFilename;
-                  //     // add file name to array of files name
-                  //     arrayImagesPath.push(newPath);
-                  //     await fs.promises.rename(
-                  //       image.filepath,
-                  //       "./public/" + newPath
-                  //     );
-                  //   }
-                  // });
-                  // store images in cloudinary
-                  // await files.images.forEach(async (image) => {
-                  //   if (fields.num) {
-                  //     const result = await cloudinary.uploader.upload(
-                  //       image.filepath,
-                  //       {
-                  //         public_id: `${
-                  //           image.originalFilename
-                  //         }_${new Date().toISOString()}`,
-                  //         folder: `mangas/${manga._id}/chapter ${fields.num[0]}`,
-                  //       }
-                  //     );
-                  // arrayImagesPath.push(result.url);
-                  //   }
-                  // });
-                  //store images in cloudinary
-                  const processArray = async (array: any) => {
-                    const promises = array.map(
-                      async (image: any, i: number) => {
-                        if (fields.num) {
-                          const result = await cloudinary.uploader.upload(
-                            image.filepath,
-                            {
-                              public_id: `${
-                                image.originalFilename
-                              }_${new Date().toISOString()}`,
-                              folder: `mangas/${manga._id}/chapter-${fields.num[0]}`,
-                            }
-                          );
-                          arrayImagesPath.push({
-                            order: i + 1,
-                            url: result.url,
-                            publicId: result.public_id,
-                          });
-                        }
+                arrayImages.sort(
+                  (a, b) =>
+                    Number(a.name.slice(0, a.name.indexOf("."))) -
+                    Number(b.name.slice(0, b.name.indexOf(".")))
+                );
+                // console.log(
+                //   "🚀 ~ file: add_and_update_chapter.ts:57 ~ arrayImages:",
+                //   arrayImages
+                // );
+                
+                if (chapter) {
+                  const exist = chapter.chapters.some(
+                    (c: ChapterType["chapters"][number]) =>
+                      fields.num && c.num === fields.num[0]
+                  );
+                  if (!exist) {
+                    chapter.chapters.push({
+                      num: fields.num[0],
+                      description: fields.description[0],
+                      imagesPath: arrayImages,
+                    });
+                    // sort chapter desc
+                    chapter.chapters.sort(
+                      (
+                        a: ChapterType["chapters"][number],
+                        b: ChapterType["chapters"][number]
+                      ) => {
+                        return Number(b.num) - Number(a.num);
                       }
                     );
-                    await Promise.all(promises);
-                  };
-                  await processArray(files.images);
-                  if (chapter) {
-                    const exist = chapter.chapters.some(
-                      (c: ChapterType["chapters"][number]) =>
-                        fields.num && c.num === fields.num[0]
-                    );
-                    if (!exist) {
-                      chapter.chapters.push({
-                        num: fields.num[0],
-                        description: fields.description[0],
-                        imagesPath: arrayImagesPath,
-                      });
-                      // sort chapter desc
-                      chapter.chapters.sort(
-                        (
-                          a: ChapterType["chapters"][number],
-                          b: ChapterType["chapters"][number]
-                        ) => {
-                          return Number(b.num) - Number(a.num);
-                        }
-                      );
-                      await chapter.save();
-                      // set 2 latest chapters for manga collection
-                      manga.chapters = chapter.chapters.slice(0, 2);
-                      await manga.save();
-                      res.status(200).json({ message: "Added Chapter" });
-                    } else {
-                      res.status(400).json({ error: "Chapter Exist" });
-                    }
+                    await chapter.save();
+                    // set 2 latest chapters for manga collection
+                    manga.chapters = chapter.chapters.slice(0, 2);
+                    await manga.save();
+                    res.status(200).json({ message: "Added Chapter" });
                   } else {
-                    await Chapter.create({
-                      mangaId: manga._id,
-                      mangaHref: manga.href,
-                      chapters: [
-                        {
-                          num: fields.num[0],
-                          description: fields.description[0],
-                          imagesPath: arrayImagesPath,
-                        },
-                      ],
-                    });
-                    // add chapter to manga
-                    manga.chapters = [
+                    res.status(400).json({ error: "Chapter Exist" });
+                  }
+                } else {
+                  await Chapter.create({
+                    mangaId: manga._id,
+                    mangaHref: manga.href,
+                    chapters: [
                       {
                         num: fields.num[0],
                         description: fields.description[0],
+                        imagesPath: arrayImages,
                       },
-                    ];
-                    await manga.save();
-                    res.status(200).json({
-                      message: "Created Chapter Collection And Added Chapter",
-                    });
-                  }
-                } else {
-                  res
-                    .status(400)
-                    .json({ error: "File Extension Is Not Matched" });
+                    ],
+                  });
+                  // add chapter to manga
+                  manga.chapters = [
+                    {
+                      num: fields.num[0],
+                      description: fields.description[0],
+                    },
+                  ];
+                  await manga.save();
+                  res.status(200).json({
+                    message: "Created Chapter Collection And Added Chapter",
+                  });
                 }
               } else {
                 res.status(400).json({ error: "Invalid Manga" });

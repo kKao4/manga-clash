@@ -73,6 +73,16 @@ export type UpdateMangaResponse = {
   }
 }
 
+export type SignatureResponse = {
+  message?: string,
+  error?: string,
+  data?: {
+    timestamp: number,
+    signature: string,
+    apiKey: string
+  }
+}
+
 export type StarType = 1 | 2 | 3 | 4 | 5
 
 export const shortName = "manga-clash-disqus-com"

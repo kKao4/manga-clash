@@ -40,7 +40,7 @@ export default function TextArea({ mangaState, description, setDescription }: { 
       </div>
       <textarea
         name="description"
-        className={`w-full px-3 border border-neutral-400 border-t-transparent rounded-b focus:outline-none min-h-[320px] mt-0`}
+        className={`w-full px-3 border border-neutral-400 border-t-transparent rounded-b focus:outline-none min-h-[240px] mt-0`}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
