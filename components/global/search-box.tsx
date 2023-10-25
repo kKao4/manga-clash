@@ -13,7 +13,7 @@ export default function SearchBox({
   const dispatch = useDispatch()
   const router = useRouter()
   return (
-    <div className={`w-full px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "max-h-[100px] py-6 opacity-100" : "max-h-0 py-0 opacity-0"}`}>
+    <div className={`w-full px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "max-h-[100px] py-4 md:py-6 opacity-100" : "max-h-0 py-0 opacity-0"}`}>
       <form className="flex flex-row justify-center" onSubmit={(e) => {
         e.preventDefault()
         closeSearchBox()
@@ -27,7 +27,7 @@ export default function SearchBox({
           onChange={(e) => dispatch(setSearchName(e.target.value))}
           autoComplete="on"
         />
-        <button className="px-6 py-3.5 text-sm font-bold text-white bg-main-green hover:bg-black transition-colors" type="submit">Tìm Kiếm</button>
+        <button className="px-6 py-3.5 text-sm font-bold text-white bg-main-green hover:bg-black transition-colors shrink-0" type="submit">Tìm Kiếm</button>
       </form>
     </div>
   )

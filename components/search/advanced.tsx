@@ -33,7 +33,7 @@ export default function Advanced({ setSearched }: { setSearched: Dispatch<SetSta
         router.push(`/search?${query}`, "", { scroll: false })
         setSearched(true)
       }}>
-        <div className="grid grid-cols-2 mb-4 sm:grid-cols-3 md:grid-cols-6 gap-y-4">
+        <div className="grid grid-cols-2 mb-2 sm:mb-4 sm:grid-cols-3 md:grid-cols-6 gap-y-4">
           {tagsArray.map(tag => {
             return <Checkbox key={tag.id} content={tag.title} />
           })}

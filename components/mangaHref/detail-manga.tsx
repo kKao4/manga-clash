@@ -146,8 +146,8 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           <PulseLoader size={12} color="#409a88" margin={3} />
         </div>
       </div>
-      <div className="flex flex-col flex-wrap gap-y-4 xl:flex-row">
-        <div className="flex flex-col basis-2/3 gap-y-2.5">
+      <div className="flex flex-col xl:flex-wrap gap-y-4 xl:flex-row">
+        <div className="flex flex-col basis-2/3 gap-y-2.5 max-h-fit">
           {/* rating information */}
           <div className="flex flex-col sm:flex-row">
             <p className="text-sm font-bold basis-1/5">Đánh giá</p>

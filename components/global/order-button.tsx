@@ -46,7 +46,7 @@ export default function OrderButton({
           (content === "Đánh Giá" && sort === "rating") ||
           (content === "Mới Nhất" && sort === "new")
           ? "text-second-green border-b-second-green" : "text-gray-text"
-          } px-2.5 py-3 capitalize hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green transition-colors border-transparent`}
+          } px-2.5 py-3 capitalize hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
         onClick={handleOnClick}
       >
         {content}
