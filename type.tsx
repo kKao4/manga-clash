@@ -32,6 +32,7 @@ export type ChaptersResponse = {
   message?: string,
   error?: string,
   data?: {
+    name: string,
     href: string,
     chapters: string[]
   }

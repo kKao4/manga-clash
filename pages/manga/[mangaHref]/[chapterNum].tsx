@@ -12,6 +12,7 @@ import { DiscussionEmbed } from 'disqus-react';
 import Title from "@/components/global/title"
 import { selectUserState, setUser } from "@/features/UserSlice"
 import { selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
+import Head from "next/head"
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
@@ -87,8 +88,12 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
     }
   }, [chapter, chapters])
   // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
+  const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
   return (
     <>
+      <Head>
+        <title>{title}</title>
+      </Head>
       {/* TODO: add admin mode to delete chapter */}
       <UserMenu user={userState} />
       <div className="dark:bg-neutral-800">
