@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { selectSignIn, toggleSignIn, toggleResetPassword } from "@/features/GlobalSlice"
-import { NormalResponse,  emailReg, passwordReg, UserResponse } from "@/type"
+import { NormalResponse, emailReg, passwordReg, UserResponse } from "@/type"
 import Input from "./input"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
@@ -56,6 +56,7 @@ export default function SignIn() {
               setPassword("")
               dispatch(toggleSignIn(false))
             } else if (result.error) {
+              alert(result.error)
               setIsLoading(false)
               setWrongInformation(true)
             }

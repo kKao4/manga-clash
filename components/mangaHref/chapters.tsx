@@ -31,10 +31,6 @@ export default function Chapters({
   const [readChapters, setReadChapters] = useState<string[]>()
   const [checkedChapters, setCheckedChapters] = useState<string[]>([])
   const [isDeletingChapters, setIsDeletingChapters] = useState<boolean>(false)
-  // useEffect(() => {
-  //   arrayImages.sort((a, b) => Number(a.name.slice(0, a.name.indexOf("."))) - Number(b.name.slice(0, b.name.indexOf("."))))
-  //   setArrayImages(arrayImages)
-  // }, [arrayImages])
   // Get localStorage For This Manga
   useEffect(() => {
     const storedArray = localStorage.getItem(`${mangaState.href}`)

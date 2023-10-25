@@ -90,7 +90,17 @@ export default function ImageAndDetailManga({
       <div className="flex flex-col items-center justify-center p-4 bg-white basis-1/4 w-fit">
         <div className="w-[193px] h-[274px] relative overflow-hidden">
           {adminMode ? (
-            <DynamicAdminImage setMangaUrl={setMangaUrl} setFile={setFile} mangaUrl={mangaUrl} />
+            <DynamicAdminImage
+              mangaUrl={mangaUrl}
+              handleOnChange={(e: any) => {
+                if (e.target.files) {
+                  setMangaUrl(URL.createObjectURL(e.target.files[0]))
+                  if (e.target.files) {
+                    setFile(e.target.files[0])
+                  }
+                }
+              }}
+            />
           ) : (
             <Image
               className="block w-full h-full mx-auto"
