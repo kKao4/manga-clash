@@ -15,7 +15,7 @@ export default async function handler(
   try {
     await dbConnect();
     if (req.method === "GET") {
-      let { page, sort, token, name } = req.query;
+      let { pageBookmark, sort, token, name } = req.query;
       // console.log("🚀 ~ file: all_mangas_bookmarks.ts:19 ~ req.query:", req.query)
       if (!token) {
         token = req.cookies.token;
@@ -39,11 +39,7 @@ export default async function handler(
         // );
         mangas = searchName(name, mangas);
         const mangasLength = mangas.length;
-        mangas = sliceMangas(mangas, Number(page));
-        console.log(
-          "🚀 ~ file: all_mangas_bookmarks.ts:36 ~ mangas=mangas.filter ~ mangas:",
-          mangas
-        );
+        mangas = sliceMangas(mangas, Number(pageBookmark));
         res.status(200).json({
           message: "Fetched Bookmark Mangas",
           data: mangas,

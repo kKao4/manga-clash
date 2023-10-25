@@ -15,7 +15,6 @@ export default function MenuButton({
   return (
     <Link
       href={href}
-      scroll={false}
       className="relative px-5 py-3 text-sm font-bold text-white cursor-pointer group"
       onClick={() => {
         handleOnClick(sort)

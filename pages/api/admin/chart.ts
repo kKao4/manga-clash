@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/dbConnect";
 import { NextApiRequest, NextApiResponse } from "next";
-import View, { ViewType } from "@/models/view";
+import View from "@/models/view";
 import Manga from "@/models/manga";
 import filterViews from "@/lib/filterViews";
 import { sliceMangas } from "@/lib/sliceMangas";
@@ -17,7 +17,7 @@ export default async function handler(
     const method = req.method;
     switch (method) {
       case "GET": {
-        let { token, time, page, name } = req.query;
+        let { token, time, pageChart, name } = req.query;
         if (!token) {
           token = req.cookies.token;
         }
@@ -63,7 +63,7 @@ export default async function handler(
             // get array length
             const arrayLength = array.length;
             // slice mangas for 1 page
-            array = sliceMangas(array, Number(page));
+            array = sliceMangas(array, Number(pageChart));
             res.status(200).json({
               message: "Ok",
               data: { mangas: array, length: arrayLength },

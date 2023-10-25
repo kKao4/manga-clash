@@ -33,9 +33,9 @@ export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasRespo
   time = time ?? "oneWeek"
   const [popularMangasRes, mangasRes, userRes, chartRes] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&page=${pageBookmark}&name=${name}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&pageBookmark=${pageBookmark}&name=${name}`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&page=${pageChart}&name=${name}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&pageChart=${pageChart}&name=${name}`)
   ])
   const [popularMangas, mangas, user, chart] = await Promise.all([popularMangasRes.json(), mangasRes.json(), userRes.json(), chartRes.json()])
   console.log("🚀 ~ file: user-settings.tsx:28 ~ user.message:", user.message)
