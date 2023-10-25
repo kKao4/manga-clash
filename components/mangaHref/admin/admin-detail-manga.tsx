@@ -4,9 +4,9 @@ import { tagsArray } from "@/type"
 import { useDispatch } from "react-redux"
 
 export default function AdminDetailManga({
-  name, setName, otherName, setOtherName, author, setAuthor, completed, setCompleted, tags, setTags, isUpdating, mangaState, setDescription
+  name, setName, otherName, setOtherName, author, setAuthor, completed, setCompleted, tags, setTags, isUpdating, mangaState, setDescription, setFile
 }: {
-  name: string, setName: any, otherName: string, setOtherName: any, author: string, setAuthor: any, completed: boolean, setCompleted: any, tags: string[], setTags: any, isUpdating: boolean, mangaState: typeof initialMangaState[number], setDescription: any
+  name: string, setName: any, otherName: string, setOtherName: any, author: string, setAuthor: any, completed: boolean, setCompleted: any, tags: string[], setTags: any, isUpdating: boolean, mangaState: typeof initialMangaState[number], setDescription: any, setFile: any
 }) {
   const dispatch = useDispatch()
   return (
@@ -91,6 +91,7 @@ export default function AdminDetailManga({
             setCompleted(mangaState.completed)
             setDescription(mangaState.description)
             dispatch(toggleAdminMode())
+            setFile(undefined)
           }}
         >
           Hủy

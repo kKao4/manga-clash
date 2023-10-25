@@ -51,7 +51,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
             </div>
           )}
           {manga.chapters[1] && (
-            <div className="flex flex-col items-center gap-y-2"> {/* TODO: change hour to day */}
+            <div className="flex flex-col items-center gap-y-2">
               <Link
                 href={`/manga/${manga.href}/chapter-${manga.chapters[1].num}`}
                 className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"

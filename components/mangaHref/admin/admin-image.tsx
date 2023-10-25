@@ -1,6 +1,7 @@
+import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import Image from "next/image"
 
-export default function AdminImage({ handleOnChange, mangaUrl }: { handleOnChange: any, mangaUrl: string }) {
+export default function AdminImage({ handleOnChange, file, mangaState }: { handleOnChange: any, file: File | undefined, mangaState: typeof initialMangaState[number] }) {
   return (
     <>
       <label
@@ -15,7 +16,7 @@ export default function AdminImage({ handleOnChange, mangaUrl }: { handleOnChang
       </label>
       <Image
         className="block w-full h-full mx-auto"
-        src={mangaUrl}
+        src={file ? URL.createObjectURL(file) : mangaState.image.url}
         alt=""
         width="193"
         height="274"

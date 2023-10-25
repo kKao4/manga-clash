@@ -1,9 +1,7 @@
-import { selectUserState } from "@/features/UserSlice"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { MangaType } from "@/models/manga"
 import { SignatureResponse } from "@/type"
 import { useEffect, useRef, useState } from "react"
-import { useSelector } from "react-redux"
 import { PacmanLoader } from "react-spinners"
 
 export default function AdminAddChapterModal({
@@ -15,7 +13,6 @@ export default function AdminAddChapterModal({
   const [chapterDescription, setChapterDescription] = useState<string>("")
   const [validChapterMessage, setValidChapterMessage] = useState<string>("")
   const [isAddingChapter, setIsAddingChapter] = useState<boolean>(false)
-  const userState = useSelector(selectUserState);
   const cloudinaryRef = useRef<any>();
   const widgetRef = useRef<any>();
   const [signatureRes, setSignatureRes] = useState<SignatureResponse["data"]>();

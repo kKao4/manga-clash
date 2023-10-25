@@ -38,7 +38,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
           </div>
         )}
         {manga.chapters[1] && (
-          <div className="flex flex-row items-center"> {/* TODO: change hour to day */}
+          <div className="flex flex-row items-center">
             <Link
               href={`/manga/${manga.href}/chapter-${manga.chapters[1].num}`}
               className="px-2 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"

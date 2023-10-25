@@ -18,7 +18,7 @@ export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | n
             })}
           </>
         ) : (
-          <p>Nothing Founded</p> //TODO - 
+          <p>Không có bộ truyện nào</p>
         )}
       </div>
       <Link

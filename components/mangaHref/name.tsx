@@ -3,7 +3,6 @@ import { initialMangaState } from "@/features/mangaHref/MangaSlice";
 import { useEffect } from "react"
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 const DynamicAdminDeleteManga = dynamic(() => import("./admin/admin-delete-manga"), {
   ssr: false,
@@ -11,7 +10,6 @@ const DynamicAdminDeleteManga = dynamic(() => import("./admin/admin-delete-manga
 })
 
 export default function Name({ mangaState }: { mangaState: typeof initialMangaState[number] }) {
-  const router = useRouter()
   const adminMode = useSelector(selectAdminMode)
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   const [countdown, setCountdown] = useState<number>(5)

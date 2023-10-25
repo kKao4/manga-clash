@@ -28,7 +28,6 @@ export default function ImageAndDetailManga({
   const adminMode = useSelector(selectAdminMode)
   const [isUpdating, setIsUpdating] = useState<boolean>(false)
   const [file, setFile] = useState<File>()
-  const [mangaUrl, setMangaUrl] = useState<string>("")
   const [name, setName] = useState<string>("")
   const [otherName, setOtherName] = useState<string>("")
   const [author, setAuthor] = useState<string>("")
@@ -37,7 +36,6 @@ export default function ImageAndDetailManga({
   // Set Manga State
   useEffect(() => {
     if (mangaState) {
-      setMangaUrl(mangaState.image.url)
       setName(mangaState.name)
       setOtherName(mangaState.otherName)
       setAuthor(mangaState.author)
@@ -91,13 +89,11 @@ export default function ImageAndDetailManga({
         <div className="w-[193px] h-[274px] relative overflow-hidden">
           {adminMode ? (
             <DynamicAdminImage
-              mangaUrl={mangaUrl}
+              file={file}
+              mangaState={mangaState}
               handleOnChange={(e: any) => {
                 if (e.target.files) {
-                  setMangaUrl(URL.createObjectURL(e.target.files[0]))
-                  if (e.target.files) {
-                    setFile(e.target.files[0])
-                  }
+                  setFile(e.target.files[0])
                 }
               }}
             />
@@ -137,6 +133,7 @@ export default function ImageAndDetailManga({
             isUpdating={isUpdating}
             mangaState={mangaState}
             setDescription={setDescription}
+            setFile={setFile}
           />
         )}
         {/* user mode */}

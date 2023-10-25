@@ -148,7 +148,7 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
                   })}
                 </>
               ) : (
-                <p className="col-span-2 text-lg text-center">Không có bộ truyện nào khớp với yêu cầu tìm kiếm, vui lòng thử lại</p>  //TODO - 
+                <p className="col-span-2 text-lg text-center">Không có bộ truyện nào khớp với yêu cầu tìm kiếm, vui lòng thử lại</p>
               )}
             </div>
           </div>

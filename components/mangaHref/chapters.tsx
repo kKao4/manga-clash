@@ -6,6 +6,7 @@ import { MangaType } from "@/models/manga"
 import Chapter from "./chapter"
 import ShowMore from "./show-more"
 import dynamic from "next/dynamic"
+// TODO: refactoring lai props trong cac dynamic components
 const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
   ssr: false,
   loading: () => <p>Loading...</p>

@@ -1,5 +1,7 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import { PulseLoader } from "react-spinners"
 
 export default function AdminDeleteMangaModal({
   isOpenDeleteModal, setIsOpenDeleteModal, countdown, mangaState
@@ -7,6 +9,7 @@ export default function AdminDeleteMangaModal({
   isOpenDeleteModal: boolean, setIsOpenDeleteModal: any, countdown: number, mangaState: typeof initialMangaState[number]
 }) {
   const router = useRouter()
+  const [isDeletingManga, setIsDeletingManga] = useState<boolean>(false)
   return (
     <div className="relative">
       {/* delete manga modal */}
@@ -18,6 +21,7 @@ export default function AdminDeleteMangaModal({
           className="flex flex-row place-content-center gap-x-2"
           onSubmit={async (e) => {
             e.preventDefault()
+            setIsDeletingManga(true)
             const result = await fetch(`/api/admin/delete_manga?href=${mangaState.href}`)
             const res = await result.json()
             console.log("🚀 ~ file: name.tsx:39 ~ onSubmit={ ~ res:", res)
@@ -26,6 +30,7 @@ export default function AdminDeleteMangaModal({
             } else if (res.error) {
               alert(res.error)
             }
+            setIsDeletingManga(false)
           }}
         >
           <button
@@ -37,10 +42,17 @@ export default function AdminDeleteMangaModal({
           </button>
           <button
             type="submit"
-            className={`${countdown >= 0 ? "bg-red-600 text-white/80 px-3" : "bg-red-500 px-2"} py-1 font-semibold text-white rounded hover:bg-red-600`}
-            disabled={countdown >= 0}
+            className={`${countdown >= 0 || isDeletingManga ? "bg-red-600 text-white/80 px-3" : "bg-red-500 px-2"} py-1 font-semibold text-white rounded hover:bg-red-600`}
+            disabled={countdown >= 0 || isDeletingManga}
           >
-            {countdown >= 0 ? <span>{countdown}</span> : "Có"}
+
+            {isDeletingManga ? (
+              <PulseLoader color="#ffffff" size={8} />
+            ) : (
+              <>
+                {countdown >= 0 ? <span>{countdown}</span> : "Có"}
+              </>
+            )}
           </button>
         </form>
       </div>
