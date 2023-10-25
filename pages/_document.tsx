@@ -6,7 +6,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.jpg" />
         <meta name="description" content="read manga for free" />
         <meta name="keywords" content="manga clash, kkao4, manga free" />
         <meta name="robots" content="index, follow" />

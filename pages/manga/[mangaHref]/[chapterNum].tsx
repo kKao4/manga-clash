@@ -22,9 +22,9 @@ export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, 
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ]);
   const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
-  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
-  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
-  console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
+  // console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
+  // console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
+  // console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
   if (!chapters.data || !chapter.data.chapter) {
     return {
       redirect: {
@@ -78,7 +78,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   // set prev/next chapter
   useEffect(() => {
     const index = chapters.data!.chapters.indexOf(chapter.data!.chapter.num)
-    console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
+    // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
     setPrevChapter(chapters.data!.chapters[index + 1])
     setNextChapter(chapters.data!.chapters[index - 1])
     if (index === 0) {
@@ -87,7 +87,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       setPrevChapter(chapters.data!.chapters[0])
     }
   }, [chapter, chapters])
-  // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
+  // // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
   return (
     <>
@@ -100,14 +100,14 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
-            <p className="mb-4 text-3xl font-bold dark:text-white">{chapter.data?.name} - Chapter {chapter.data?.chapter.num}</p>
-            <div className="flex flex-col items-center sm:flex-row">
-              {/* navigation */}
-              <div className="w-full grow">
-                <Navigation manga={chapter.data} />
-              </div>
+            <p className="text-3xl font-bold dark:text-white">{chapter.data?.name} - Chapter {chapter.data?.chapter.num}</p>
+            {/* navigation */}
+            <div className="w-full grow">
+              <Navigation manga={chapter.data} />
+            </div>
+            <div className="flex flex-row items-center">
               {/* bookmark/theme button */}
-              <div className="mb-2 mr-auto space-x-2 shrink-0">
+              <div className="mb-3 mr-auto space-x-2 shrink-0">
                 <button
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
                   title="Bookmark this manga"
@@ -115,7 +115,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                     const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`)
                     const res = await result.json();
                     setBookmark(b => !b)
-                    console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
+                    // console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
                   }}
                 >
                   {bookmark ? (
@@ -131,6 +131,15 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 >
                   <svg className="block h-4 mx-auto transition-colors fill-second-green group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" /></svg>
                 </button>
+                {/* admin delete chapter */}
+              </div>
+              <div className="">
+                <button
+                  className="px-2 py-1.5 group hover:bg-red-500 rounded transition-colors"
+                // onClick={() => setIsOpenDeleteModal((prevState: any) => !prevState)}
+                >
+                  <svg className="h-4 fill-red-500 group-hover:fill-white transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" /></svg>
+                </button>
               </div>
             </div>
             <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
@@ -141,7 +150,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
               })}
             </div>
             <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
-            <div className="mt-12">
+            <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapter.data?.chapter.num}"`} order={false} />
             </div>
             <article className="mt-8 disqus">

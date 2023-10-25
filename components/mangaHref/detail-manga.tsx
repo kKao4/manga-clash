@@ -217,7 +217,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             </div>
           </div>
         </div>
-        <div className="flex flex-row justify-center xl:justify-start gap-x-2.5 -mt-4 xl:mt-0">
+        <div className="flex flex-row justify-center xl:justify-start gap-x-2.5">
           <Link
             href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[chapters.length - 1].num}` : "/"}
             className="text-white bg-second-green font-bold px-3 py-2.5 rounded-md text-sm hover:bg-black transition-colors"

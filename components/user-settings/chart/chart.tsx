@@ -29,7 +29,7 @@ export default function Chart() {
             e.preventDefault()
             router.push(`/user-settings?time=${chartState.time}&pageChart=1&name=${chartState.name}`)
           }}>
-            <label>Tìm kiếm:</label>
+            <label className="sm:inline-block hidden">Tìm kiếm:</label>
             <input
               type="text"
               className="focus:outline-none px-2 py-1 border border-gray-300 rounded-md max-w-[180px]"

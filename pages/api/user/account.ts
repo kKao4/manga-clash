@@ -18,17 +18,21 @@ export default async function handler(
           token = req.cookies.token;
           // console.log("🚀 ~ file: account.ts:18 ~ req.cookies.token:", req.cookies.token)
         }
-        // console.log("🚀 ~ file: account.ts:18 ~ token:", token)
-        const { user } = await auth(token as string);
-        if (user) {
-          let data = { ...user };
-          data = data._doc;
-          // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
-          delete data.password;
-          // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
-          res.status(200).json({ message: "Verified", data: data });
+        // console.log("🚀 ~ file: account.ts:18 ~ token:", token);
+        if (token !== "undefined" && token) {
+          const { user } = await auth(token as string);
+          if (user) {
+            let data = { ...user };
+            data = data._doc;
+            // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
+            delete data.password;
+            // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
+            res.status(200).json({ message: "Verified", data: data });
+          } else {
+            res.status(200).json({ error: "Invalid Token" });
+          }
         } else {
-          res.status(200).json({ error: "Invalid Token" });
+          res.status(401).json({ error: "Invalid Token" });
         }
       }
     }
