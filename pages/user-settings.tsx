@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasRespo
   console.log("🚀 ~ file: user-settings.tsx:28 ~ user.message:", user.message)
   console.log("🚀 ~ file: user-settings.tsx:28 ~ mangas.message:", mangas.message)
   console.log("🚀 ~ file: user-settings.tsx:28 ~ popularMangas.message:", popularMangas.message)
-  console.log("🚀 ~ file: user-settings.tsx:31 ~ chart:", chart)
+  console.log("🚀 ~ file: user-settings.tsx:31 ~ chart:", chart.message)
   if (!user.data) {
     return {
       redirect: {

@@ -39,8 +39,6 @@ export default async function handler(
               username: username,
               password: hashPassword,
               email: email,
-              bookmarks: [],
-              profilePicture: "",
             });
             await newUser.save();
             res.status(200).json({ message: "User Created" });

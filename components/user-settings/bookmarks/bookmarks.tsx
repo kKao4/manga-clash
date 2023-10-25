@@ -1,7 +1,6 @@
 import TableRow from "./table-row"
 import Paginate from "@/components/global/paginate"
 import { MangasResponse } from "@/type"
-import { useState } from "react"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import { selectBookmarkState, setSearchName } from "@/features/user-settings/BookmarkSlice"
@@ -13,7 +12,7 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
   return (
     <>
       {/* table bookmarked manga */}
-      <form className="space-x-2 mb-2 float-right" onSubmit={async (e) => {
+      <form className="float-right mb-2 space-x-2" onSubmit={async (e) => {
         e.preventDefault()
         router.push(`/user-settings?pageBookmark=1&name=${name}`)
       }}>

@@ -90,7 +90,7 @@ export const shortName = "manga-clash-disqus-com"
 
 export type MangasLength = { length: number };
 
-export const mangasPerPage = 2;
+export const mangasPerPage = 10;
 
 export const HOST_URL = "http://localhost:3000";
 // export const HOST_URL = "https://manga-clash.vercel.app/";

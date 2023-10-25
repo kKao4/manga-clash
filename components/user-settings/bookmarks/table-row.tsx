@@ -17,12 +17,12 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
   const [isRemovingBookmark, setIsRemovingBookmark] = useState<boolean>(false)
   return (
     <>
-      <tr className="relative border-b border-neutral-300">
-        <div className={`${isRemovingBookmark ? "block z-10" : "hidden"} animate-pulse absolute min-w-full grid place-content-center min-h-full bg-black/40`}>
+      <tr className={`relative border-b border-neutral-300 ${isRemovingBookmark && "opacity-60"}`}>
+        {/* <div className={`${isRemovingBookmark ? "block z-10 opacity-100" : "hidden"} absolute min-w-full grid place-content-center min-h-full bg-black/40`}>
           <PacmanLoader color="#ffffff" size={25} />
-        </div>
+        </div> */}
         {/* image and name */}
-        <td className="flex flex-row p-4 pr-0 text-sm gap-x-4">
+        <td className={`flex flex-row p-4 pr-0 text-sm gap-x-4`}>
           <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144} />
           <Link
             href={`/manga/${manga.href}`}
@@ -78,7 +78,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               const res1 = await result1.json()
               console.log("🚀 ~ file: info-box.tsx:63 ~ onClick={ ~ res:", res1)
               if (bookmarkState.page > Math.ceil((mangasLength - 1) / mangasPerPage)) {
-                router.replace(router.pathname + "?page=" + (bookmarkState.page - 1) + `${router.query.name ? `&name=${router.query.name}` : ""}`, "", { scroll: false, shallow: true })
+                router.replace(router.pathname + "?pageBookmark=" + (bookmarkState.page - 1) + `${router.query.name ? `&name=${router.query.name}` : ""}`, "", { scroll: false, shallow: true })
                 const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&name=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
@@ -86,6 +86,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
                 // router.replace(router.asPath, "", { scroll: false })
                 const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page}&name=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
+                console.log("🚀 ~ file: table-row.tsx:90 ~ mangasBookmarkRes:", mangasBookmarkRes)
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               }
               setIsRemovingBookmark(false)
