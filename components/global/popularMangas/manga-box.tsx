@@ -1,6 +1,6 @@
 import { MangaType } from "@/models/manga"
 import Image from "next/image"
-import { parseISO, formatDistanceToNow } from "date-fns"
+import { parseISO, formatDistanceToNowStrict } from "date-fns"
 import newGif from "@/assets/new.gif"
 import Link from "next/link"
 import { vi } from "date-fns/locale"
@@ -29,7 +29,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[0].num}
             </Link>
-            <p className="ml-8 text-sm">{formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
+            <p className="ml-8 text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}</p>
           </div>
         )}
         {manga.chapters[1] && (
@@ -40,7 +40,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[1].num}
             </Link>
-            <p className="ml-8 text-sm">{formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
+            <p className="ml-8 text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi })}</p>
           </div>
         )}
       </div>

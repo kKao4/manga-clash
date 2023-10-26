@@ -1,7 +1,6 @@
 import { mangasPerPage } from "@/type";
 import Image from "next/image";
-import { parseISO, formatDistanceToNowStrict, formatDistanceToNow, format } from "date-fns"
-import newGif from "@/assets/new.gif"
+import { parseISO, formatDistanceToNowStrict } from "date-fns"
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { MangaType } from "@/models/manga";
@@ -38,7 +37,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               >
                 Chapter {manga.chapters[0].num}
               </Link>
-              <p className="text-sm">{formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
+              <p className="text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}</p>
             </div>
           )}
           {manga.chapters[1] && (
@@ -49,7 +48,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               >
                 Chapter {manga.chapters[1].num}
               </Link>
-              <p className="text-sm">{formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
+              <p className="text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi })}</p>
             </div>
           )}
         </td>
