@@ -31,7 +31,7 @@ export default function Chapter({
         />
       )}
       <div className="text-[13px] italic self-center shrink-0 min-w-fit">
-        <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt), "dd/MM/yyyy")}</p>
+        <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
       </div>
     </label>
   )

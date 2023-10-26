@@ -11,12 +11,14 @@ import { useSelector, useDispatch } from "react-redux"
 import { DiscussionEmbed } from 'disqus-react';
 import Title from "@/components/global/title"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
+import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
+import Link from "next/link"
+import NavChapter from "@/components/chapterNum/nav-chapter"
 const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <p className="dark:text-white">Loading...</p>
 })
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
@@ -47,8 +49,10 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const [bookmark, setBookmark] = useState<boolean>(false)
   const userState = useSelector(selectUserState)
   const darkMode = useSelector(selectDarkMode)
+  const adminMode = useSelector(selectAdminMode)
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
+  const [showNavChapter, setShowNavChapter] = useState<boolean>(false)
   // Set User
   useEffect(() => {
     if (user.data) {
@@ -92,7 +96,23 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       setPrevChapter(chapters.data!.chapters[0])
     }
   }, [chapter, chapters])
-  // // console.log("🚀 ~ file: [chapterNum].tsx:101 ~ onClick={ ~ router.asPath:", router.asPath)
+  // detect direction scroll
+  useEffect(() => {
+    let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+    function detectDirection() {
+      const scrollTopPosition =
+        window.scrollY || document.documentElement.scrollTop;
+      if (scrollTopPosition < lastScrollTop) {
+        setShowNavChapter(true)
+      } else if (scrollTopPosition > lastScrollTop) {
+        setShowNavChapter(false)
+      }
+      lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
+    }
+    window.addEventListener("scroll", detectDirection);
+
+  }, [])
+
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
   return (
     <>
@@ -100,6 +120,13 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
         <title>{title}</title>
       </Head>
       <UserMenu user={userState} />
+      <NavChapter
+        showNavChapter={showNavChapter}
+        chapter={chapter.data}
+        chapters={chapters.data}
+        prevChapter={prevChapter}
+        nextChapter={nextChapter}
+      />
       <div className="dark:bg-neutral-800">
         <BodyBox>
           <div className="basis-full">
@@ -136,7 +163,9 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                   <svg className="block h-4 mx-auto transition-colors fill-second-green group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" /></svg>
                 </button>
               </div>
-              <DynamicDeleteChapter chapter={chapter} prevChapter={prevChapter} />
+              {adminMode && (
+                <DynamicDeleteChapter chapter={chapter} prevChapter={prevChapter} />
+              )}
             </div>
             <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
             {/* images chapter */}
