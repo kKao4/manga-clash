@@ -1,9 +1,6 @@
-import { format, parseISO, formatDistanceToNowStrict, formatDistanceToNow } from "date-fns"
-import newGif from "@/assets/new.gif"
-import Image from "next/image";
+import { parseISO, format } from "date-fns"
 import { MangaType } from "@/models/manga";
 import Link from "next/link";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAdminMode } from "@/features/GlobalSlice";
 
@@ -34,13 +31,7 @@ export default function Chapter({
         />
       )}
       <div className="text-[13px] italic self-center shrink-0 min-w-fit">
-        {Number(formatDistanceToNowStrict(parseISO(chapter.updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-          <p title={formatDistanceToNow(parseISO(chapter.updatedAt as unknown as string))}>
-            <Image className="select-none" src={newGif} alt="new" />
-          </p>
-        ) : (
-          <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-        )}
+        <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt), "dd/MM/yyyy")}</p>
       </div>
     </label>
   )

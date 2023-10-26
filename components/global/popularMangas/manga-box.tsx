@@ -1,15 +1,16 @@
 import { MangaType } from "@/models/manga"
 import Image from "next/image"
-import { format, parseISO, formatDistanceToNowStrict, formatDistanceToNow } from "date-fns"
+import { parseISO, formatDistanceToNow } from "date-fns"
 import newGif from "@/assets/new.gif"
 import Link from "next/link"
+import { vi } from "date-fns/locale"
 
 export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
   return (
     <div className="flex flex-row col-span-1 gap-x-5">
       {/* image */}
       <Link href={`/manga/${manga.href}`} className="relative w-16 h-[86px] overflow-hidden cursor-pointer group/image shrink-0">
-        <div className="absolute top-0 left-0 w-full h-full transition-colors bg-transparent duration-200 ease-linear group-hover/image:bg-black/20 z-10"></div>
+        <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
         {manga.image ? (
           <Image className="w-full h-full transition-transform duration-550 group-hover/image:scale-107" src={manga.image.url} alt="" width="100" height="144" />
         ) : (
@@ -28,13 +29,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[0].num}
             </Link>
-            {Number(formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-              <p title={formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string))}>
-                <Image className="ml-8" src={newGif} alt="new" />
-              </p>
-            ) : (
-              <p className="ml-8 text-sm">{format(parseISO(manga.chapters[0].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-            )}
+            <p className="ml-8 text-sm">{formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
           </div>
         )}
         {manga.chapters[1] && (
@@ -45,13 +40,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[1].num}
             </Link>
-            {Number(formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-              <p title={formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string))}>
-                <Image className="ml-8" src={newGif} alt="new" />
-              </p>
-            ) : (
-              <p className="ml-8 text-sm">{format(parseISO(manga.chapters[1].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-            )}
+            <p className="ml-8 text-sm">{formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
           </div>
         )}
       </div>

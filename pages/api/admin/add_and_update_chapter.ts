@@ -39,6 +39,7 @@ export default async function handler(
               const manga = await Manga.findOne({ href: href });
               if (manga) {
                 const chapter = await Chapter.findOne({ mangaId: manga._id });
+                // console.log("🚀 ~ file: add_and_update_chapter.ts:62 ~ chapter:", chapter.chapters)
                 let arrayImages: {
                   name: string;
                   url: string;
@@ -57,18 +58,21 @@ export default async function handler(
                 //   "🚀 ~ file: add_and_update_chapter.ts:57 ~ arrayImages:",
                 //   arrayImages
                 // );
-                
+
                 if (chapter) {
+                  // console.log("🚀 ~ file: add_and_update_chapter.ts:62 ~ chapter:", chapter.chapters)
                   const exist = chapter.chapters.some(
                     (c: ChapterType["chapters"][number]) =>
                       fields.num && c.num === fields.num[0]
                   );
                   if (!exist) {
-                    chapter.chapters.push({
+                    chapter.chapters.unshift({
                       num: fields.num[0],
                       description: fields.description[0],
                       imagesPath: arrayImages,
                     });
+                    // console.log("🚀 ~ file: add_and_update_chapter.ts:62 ~ chapter:", chapter.chapters)
+                    await chapter.save();
                     // sort chapter desc
                     chapter.chapters.sort(
                       (
@@ -78,7 +82,6 @@ export default async function handler(
                         return Number(b.num) - Number(a.num);
                       }
                     );
-                    await chapter.save();
                     // set 2 latest chapters for manga collection
                     manga.chapters = chapter.chapters.slice(0, 2);
                     await manga.save();
@@ -103,6 +106,7 @@ export default async function handler(
                     {
                       num: fields.num[0],
                       description: fields.description[0],
+                      updatedAt: new Date().toISOString(),
                     },
                   ];
                   await manga.save();

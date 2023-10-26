@@ -2,21 +2,22 @@ import mongoose, { Schema } from "mongoose";
 
 mongoose.set("strictQuery", true);
 
-const chapterSchema = new mongoose.Schema(
-  {
-    num: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+const chapterSchema = new mongoose.Schema({
+  num: {
+    type: String,
+    trim: true,
+    required: true,
   },
-  { timestamps: true }
-);
+  description: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  updatedAt: {
+    type: Date,
+    required: true,
+  },
+});
 
 const MangaSchema = new mongoose.Schema(
   {

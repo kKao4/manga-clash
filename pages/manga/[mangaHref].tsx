@@ -69,6 +69,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
   // Set Chapters
   useEffect(() => {
     setChapters(manga.data?.chapters)
+    console.log("🚀 ~ file: [mangaHref].tsx:72 ~ useEffect ~ manga.data?.chapters:", manga.data?.chapters)
   }, [manga])
   // Sort Chapters
   useEffect(() => {

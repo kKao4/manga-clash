@@ -212,7 +212,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
               {bookmark ? (
                 <p className="text-sm text-center select-none">Bạn đã thích truyện</p>
               ) : (
-                <p className="text-sm text-center select-none">{manga.bookmarks} người dùng đã thích truyện</p>
+                <p className="text-sm text-center select-none">{manga.bookmarks} người theo dõi truyện</p>
               )}
             </div>
           </div>

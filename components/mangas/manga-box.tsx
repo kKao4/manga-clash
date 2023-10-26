@@ -1,8 +1,9 @@
 import Image from "next/image"
-import { format, parseISO, formatDistanceToNowStrict, formatDistanceToNow } from "date-fns"
+import { parseISO, formatDistanceToNow } from "date-fns"
 import newGif from "@/assets/new.gif"
 import Link from "next/link"
 import { MangaType } from "@/models/manga"
+import { vi } from "date-fns/locale"
 
 export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
@@ -63,13 +64,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[0].num}
             </Link>
-            {Number(formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-              <p title={formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string))}>
-                <Image className="ml-7" src={newGif} alt="new" />
-              </p>
-            ) : (
-              <p className="text-sm ml-7">{format(parseISO(manga.chapters[0].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-            )}
+            <p className="text-sm ml-7">{formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
           </div>
         )}
         {manga.chapters[1] && (
@@ -80,13 +75,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
             >
               Chapter {manga.chapters[1].num}
             </Link>
-            {Number(formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-              <p title={formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string))}>
-                <Image className="ml-7" src={newGif} alt="new" />
-              </p>
-            ) : (
-              <p className="text-sm ml-7">{format(parseISO(manga.chapters[1].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-            )}
+            <p className="text-sm ml-7">{formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
           </div>
         )}
       </div>

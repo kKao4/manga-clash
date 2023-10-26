@@ -8,7 +8,7 @@ import { MangaType } from "@/models/manga";
 import { useRouter } from "next/router";
 import { selectBookmarkState, setMangasBookmark } from "@/features/user-settings/BookmarkSlice";
 import { useState } from "react";
-import { PacmanLoader } from "react-spinners";
+import { vi } from "date-fns/locale";
 
 export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }) {
   const dispatch = useDispatch()
@@ -18,9 +18,6 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
   return (
     <>
       <tr className={`relative border-b border-neutral-300 ${isRemovingBookmark && "opacity-60"}`}>
-        {/* <div className={`${isRemovingBookmark ? "block z-10 opacity-100" : "hidden"} absolute min-w-full grid place-content-center min-h-full bg-black/40`}>
-          <PacmanLoader color="#ffffff" size={25} />
-        </div> */}
         {/* image and name */}
         <td className={`flex flex-row p-4 pr-0 text-sm gap-x-4`}>
           <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144} />
@@ -41,13 +38,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               >
                 Chapter {manga.chapters[0].num}
               </Link>
-              {Number(formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-                <p title={formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string))}>
-                  <Image src={newGif} alt="new" />
-                </p>
-              ) : (
-                <p className="text-sm">{format(parseISO(manga.chapters[0].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-              )}
+              <p className="text-sm">{formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
             </div>
           )}
           {manga.chapters[1] && (
@@ -58,13 +49,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               >
                 Chapter {manga.chapters[1].num}
               </Link>
-              {Number(formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { unit: "day" }).split(" ")[0]) <= 2 ? (
-                <p title={formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string))}>
-                  <Image src={newGif} alt="new" />
-                </p>
-              ) : (
-                <p className="text-sm">{format(parseISO(manga.chapters[1].updatedAt as unknown as string), "MM/dd/yyyy")}</p>
-              )}
+              <p className="text-sm">{formatDistanceToNow(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}</p>
             </div>
           )}
         </td>

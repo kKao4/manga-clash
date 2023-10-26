@@ -99,7 +99,6 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       <Head>
         <title>{title}</title>
       </Head>
-      {/* TODO: add admin mode to delete chapter */}
       <UserMenu user={userState} />
       <div className="dark:bg-neutral-800">
         <BodyBox>

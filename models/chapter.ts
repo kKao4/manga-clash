@@ -2,6 +2,36 @@ import mongoose, { Schema } from "mongoose";
 
 mongoose.set("strictQuery", true);
 
+const NestedChapterSchema = new mongoose.Schema(
+  {
+    num: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    imagesPath: {
+      type: [
+        {
+          url: {
+            type: String,
+            default: "",
+          },
+          publicId: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
+
 const ChapterSchema = new mongoose.Schema(
   {
     mangaId: {
@@ -15,39 +45,7 @@ const ChapterSchema = new mongoose.Schema(
       unique: true,
     },
     chapters: {
-      type: [
-        {
-          num: {
-            type: String,
-            required: true,
-          },
-          description: {
-            type: String,
-            trim: true,
-            default: "",
-          },
-          imagesPath: {
-            type: [
-              {
-                url: {
-                  type: String,
-                  default: "",
-                },
-                publicId: {
-                  type: String,
-                  default: "",
-                },
-              },
-            ],
-            default: [],
-          },
-          updatedAt: {
-            type: String,
-            required: true,
-            default: new Date().toISOString(),
-          },
-        },
-      ],
+      type: [NestedChapterSchema],
       default: [],
     },
   },

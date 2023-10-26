@@ -1,8 +1,9 @@
 import { MangaType } from "@/models/manga"
 import Image from "next/image"
-import { format, parseISO } from "date-fns"
+import { formatDistanceToNow, parseISO } from "date-fns"
 import TagsDetailManga from "../mangaHref/tags-detail-manga"
 import Link from "next/link"
+import { vi } from "date-fns/locale"
 
 export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
@@ -58,7 +59,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
                 Chapter {manga.chapters[0] ? `${manga.chapters[0].num}` : "0"}
               </Link>
             )}
-            <p className="ml-0 lg:-ml-14">{manga.chapters[0] ? `${format(parseISO(manga.chapters[0].updatedAt as unknown as string), "MM/dd/yyyy hh:mm:ss")}` : "Updating"}</p>
+            <p className="ml-0 lg:-ml-14">{manga.chapters[0] ? `${formatDistanceToNow(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi, includeSeconds: true })}` : "Updating"}</p>
             {/* star */}
             <div className="flex flex-row items-center mb-1 ml-0 lg:ml-12">
               {manga.rating.star ? (
