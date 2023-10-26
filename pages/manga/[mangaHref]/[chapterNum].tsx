@@ -14,7 +14,6 @@ import { selectUserState, setUser } from "@/features/UserSlice"
 import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
-import Link from "next/link"
 import NavChapter from "@/components/chapterNum/nav-chapter"
 const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
@@ -110,7 +109,6 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
     }
     window.addEventListener("scroll", detectDirection);
-
   }, [])
 
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
