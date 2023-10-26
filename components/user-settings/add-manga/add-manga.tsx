@@ -176,7 +176,7 @@ export default function AddManga() {
               <div className="absolute top-1/3 left-1/2">
                 <PropagateLoader color="#ffffff" size={12} />
               </div>
-            ) : <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">Xác nhận tạo truyện</p>}
+            ) : <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">Tạo truyện</p>}
           </button>
         </form>
       </div>

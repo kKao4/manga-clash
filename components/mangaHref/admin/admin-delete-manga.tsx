@@ -14,7 +14,7 @@ export default function AdminDeleteMangaModal({
     <div className="relative">
       {/* delete manga modal */}
       <div
-        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full" : "scale-0 -translate-y-1/2"} absolute transition-all duration-200 -top-1 grid grid-cols-1 content-evenly border-2 border-red-500 w-[200px] -translate-x-1/2 bg-white z-10 rounded-md h-[100px] left-1/2`}
+        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full opacity-100" : "scale-0 -translate-y-1/2 opacity-0"} absolute transition-all duration-200 -top-1 grid grid-cols-1 content-evenly border-2 border-red-500 w-[200px] -translate-x-1/2 bg-white z-10 rounded-md h-[100px] left-1/2`}
       >
         <p className="font-semibold text-center">Bạn có chắc muốn xóa truyện này?</p>
         <form

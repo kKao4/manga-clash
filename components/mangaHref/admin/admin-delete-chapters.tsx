@@ -1,6 +1,6 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { useState } from "react"
-import { BeatLoader } from "react-spinners"
+import { PulseLoader } from "react-spinners"
 
 export default function AdminDeleteChapters({
   setIsDeletingChapters, checkedChapters, setCheckedChapters, setChapters, isDeletingChapters, mangaState
@@ -19,7 +19,7 @@ export default function AdminDeleteChapters({
       </button>
       {/* delete chapters modal */}
       <form
-        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full translate-x-0 opacity-100" : "opacity-0 scale-0 -translate-y-1/2 translate-x-1/2"} absolute transition-all shadow grid grid-cols-1 right-0 content-evenly -top-1 duration-200 z-10 border-2 w-[220px] h-[84px] bg-white rounded-md border-second-green`}
+        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full translate-x-0 opacity-100" : "opacity-0 scale-0 -translate-y-1/2 translate-x-1/2"} absolute transition-all shadow grid grid-cols-1 right-0 content-evenly -top-1 duration-200 z-10 border-2 w-[220px] h-[84px] bg-white rounded-md border-red-500`}
         onSubmit={async (e) => {
           e.preventDefault()
           setIsDeletingChapters(true)
@@ -58,12 +58,12 @@ export default function AdminDeleteChapters({
           </button>
           <button
             type="submit"
-            className={`${isDeletingChapters ? "" : "hover:bg-black"} px-2 py-1 font-semibold text-white rounded bg-second-green`}
+            className={`${isDeletingChapters ? "" : "hover:bg-black"} px-2 py-1 font-semibold text-white rounded bg-red-500`}
             disabled={isDeletingChapters}
           >
             {isDeletingChapters ? (
-              <BeatLoader size={9} color="#ffffff" />
-            ) : "Xác nhận"}
+              <PulseLoader size={9} color="#ffffff" />
+            ) : "Có"}
           </button>
         </div>
       </form>
