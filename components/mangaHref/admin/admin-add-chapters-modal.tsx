@@ -142,6 +142,7 @@ export default function AdminAddChapterModal({
         <input
           type="number"
           min={0}
+          max={9999}
           value={num}
           className={`${validChapterMessage ? "border-b-red-500 text-red-500" : "border-b-gray-200 "} w-full text-center py-1 border-b focus:outline-none`}
           onChange={(e) => {

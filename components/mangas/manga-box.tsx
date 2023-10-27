@@ -1,9 +1,7 @@
 import Image from "next/image"
-import { parseISO, formatDistanceToNowStrict } from "date-fns"
-import newGif from "@/assets/new.gif"
+import RowChapter from "./row-chapter"
 import Link from "next/link"
 import { MangaType } from "@/models/manga"
-import { vi } from "date-fns/locale"
 
 export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
@@ -17,7 +15,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           <div className="w-[100px] h-36 bg-neutral-200 animate-pulse"></div>
         )}
       </Link>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col w-full gap-y-2">
         {/* name */}
         <Link href={`/manga/${manga.href}`} className="font-bold cursor-pointer line-clamp-2 hover:text-second-green">
           {manga.name}
@@ -56,28 +54,11 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           <span className="text-xs font-bold ml-1.5">{manga.rating.star ? `${manga.rating.star.toFixed(1)}` : "No Rating"}</span>
         </div>
         {/* 2 chapters */}
-        {/* TODO: make component for chapter row */}
         {manga.chapters[0] && (
-          <div className="flex flex-row items-center mt-1">
-            <Link
-              href={`/manga/${manga.href}/chapter-${manga.chapters[0].num}`}
-              className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
-            >
-              Chapter {manga.chapters[0].num}
-            </Link>
-            <p className="text-sm ml-7">{formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}</p>
-          </div>
+          <RowChapter manga={manga} i={0} />
         )}
         {manga.chapters[1] && (
-          <div className="flex flex-row items-center">
-            <Link
-              href={`/manga/${manga.href}/chapter-${manga.chapters[1].num}`}
-              className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
-            >
-              Chapter {manga.chapters[1].num}
-            </Link>
-            <p className="text-sm ml-7">{formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi })}</p>
-          </div>
+          <RowChapter manga={manga} i={1} />
         )}
       </div>
     </div>

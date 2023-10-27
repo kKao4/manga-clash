@@ -34,7 +34,7 @@ export type ChaptersResponse = {
   data?: {
     name: string,
     href: string,
-    chapters: string[]
+    chapters: { num: string; description: string }[]
   }
 }
 

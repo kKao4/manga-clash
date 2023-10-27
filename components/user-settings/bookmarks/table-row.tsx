@@ -1,13 +1,12 @@
 import { mangasPerPage } from "@/type";
 import Image from "next/image";
-import { parseISO, formatDistanceToNowStrict } from "date-fns"
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { MangaType } from "@/models/manga";
 import { useRouter } from "next/router";
 import { selectBookmarkState, setMangasBookmark } from "@/features/user-settings/BookmarkSlice";
 import { useState } from "react";
-import { vi } from "date-fns/locale";
+import RowChapter from "./row-chapter";
 
 export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }) {
   const dispatch = useDispatch()
@@ -28,28 +27,12 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
           </Link>
         </td>
         {/* 2 latest chapters */}
-        <td className="hidden py-3 space-y-4 text-sm sm:table-cell">
+        <td className="hidden py-3 space-y-2.5 text-sm sm:table-cell">
           {manga.chapters[0] && (
-            <div className="flex flex-col items-center gap-y-2">
-              <Link
-                href={`/manga/${manga.href}/chapter-${manga.chapters[0].num}`}
-                className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
-              >
-                Chapter {manga.chapters[0].num}
-              </Link>
-              <p className="text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}</p>
-            </div>
+            <RowChapter manga={manga} i={0} />
           )}
           {manga.chapters[1] && (
-            <div className="flex flex-col items-center gap-y-2">
-              <Link
-                href={`/manga/${manga.href}/chapter-${manga.chapters[1].num}`}
-                className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
-              >
-                Chapter {manga.chapters[1].num}
-              </Link>
-              <p className="text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[1].updatedAt as unknown as string), { locale: vi })}</p>
-            </div>
+            <RowChapter manga={manga} i={1} />
           )}
         </td>
         {/* delete button */}

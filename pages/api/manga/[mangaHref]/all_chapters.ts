@@ -15,11 +15,14 @@ export default async function handler(
       case "GET": {
         const { mangaHref } = req.query;
         const chapter = await Chapter.findOne({ mangaHref: mangaHref });
-        const manga = await Manga.findOne({href: mangaHref})
+        const manga = await Manga.findOne({ href: mangaHref });
         if (chapter) {
-          let array: string[] = [];
+          let array: { num: string; description: string }[] = [];
           chapter.chapters.forEach((c: ChapterType["chapters"][number]) => {
-            array.push(c.num);
+            array.push({
+              num: c.num,
+              description: c.description,
+            });
           });
           res.status(200).json({
             message: "Fetched Chapters",

@@ -85,14 +85,17 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   }, [chapter])
   // set prev/next chapter
   useEffect(() => {
-    const index = chapters.data!.chapters.indexOf(chapter.data!.chapter.num)
-    // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
-    setPrevChapter(chapters.data!.chapters[index + 1])
-    setNextChapter(chapters.data!.chapters[index - 1])
+    const index = chapters.data!.chapters.findIndex(obj => obj.num === chapter.data!.chapter.num)
+    console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
     if (index === 0) {
-      setNextChapter(chapters.data!.chapters[chapters.data!.chapters.length - 1])
+      setPrevChapter(chapters.data!.chapters[index + 1].num)
+      setNextChapter(chapters.data!.chapters[chapters.data!.chapters.length - 1].num)
     } else if (index === chapters.data!.chapters.length - 1) {
-      setPrevChapter(chapters.data!.chapters[0])
+      setPrevChapter(chapters.data!.chapters[0].num)
+      setNextChapter(chapters.data!.chapters[index - 1].num)
+    } else {
+      setPrevChapter(chapters.data!.chapters[index + 1].num)
+      setNextChapter(chapters.data!.chapters[index - 1].num)
     }
   }, [chapter, chapters])
   // detect direction scroll

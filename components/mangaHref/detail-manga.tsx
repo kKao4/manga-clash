@@ -202,6 +202,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             </div>
             {/* bookmarks information */}
             <div className="flex flex-col basis-1/2 gap-y-3">
+              {/* TODO: add loading bookmark */}
               <div className="w-full">
                 {bookmark ? (
                   <svg className="block h-8 px-2 mx-auto cursor-pointer fill-second-green" onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>

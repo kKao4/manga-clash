@@ -12,8 +12,8 @@ export default function Menu({
   const [isLastChapter, setIsLastChapter] = useState<boolean>(false)
   useEffect(() => {
     if (router.query.chapterNum && !Array.isArray(router.query.chapterNum)) {
-      setIsFirstChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[chapters.chapters.length - 1]?.toString()))
-      setIsLastChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[0]?.toString()))
+      setIsFirstChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[chapters.chapters.length - 1].num?.toString()))
+      setIsLastChapter(router.query.chapterNum.split("-")[1] === (chapters?.chapters[0].num?.toString()))
     }
   }, [router, chapters])
   return (
@@ -28,10 +28,10 @@ export default function Menu({
           {chapters?.chapters.map(chapter => {
             return (
               <option
-                key={chapter}
-                value={chapter}
+                key={chapter.num}
+                value={chapter.num}
               >
-                Chapter {chapter}
+                Chapter {chapter.num}{chapter.description && ` - ${chapter.description}`}
               </option>
             )
           })}

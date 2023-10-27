@@ -19,7 +19,7 @@ export default function UserMenu({ user }: { user: UserResponse["data"] }) {
             <span className={`${!adminMode ? "opacity-100" : "opacity-0"} absolute transition-opacity duration-200 font-bold right-3.5`}>User</span>
           </button>
         )}
-        <div className={`flex flex-row items-center w-full py-2 gap-x-2 ${!user?.username ? "justify-center" : "justify-end"}`}>
+        <div className={`flex flex-row items-center w-full py-1 md:py-2 gap-x-2 ${!user?.username ? "justify-center" : "justify-end"}`}>
           {!user?.username ? (
             <>
               <button

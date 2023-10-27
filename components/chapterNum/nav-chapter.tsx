@@ -32,10 +32,10 @@ export default function NavChapter({
               {chapters?.chapters.map(chapter => {
                 return (
                   <option
-                    key={chapter}
-                    value={chapter}
+                    key={chapter.num}
+                    value={chapter.num}
                   >
-                    Chapter {chapter}
+                    Chapter {chapter.num}{chapter.description && ` - ${chapter.description}`}
                   </option>
                 )
               })}
