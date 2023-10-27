@@ -11,4 +11,7 @@
   .disqus a {
     @apply text-[rgb(204,204,204)];
   }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
