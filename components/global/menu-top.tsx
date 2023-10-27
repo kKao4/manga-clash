@@ -25,7 +25,6 @@ export default function MenuTop() {
   return (
     <>
       <SearchBox showSearchBox={showSearchBox} closeSearchBox={closeSearchBox} />
-      {/* TODO: close menu modal after choose */}
       <ResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}

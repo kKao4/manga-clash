@@ -3,14 +3,12 @@ import { selectSignIn, toggleSignIn, toggleResetPassword } from "@/features/Glob
 import { NormalResponse, emailReg, passwordReg, UserResponse } from "@/type"
 import Input from "./input"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/router"
 import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
   const dispatch = useDispatch()
-  const router = useRouter()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [emailValid, setEmailValid] = useState<boolean>(false)
@@ -34,7 +32,6 @@ export default function SignIn() {
     <>
       <div className={`${showSignIn ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid place-items-center`}>
         <form
-          // ref={ref}
           className="bg-[url(../assets/bg-search.jpg)] w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()

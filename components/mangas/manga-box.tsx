@@ -56,6 +56,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           <span className="text-xs font-bold ml-1.5">{manga.rating.star ? `${manga.rating.star.toFixed(1)}` : "No Rating"}</span>
         </div>
         {/* 2 chapters */}
+        {/* TODO: make component for chapter row */}
         {manga.chapters[0] && (
           <div className="flex flex-row items-center mt-1">
             <Link
