@@ -25,9 +25,9 @@ export default function NavChapter({
           <div className="relative w-full h-full overflow-hidden">
             <select
               value={chapter?.chapter.num}
-              className="w-full h-full px-3 py-2 text-center transition-colors rounded-md bg-neutral-700 dark:text-white focus:outline-none" id="select-chapter"
+              className="w-full h-full px-0 py-2 text-base transition-colors rounded-md select-none sm:px-2 text-ellipsis md:px-4 md:text-lg bg-neutral-700 dark:text-white focus:outline-none" id="select-chapter"
               onChange={(e) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
-              style={{ appearance: "none" }}
+              style={{ appearance: "none", textAlignLast: "center" }}
             >
               {chapters?.chapters.map(chapter => {
                 return (
@@ -40,9 +40,9 @@ export default function NavChapter({
                 )
               })}
             </select>
-            <span className="absolute top-0 right-0 w-6 h-full transition-colors rounded-md bg-neutral-700">
-              <svg className="block w-2 h-full mx-auto dark:fill-neutral-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" /></svg>
-            </span>
+            {/* <span className="absolute top-0 right-0 flex items-center justify-start h-full transition-colors rounded-md md:w-1/4 xl:w-1/3 bg-neutral-700">
+              <svg className="h-3.5 dark:fill-gray-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M246.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 109.3 361.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160zm160 352l-160-160c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 301.3 361.4 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3z" /></svg>
+            </span> */}
           </div>
         </div>
         <div className="basis-1/4">

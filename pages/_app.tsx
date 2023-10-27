@@ -33,7 +33,7 @@ type AppPropsWithLayout = AppProps & {
 
 NProgress.configure({
   showSpinner: false,
-  minimum: 0.12
+  minimum: 0.20
 })
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {

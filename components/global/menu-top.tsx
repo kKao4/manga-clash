@@ -25,6 +25,7 @@ export default function MenuTop() {
   return (
     <>
       <SearchBox showSearchBox={showSearchBox} closeSearchBox={closeSearchBox} />
+      {/* TODO: close menu modal after choose */}
       <ResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}
@@ -36,13 +37,19 @@ export default function MenuTop() {
             }, 350)
           }
         }}
+        handleOnClickLink={() => {
+          setShowModalMenu(false)
+          setTimeout(() => {
+            setZIndex("-z-20")
+          }, 350)
+        }}
       />
       {/* normal menu */}
       <div className="w-full bg-main-green">
         <div className="py-4 xl:max-w-[1200px] lg:max-w-[940px] mx-auto">
-          <div className="flex flex-row items-stretch md:items-center px-5">
+          <div className="flex flex-row items-stretch px-5 md:items-center">
             {/* Responsive Menu Button */}
-            <div className="cursor-pointer pr-4 sm:pr-8 min-h-full md:hidden flex justify-center items-center" onClick={() => {
+            <div className="flex items-center justify-center min-h-full pr-4 cursor-pointer sm:pr-8 md:hidden" onClick={() => {
               setShowModalMenu(true)
               setZIndex("z-20")
             }}>
@@ -55,7 +62,7 @@ export default function MenuTop() {
               <MenuButton content="Trang chủ" sort="latest" href="/" handleOnClick={changeOrder} />
               <MenuButton content="Truyện mới cập nhật" sort="latest" href="/manga?page=1&sort=latest" handleOnClick={changeOrder} />
               <MenuButton content="Truyện hot" sort="views" href="/manga?page=1&sort=views" handleOnClick={changeOrder} />
-              <div className="xl:flex hidden justify-center items-center">
+              <div className="items-center justify-center hidden xl:flex">
                 <MenuButton content="Truyện mới nhất" sort="new" href="/manga?page=1&sort=new" handleOnClick={changeOrder} />
               </div>
             </div>
@@ -65,7 +72,7 @@ export default function MenuTop() {
                 <svg className="absolute h-4 group-hover:fill-white fill-main-green top-2 left-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
               </div>
               <button
-                className="px-2 hidden sm:block text-sm font-semibold text-white transition-colors rounded-full hover:bg-black"
+                className="hidden px-2 text-sm font-semibold text-white transition-colors rounded-full sm:block hover:bg-black"
                 onClick={() => router.push("/search")}
               >
                 Tìm Kiếm
