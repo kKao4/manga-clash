@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 import { useDebounce } from 'usehooks-ts'
 import RowSearchDropdown from "./row-search-dropdown"
 
-export default function SearchDropdown({ isLoadingMangas, setIsLoadingMangas }: { isLoadingMangas: boolean, setIsLoadingMangas: any }) {
+export default function SearchDropdown({ setIsLoadingMangas }: { setIsLoadingMangas: any }) {
   const searchState = useSelector(selectSearchState)
   const debounceSearchName = useDebounce<string>(searchState.name, 400)
   const [searchedMangas, setSearchedMangas] = useState<MangaType[]>()

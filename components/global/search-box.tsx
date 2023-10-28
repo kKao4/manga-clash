@@ -49,7 +49,7 @@ export default function SearchBox({
         </form>
       </div>
       {/* search dropdown section */}
-      <SearchDropdown isLoadingMangas={isLoadingMangas} setIsLoadingMangas={setIsLoadingMangas} />
+      <SearchDropdown setIsLoadingMangas={setIsLoadingMangas} />
     </>
   )
 }
