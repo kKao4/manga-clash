@@ -21,7 +21,7 @@ export default function MenuTop() {
   }
   return (
     <>
-      <SearchBox showSearchBox={showSearchBox} />
+      <SearchBox showSearchBox={showSearchBox} setShowSearchBox={setShowSearchBox} />
       <ResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}
@@ -42,7 +42,7 @@ export default function MenuTop() {
       />
       {/* normal menu */}
       <div className="w-full bg-main-green">
-        <div className="py-4 xl:max-w-[1200px] lg:max-w-[940px] mx-auto">
+        <div className="py-3 md:py-4 xl:max-w-[1200px] lg:max-w-[940px] mx-auto">
           <div className="flex flex-row items-stretch px-5 md:items-center">
             {/* Responsive Menu Button */}
             <div className="flex items-center justify-center min-h-full pr-4 cursor-pointer sm:pr-8 md:hidden" onClick={() => {
