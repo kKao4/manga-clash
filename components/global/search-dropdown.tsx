@@ -1,7 +1,6 @@
 import { selectSearchState } from "@/features/search/SearchSlice"
 import { MangaType } from "@/models/manga"
 import { MangasResponse } from "@/type"
-import * as React from "react";
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useDebounce } from 'usehooks-ts'
