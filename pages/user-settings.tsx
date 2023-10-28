@@ -63,7 +63,7 @@ const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsTyp
   // set mangas bookmark
   useEffect(() => {
     if (mangas.data) {
-      dispatch(setMangasBookmark({ mangas: mangas.data, length: mangas.length }))
+      dispatch(setMangasBookmark({ mangas: mangas.data, length: mangas.length as number }))
     }
   }, [dispatch, mangas])
   // set user
