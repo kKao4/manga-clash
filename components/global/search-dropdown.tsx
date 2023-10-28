@@ -36,7 +36,7 @@ export default function SearchDropdown({ setIsLoadingMangas }: { setIsLoadingMan
   }, [searchState.name])
   return (
     <div
-      className={`${searchState.name ? "max-h-[480px]" : "max-h-0"} ${searchedMangas ? "border-2 border-b-0" : ""} z-50 absolute top-[68px] rounded-b-md shadow-lg transition-all w-full md:w-[734px] left-1/2 -translate-x-1/2 bg-white overflow-auto scrollbar`}
+      className={`${searchState.name ? "max-h-[480px]" : "max-h-0"} ${searchedMangas ? "border-2 border-b-0" : ""} z-50 absolute top-[58px] md:top-[68px] rounded-b-md shadow-lg transition-all w-full md:w-[734px] left-1/2 -translate-x-1/2 bg-white overflow-auto scrollbar`}
     >
       {searchedMangas && searchedMangas.length ? (
         <>

@@ -112,6 +112,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
     }
     window.addEventListener("scroll", detectDirection);
+    return () => window.removeEventListener("scroll", detectDirection)
   }, [])
 
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
