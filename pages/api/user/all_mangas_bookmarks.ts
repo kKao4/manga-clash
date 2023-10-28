@@ -46,13 +46,11 @@ export default async function handler(
           length: mangasLength,
         });
       } else {
-        res
-          .status(401)
-          .json({ message: "Invalid Token", data: null, length: 0 });
+        res.status(401).json({ error: "Invalid Token" });
       }
     }
-  } catch (err: any) {
-    console.log(err);
-    res.status(500).json({ message: err.message, data: null, length: 0 });
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 }

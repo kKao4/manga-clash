@@ -65,19 +65,16 @@ export default async function handler(
           message: "Fetched Mangas",
           length: mangasLength,
           data: mangas,
-          search: name,
+          search: name as string,
         });
       } else {
         res.status(200).json({
           message: "No Mangas",
-          length: 0,
-          data: null,
-          search: name,
         });
       }
     }
-  } catch (err: any) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 }

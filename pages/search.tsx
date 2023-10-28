@@ -4,7 +4,7 @@ import OrderNavigation from "@/components/global/order-navigation";
 import MangaBox from "@/components/search/manga-box";
 import Paginate from "@/components/global/paginate";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import { MangasResponse,  UserResponse } from "@/type";
+import { MangasResponse, UserResponse } from "@/type";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
@@ -109,7 +109,7 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
           }}>
             {/* input search box */}
             <input
-              className="w-full px-4 md:px-6 py-3 text-lg rounded-l-md focus:outline-none"
+              className="w-full px-4 py-3 text-lg md:px-6 rounded-l-md focus:outline-none"
               type="text"
               value={searchState.name}
               onChange={(e) => dispatch(setSearchName(e.target.value))}
@@ -153,7 +153,9 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
             </div>
           </div>
           <div className="flex justify-center">
-            <Paginate mangasLength={mangas.length} page="search" />
+            {mangas.length && (
+              <Paginate mangasLength={mangas.length} page="search" />
+            )}
           </div>
         </div>
       </BodyBox>

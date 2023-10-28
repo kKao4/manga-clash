@@ -9,7 +9,7 @@ export default function OrderNavigation({
   search,
   searchValue
 }: {
-  mangasLength: number,
+  mangasLength: number | undefined,
   search: boolean,
   searchValue: MangasResponse["search"]
 }) {

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   transpilePackages: ["smooth-scrollbar/plugins/overscroll"],
   images: {
     domains: ["res.cloudinary.com"],

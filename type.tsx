@@ -1,14 +1,14 @@
 import { UserType } from "./models/user";
-import { initialGlobalState } from "./features/GlobalSlice";
 import { MangaType } from "./models/manga";
 import { ChapterType } from "./models/chapter";
 import { initialSearchState } from "./features/search/SearchSlice";
 
 export type MangasResponse = {
-  length: number;
-  search?: string | string[] | undefined;
-  message: string;
-  data: MangaType[] | null;
+  length?: number;
+  search?: string;
+  message?: string;
+  data?: MangaType[];
+  error?: string
 };
 
 export type MangaResponse = {

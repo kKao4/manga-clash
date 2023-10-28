@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { setSort } from "@/features/GlobalSlice"
 import Row from "./row"
 
-export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | null }) {
+export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | undefined }) {
   const dispatch = useDispatch()
   return (
     <div className="basis-4/12">

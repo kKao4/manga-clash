@@ -30,7 +30,6 @@ export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, po
 }
 
 const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const mangasState = useSelector(selectMangasState)
   const dispatch = useDispatch()
   const router = useRouter()
   const userState = useSelector(selectUserState)

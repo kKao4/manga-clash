@@ -24,14 +24,11 @@ export default async function handler(
       } else {
         res.status(200).json({
           message: "No Popular Mangas",
-          data: null,
-          length: 10,
-          search: "",
         });
       }
     }
-  } catch (err: any) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 }

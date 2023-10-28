@@ -24,6 +24,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
   const [bookmark, setBookmark] = useState<boolean>(false)
   const [yourRating, setYourRating] = useState<StarType>(1)
   const [isLoadingUserRating, setIsLoadingUserRating] = useState<boolean>(false)
+  const [isLoadingBookmark, setIsLoadingBookmark] = useState<boolean>(false)
   // Animation when finishing refetch user rating api
   useEffect(() => {
     if (!isLoadingUserRating) {
@@ -47,6 +48,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
     }
   }, [manga, userState])
   const handleBookmark = async () => {
+    setIsLoadingBookmark(true)
     const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`);
     const res = await result.json()
     console.log("🚀 ~ file: detail-manga.tsx:23 ~ handleBookmark ~ res:", res)
@@ -55,6 +57,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
     } else {
       setBookmark(b => !b)
     }
+    setIsLoadingBookmark(false)
   }
   const handleHoverStar = (num: StarType) => {
     setYourRating(num)
@@ -79,7 +82,6 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       if (mangaRes.data && userRatingRes.data) {
         dispatch(addOrUpdateManga(mangaRes.data))
         dispatch(setUserRating(userRatingRes.data.star))
-        setIsLoadingUserRating(false)
       }
       // if (res.data) {
       //   router.replace(router.asPath, "", { scroll: false })
@@ -88,6 +90,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       alert(res.error)
       dispatch(toggleSignIn(true))
     }
+    setIsLoadingUserRating(false)
   }
   return (
     <>
@@ -202,12 +205,11 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             </div>
             {/* bookmarks information */}
             <div className="flex flex-col basis-1/2 gap-y-3">
-              {/* TODO: add loading bookmark */}
               <div className="w-full">
                 {bookmark ? (
-                  <svg className="block h-8 px-2 mx-auto cursor-pointer fill-second-green" onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
+                  <svg className={`${isLoadingBookmark ? "opacity-50" : "opacity-100"} block h-8 px-2 mx-auto cursor-pointer fill-second-green`} onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
                 ) : (
-                  <svg className="block h-8 px-2 mx-auto cursor-pointer fill-second-green" onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" /></svg>
+                  <svg className={`${isLoadingBookmark ? "opacity-50" : "opacity-100"} block h-8 px-2 mx-auto cursor-pointer fill-second-green`} onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" /></svg>
                 )}
               </div>
               {bookmark ? (

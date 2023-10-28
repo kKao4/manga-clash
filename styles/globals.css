@@ -14,4 +14,11 @@
   * {
     -webkit-tap-highlight-color: transparent;
   }
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: #999;
+  }
 }

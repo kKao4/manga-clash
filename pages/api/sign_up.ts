@@ -48,8 +48,8 @@ export default async function handler(
         }
       }
     }
-  } catch (err: any) {
-    console.log("🚀 ~ file: sign_up.ts:45 ~ err:", err);
-    res.status(500).json(err);
+  } catch (error: any) {
+    console.log("🚀 ~ file: sign_up.ts:45 ~ error:", error);
+    res.status(500).json({ error: error.message });
   }
 }
