@@ -8,6 +8,7 @@ import ResponsiveMenu from "./responsive-menu";
 import Image from "next/image";
 import AliceChan from "@/assets/Kisaragi_Alice_full.jpg"
 import Link from "next/link";
+import { setSearchName } from "@/features/search/SearchSlice";
 
 export default function MenuTop() {
   const dispatch = useDispatch()
@@ -18,13 +19,9 @@ export default function MenuTop() {
   const changeOrder = (value: Order) => {
     dispatch(setSort(value))
   }
-  const closeSearchBox = () => {
-    setShowSearchBox(false);
-  }
-
   return (
     <>
-      <SearchBox showSearchBox={showSearchBox} closeSearchBox={closeSearchBox} />
+      <SearchBox showSearchBox={showSearchBox} />
       <ResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}
@@ -67,7 +64,17 @@ export default function MenuTop() {
             </div>
             {/* Search Button */}
             <div className="flex flex-row gap-x-1 lg:gap-x-2">
-              <div className="relative w-8 h-8 transition-colors duration-75 bg-white rounded-full cursor-pointer group hover:bg-black" onClick={() => setShowSearchBox(s => !s)}>
+              <div
+                className="relative w-8 h-8 transition-colors duration-75 bg-white rounded-full cursor-pointer group hover:bg-black"
+                onClick={() => {
+                  if (showSearchBox) {
+                    setShowSearchBox(false)
+                    dispatch(setSearchName(""))
+                  } else {
+                    setShowSearchBox(true)
+                  }
+                }}
+              >
                 <svg className="absolute h-4 group-hover:fill-white fill-main-green top-2 left-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
               </div>
               <button

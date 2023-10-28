@@ -70,6 +70,8 @@ export default async function handler(
       } else {
         res.status(200).json({
           message: "No Mangas",
+          length: 0,
+          search: name as string,
         });
       }
     }
