@@ -14,10 +14,10 @@ export default async function handler(
     switch (method) {
       case "GET": {
         const { name } = req.query;
-        // console.log("🚀 ~ file: all_mangas_dropdown.ts:17 ~ name:", name)
+        console.log("🚀 ~ file: all_mangas_dropdown.ts:17 ~ name:", name)
         let mangas = await Manga.find({});
         mangas = searchName(name, mangas);
-        // console.log("🚀 ~ file: all_mangas_dropdown.ts:20 ~ mangas:", mangas)
+        console.log("🚀 ~ file: all_mangas_dropdown.ts:20 ~ mangas:", mangas)
         mangas = mangas.slice(0, 12);
         res
           .status(200)

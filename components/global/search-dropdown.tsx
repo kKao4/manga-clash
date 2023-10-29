@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 import { useDebounce } from 'usehooks-ts'
 import RowSearchDropdown from "./row-search-dropdown"
 
-export default function SearchDropdown({ setIsLoadingMangas }: { setIsLoadingMangas: any }) {
+export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }: { setIsLoadingMangas: any, setShowSearchBox: any }) {
   const searchState = useSelector(selectSearchState)
   const debounceSearchName = useDebounce<string>(searchState.name, 400)
   const [searchedMangas, setSearchedMangas] = useState<MangaType[]>()
@@ -15,7 +15,7 @@ export default function SearchDropdown({ setIsLoadingMangas }: { setIsLoadingMan
     const fetchSearchedMangas = async () => {
       if (debounceSearchName) {
         setIsLoadingMangas(true)
-        const result = await fetch(`api/all_mangas_dropdown?name=${debounceSearchName}`)
+        const result = await fetch(`/api/all_mangas_dropdown?name=${debounceSearchName}`)
         const res: MangasResponse = await result.json()
         console.log("🚀 ~ file: search-dropdown.tsx:19 ~ fetchSearchedMangas ~ res:", res)
         if (res.message) {
@@ -41,7 +41,7 @@ export default function SearchDropdown({ setIsLoadingMangas }: { setIsLoadingMan
       {searchedMangas && searchedMangas.length ? (
         <>
           {searchedMangas.map((manga) => {
-            return <RowSearchDropdown key={manga.href} manga={manga} />
+            return <RowSearchDropdown key={manga.href} manga={manga} setShowSearchBox={setShowSearchBox} />
           })}
         </>
       ) : searchedMangas && !searchedMangas.length ? (

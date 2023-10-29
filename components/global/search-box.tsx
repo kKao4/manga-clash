@@ -46,7 +46,7 @@ export default function SearchBox({
       </div>
       {/* search dropdown section */}
       {showSearchBox && (
-        <SearchDropdown setIsLoadingMangas={setIsLoadingMangas} />
+        <SearchDropdown setIsLoadingMangas={setIsLoadingMangas} setShowSearchBox={setShowSearchBox} />
       )}
     </>
   )

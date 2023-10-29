@@ -1,14 +1,26 @@
+import { setSearchName } from "@/features/search/SearchSlice"
 import { MangaType } from "@/models/manga"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { vi } from "date-fns/locale"
 import Image from "next/image"
+import { useRouter } from "next/router"
+import { useDispatch } from "react-redux"
 
-export default function RowSearchDropdown({ manga }: { manga: MangaType }) {
+export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: MangaType, setShowSearchBox: any }) {
+  const router = useRouter()
+  const dispatch = useDispatch()
   return (
-    <div className="flex flex-row items-center px-2 py-2 transition-colors border-b border-gray-100 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100">
+    <div
+      className="flex flex-row items-center px-2 py-2 transition-colors border-b border-gray-100 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100"
+      onClick={() => {
+        setShowSearchBox(false)
+        dispatch(setSearchName(""))
+        router.push(`/manga/${manga.href}`)
+      }}
+    >
       <Image src={`${manga.image.url}`} alt="" width={69} height={100} />
       <div className="flex flex-col gap-y-1">
-        <p className="font-bold transition-colors group-hover:text-second-green line-clamp-2">{manga.name}{manga.name}{manga.name}{manga.name}{manga.name}{manga.name}</p>
+        <p className="font-bold transition-colors group-hover:text-second-green line-clamp-2">{manga.name}</p>
         <p className="hidden text-sm md:inline-block"><span className="font-semibold">Tên khác:</span> {manga.otherName ? `${manga.otherName}` : "Đang cập nhật"}</p>
         <div className="flex flex-row flex-wrap text-xs md:text-sm gap-x-1 sm:gap-x-2">
           <p><span className="hidden font-semibold md:inline-block">Trạng thái:</span> {manga.completed ? "Hoàn thành" : "Đang tiến hành"}</p>
