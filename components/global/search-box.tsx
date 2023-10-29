@@ -28,6 +28,7 @@ export default function SearchBox({
             onChange={(e) => dispatch(setSearchName(e.target.value))}
             autoComplete="on"
           />
+          {/* TODO: code btn again */}
           <button
             className={`min-w-[100px] md:min-w-[114px] py-3 md:py-3.5 text-sm cursor-default font-bold text-white bg-main-green transition-colors shrink-0`}
             disabled={isLoadingMangas}
