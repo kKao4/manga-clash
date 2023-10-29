@@ -53,7 +53,7 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
           {mangas.data ? (
             <MangaBoxes mangas={mangas.data} mangasLength={mangas.length} />
           ) : (
-            <p className="text-center mt-8 font-medium">Không có bộ truyện nào, vui lòng tạo truyện</p>
+            <p className="mt-8 font-medium text-center">Không có bộ truyện nào, vui lòng tạo truyện</p>
           )}
         </div>
         {/* right row */}

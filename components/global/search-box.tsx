@@ -22,27 +22,13 @@ export default function SearchBox({
         }}>
           <input
             name="search-box"
-            className="px-4 text-sm py-3 md:py-3.5 w-[620px] focus:outline-none border bg-gray-100 border-neutral-300" placeholder="Tên truyện cần tìm..."
+            className="px-4 text-sm py-3 md:py-3.5 w-[680px] focus:outline-none border bg-gray-100 border-neutral-300" placeholder="Tên truyện cần tìm..."
             type="text"
             value={searchState.name}
             onChange={(e) => dispatch(setSearchName(e.target.value))}
             autoComplete="on"
           />
           {/* TODO: code btn again */}
-          <button
-            className={`min-w-[100px] md:min-w-[114px] py-3 md:py-3.5 text-sm cursor-default font-bold text-white bg-main-green transition-colors shrink-0`}
-            disabled={isLoadingMangas}
-            onClick={() => {
-              setShowSearchBox(false)
-              dispatch(setSearchName(""))
-            }}
-          >
-            {isLoadingMangas ? (
-              <>
-                <PulseLoader color="#ffffff" size={9} />
-              </>
-            ) : "Tìm Kiếm"}
-          </button>
         </form>
       </div>
       {/* search dropdown section */}
