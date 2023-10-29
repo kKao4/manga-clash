@@ -28,7 +28,6 @@ export default function SearchBox({
             onChange={(e) => dispatch(setSearchName(e.target.value))}
             autoComplete="on"
           />
-          {/* TODO: code btn again */}
         </form>
       </div>
       {/* search dropdown section */}

@@ -164,17 +164,21 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           {/* other name information */}
           <div className="flex flex-col sm:flex-row">
             <p className="text-sm font-bold basis-1/5">Tên khác</p>
-            <p className="text-sm basis-4/5">{manga!.otherName ? `${manga!.otherName}` : "Đang cập nhật"}</p>
+            <p className="text-sm basis-4/5">{manga.otherName ? `${manga.otherName}` : "Đang cập nhật"}</p>
           </div>
-          {/* TODO: author information add link to search author */}
           <div className="flex flex-col sm:flex-row">
             <p className="text-sm font-bold basis-1/5">Tác giả</p>
-            <p className="text-sm basis-4/5">{manga!.author ? `${manga!.author}` : "Đang cập nhật"}</p>
+            <p
+              className={`text-sm basis-4/5 ${manga.author ? "text-second-green font-semibold cursor-pointer" : ""}`}
+              onClick={() => router.push(`/search?author=${manga.author}`)}
+            >
+              {manga.author ? `${manga.author}` : "Đang cập nhật"}
+            </p>
           </div>
           {/* status information */}
           <div className="flex flex-col sm:flex-row">
             <p className="text-sm font-bold basis-1/5">Trạng thái</p>
-            <p className="text-sm basis-4/5">{manga!.completed ? "Hoàn thành" : "Đang tiến hành"}</p>
+            <p className="text-sm basis-4/5">{manga.completed ? "Hoàn thành" : "Đang tiến hành"}</p>
           </div>
           {/* genres information */}
           <div className="flex flex-col sm:flex-row">

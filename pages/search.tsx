@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {
-  let { page, sort, name, author, year, completed, tags } = context.query
+  let { page, sort, name, author, completed, tags } = context.query
   page = page ?? "1"
   sort = sort ?? "latest"
   name = name ?? ""
