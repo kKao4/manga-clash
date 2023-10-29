@@ -14,7 +14,7 @@ export default function RowChapter({ manga, i }: { manga: MangaType, i: number }
           Chapter {manga.chapters[i].num}
         </Link>
       </div>
-      <p className="text-sm ml-7">{formatDistanceToNowStrict(parseISO(manga.chapters[i].updatedAt as unknown as string), { locale: vi })}</p>
+      <p className="text-sm">{formatDistanceToNowStrict(parseISO(manga.chapters[i].updatedAt as unknown as string), { locale: vi })}</p>
     </div>
   )
 }
