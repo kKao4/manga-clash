@@ -11,7 +11,7 @@ export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: 
   const dispatch = useDispatch()
   return (
     <div
-      className="flex flex-row items-center px-2 py-2 transition-colors border-b border-gray-100 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100"
+      className="flex flex-row items-start px-2 py-2 transition-colors border-b border-gray-100 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100"
       onClick={() => {
         setShowSearchBox(false)
         dispatch(setSearchName(""))
