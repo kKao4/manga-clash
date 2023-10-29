@@ -37,9 +37,15 @@ export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: 
             </>
           )}</p>
         </div>
-        {/* TODO: tags */}
-        <div className="text-xs md:text-sm">
-          <span className="hidden font-semibold md:inline-block">Thể loại:</span> <span className="line-clamp-2">Harem, Comedy, Ecchi, Romance, Something, Something, Something Romance, Something, Something, Something</span>
+        <div className="text-xs md:text-sm line-clamp-2">
+          <span className="hidden font-semibold md:inline-block">Thể loại:</span>{" "}
+          {manga.tags.map((tag, i, arr) => {
+            if (i !== arr.length - 1) {
+              return <span key={tag} className="capitalize">{tag}, </span>
+            } else {
+              return <span key={tag} className="capitalize">{tag}</span>
+            }
+          })}
         </div>
       </div>
     </div>
