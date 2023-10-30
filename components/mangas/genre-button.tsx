@@ -9,7 +9,7 @@ export default function GenreButton({ tag }: { tag: typeof tagsArray[number] }) 
   const dispatch = useDispatch()
   return (
     <Link
-      href={`/search/?page=1&sort=${sort}&tags=${tag.id}`}
+      href={`/manga/?page=1&sort=latest&tags=${tag.id}`}
       className="col-span-1 py-2 font-bold text-center transition-colors cursor-pointer hover:text-second-green"
       onClick={() => dispatch(resetSearchTags())}
     >

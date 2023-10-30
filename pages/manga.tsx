@@ -1,6 +1,6 @@
 import MenuFoot from "@/components/mangas/menu-foot";
 import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
-import {  MangasResponse, UserResponse } from "@/type";
+import { MangasResponse, UserResponse } from "@/type";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import MangaBoxes from "@/components/mangas/manga-boxes";
 import Head from "next/head";
@@ -10,15 +10,18 @@ import UserMenu from "@/components/global/user-menu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router"
-import { selectMangasState, setPageMangas } from "@/features/manga/MangasSlice";
+import { setPageMangas } from "@/features/manga/MangasSlice";
 import { setUser, selectUserState } from "@/features/UserSlice";
+import { addSearchTags, resetSearchTags } from "@/features/search/SearchSlice";
+import { setSort } from "@/features/GlobalSlice";
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {
-  let { page, sort } = context.query;
+  let { page, sort, tags } = context.query;
   sort = sort ?? "latest";
   page = page ?? "1";
+  tags = tags ?? ""
   const [mangasRes, popularMangasRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?page=${page}&sort=${sort}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?page=${page}&sort=${sort}&tags=${tags}`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ])
@@ -47,6 +50,22 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
       dispatch(setPageMangas(1))
     }
   }, [dispatch, router.query.page])
+  // set sort
+  useEffect(() => {
+    if (router.query.sort) {
+      dispatch(setSort(router.query.sort as any))
+    } else {
+      dispatch(setSort("latest"))
+    }
+  }, [dispatch, router.query.sort])
+  // set tags
+  useEffect(() => {
+    if (router.query.tags) {
+      dispatch(addSearchTags(router.query.tags as string))
+    } else {
+      dispatch(resetSearchTags())
+    }
+  }, [dispatch, router.query.tags])
   return (
     <>
       <UserMenu user={userState} />
@@ -57,7 +76,7 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
       <BodyBox>
         {/* left row */}
         <div className="basis-9/12">
-          <h2 className="mb-6 text-lg font-bold">Tất Cả Các Bộ Truyện</h2>
+          <h2 className="mb-6 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {mangas.tags ? `Thể Loại "${mangas.tags}"` : ""}</h2>
           <OrderNavigation mangasLength={mangas.length} search={false} searchValue={mangas.search} />
           {/* mangas loop */}
           <MangaBoxes mangas={mangas.data} mangasLength={mangas.length} />

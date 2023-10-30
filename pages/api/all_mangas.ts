@@ -1,7 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
 import type { NextApiRequest, NextApiResponse } from "next";
-import Manga from "@/models/manga";
-import User, { UserType } from "@/models/user";
 import { MangasResponse, mangasPerPage } from "@/type";
 import { findAndSortMangas } from "@/lib/findAndSortMangas";
 import { searchName } from "@/lib/searchName";
@@ -10,7 +8,6 @@ import { searchCompleted } from "@/lib/searchCompleted";
 import { searchTags } from "@/lib/searchTags";
 import { sliceMangas } from "@/lib/sliceMangas";
 import { MangaType } from "@/models/manga";
-import Chapter from "@/models/chapter";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +16,7 @@ export default async function handler(
   try {
     await dbConnect();
     if (req.method === "GET") {
-      const { page, sort, name, author, year, completed, tags } = req.query;
+      const { page, sort, name, author, completed, tags } = req.query;
       // console.log("🚀 ~ file: all_mangas.ts:14 ~ req.query:", req.query);
       let mangas: MangaType[] = [];
       let mangasLength: number = 0;
@@ -66,12 +63,14 @@ export default async function handler(
           length: mangasLength,
           data: mangas,
           search: name as string,
+          tags: tags as string,
         });
       } else {
         res.status(200).json({
           message: "No Mangas",
           length: 0,
           search: name as string,
+          tags: tags as string,
         });
       }
     }

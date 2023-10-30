@@ -14,7 +14,7 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
               return (
                 <Link
                   key={tag}
-                  href={`/search?tags=${tag.toLowerCase()}`} className="font-semibold capitalize text-main-green"
+                  href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`} className="font-semibold capitalize text-main-green"
                   onClick={() => dispatch(resetSearchTags())}
                 >
                   {tag}
@@ -24,7 +24,7 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
               return (
                 <Link
                   key={tag}
-                  href={`/search?tags=${tag.toLowerCase()}`}
+                  href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`}
                   onClick={() => dispatch(resetSearchTags())}
                 >
                   <button
@@ -37,7 +37,7 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
             }
           })}
         </>
-      ) : "Updating"}
+      ) : "Đang cập nhật"}
     </>
   )
 }

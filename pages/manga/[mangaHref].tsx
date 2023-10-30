@@ -94,7 +94,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
   const handleChangeChaptersOrder = () => {
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")
   }
-
+  // TODO: click in tags go to manga page
   if (mangaState) {
     return (
       <>

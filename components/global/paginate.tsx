@@ -26,7 +26,7 @@ export default function Paginate({ mangasLength, page }: { mangasLength: number,
     const newOffset = (event.selected * mangasPerPage) % mangasLength;
     setItemOffset(newOffset);
     if (page === "manga") {
-      router.push(`/manga?page=${event.selected + 1}&sort=${sortState.toLowerCase()}`);
+      router.push(`/manga?page=${event.selected + 1}&sort=${sortState.toLowerCase()}&tags=${searchState.tags}`);
     }
     else if (page === "search") {
       let searchQuery: string = ""

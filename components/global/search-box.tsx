@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import SearchDropdown from "./search-dropdown"
 import { useState } from "react"
-import { PulseLoader } from "react-spinners"
+import { BarLoader } from "react-spinners"
 
 export default function SearchBox({
   showSearchBox,
@@ -17,7 +17,7 @@ export default function SearchBox({
   return (
     <>
       <div className={`w-full px-2 md:px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "max-h-[82px] py-2 md:py-4 opacity-100" : "max-h-0 py-0 opacity-0"}`}>
-        <form className="relative flex flex-row justify-center" onSubmit={(e) => {
+        <form className="relative flex flex-row justify-center max-w-fit mx-auto" onSubmit={(e) => {
           e.preventDefault()
         }}>
           <input
@@ -28,6 +28,11 @@ export default function SearchBox({
             onChange={(e) => dispatch(setSearchName(e.target.value))}
             autoComplete="on"
           />
+          {isLoadingMangas && (
+            <div className="absolute bottom-0">
+              <BarLoader height={3} width={680} color="#409a88" />
+            </div>
+          )}
         </form>
       </div>
       {/* search dropdown section */}

@@ -25,6 +25,7 @@ export default function MenuTop() {
       <ResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}
+        setShowModalMenu={setShowModalMenu}
         handleOnClick={() => {
           if (showModalMenu) {
             setShowModalMenu(false)

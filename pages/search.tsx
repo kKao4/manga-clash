@@ -6,7 +6,7 @@ import Paginate from "@/components/global/paginate";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { MangasResponse, UserResponse } from "@/type";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch } from "@/features/search/SearchSlice";
+import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch, resetSearchTags } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
 import { MyRipples } from "@/components/global/button-ripple";
 import { useRef, useState } from "react";
@@ -15,6 +15,7 @@ import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
+import { setSort } from "@/features/GlobalSlice";
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort, name, author, completed, tags } = context.query
@@ -69,14 +70,27 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
     }
   }, [dispatch, router.query.page])
   useEffect(() => {
+    if (router.query.sort) {
+      dispatch(setSort(router.query.sort as any))
+    } else {
+      dispatch(setSort("latest"))
+    }
+  }, [dispatch, router.query.sort])
+  useEffect(() => {
     if (router.query.name) {
       dispatch(setSearchName(router.query.name as string))
+    } else {
+      dispatch(setSearchName(""))
     }
     if (router.query.author) {
       dispatch(setSearchAuthor(router.query.author as string))
+    } else {
+      dispatch(setSearchAuthor(""))
     }
     if (router.query.completed) {
       dispatch(setSearchCompleted(router.query.completed as "true" | "false" | ""))
+    } else {
+      dispatch(setSearchCompleted(""))
     }
     // console.log("🚀 ~ file: search.tsx:66 ~ useEffect ~ router.query.tags:", router.query.tags)
     if (router.query.tags && Array.isArray(router.query.tags)) {
@@ -86,8 +100,10 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
       })
     } else if (router.query.tags && !Array.isArray(router.query.tags)) {
       dispatch(addSearchTags(router.query.tags))
+    } else if (!router.query.tags) {
+      dispatch(resetSearchTags())
     }
-  }, [dispatch, router])
+  }, [dispatch, router.query])
   // open advanced has params 
   useEffect(() => {
     if (router.query.author || router.query.year || router.query.completed || router.query.tags) {

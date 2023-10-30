@@ -17,9 +17,9 @@ export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType
         )}
       </div>
       <div className="flex justify-center">
-        {mangasLength && (
+        {mangasLength ? (
           <Paginate mangasLength={mangasLength} page="manga" />
-        )}
+        ) : ""}
       </div>
     </div>
   )

@@ -34,7 +34,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
             <div className="flex flex-col gap-y-3">
               <div className="flex flex-col md:flex-row">
                 <p className="flex-1 font-bold text-gray-200 basis-1/6">Tên khác</p>
-                <p className="flex-1 basis-5/6">{manga.otherName ? manga.otherName : "Updating"}</p>
+                <p className="flex-1 basis-5/6">{manga.otherName ? manga.otherName : "Đang cập nhật"}</p>
               </div>
               <div className="flex flex-col md:flex-row">
                 <p className="flex-1 font-bold text-gray-200 basis-1/6">Thể loại</p>
@@ -44,7 +44,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
               </div>
               <div className="flex flex-col md:flex-row">
                 <p className="flex-1 font-bold text-gray-200 basis-1/6">Trạng thái</p>
-                <p className="flex-1 basis-5/6">{manga.completed ? "Completed" : "OnGoing"}</p>
+                <p className="flex-1 basis-5/6">{manga.completed ? "Hoàn thành" : "Đang tiến hành"}</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
                 Chapter {manga.chapters[0] ? `${manga.chapters[0].num}` : "0"}
               </Link>
             )}
-            <p className="ml-0 lg:-ml-14">{manga.chapters[0] ? `${formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}` : "Updating"}</p>
+            <p className="ml-0 lg:-ml-14">{manga.chapters[0] ? `${formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}` : "Đang cập nhật"}</p>
             {/* star */}
             <div className="flex flex-row items-center mb-1 ml-0 lg:ml-12">
               {manga.rating.star ? (

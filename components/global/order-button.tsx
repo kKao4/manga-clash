@@ -22,6 +22,8 @@ export default function OrderButton({
     let searchQuery = "";
     if (search) {
       searchQuery = searchQueryFn(searchState)
+    } else {
+      searchQuery = `&tags=${searchState.tags}`;
     }
     if (content === "Lượt Xem") {
       setQuery(`page=1&sort=views&${searchQuery}`)

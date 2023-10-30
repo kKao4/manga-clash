@@ -1,17 +1,20 @@
 import Link from "next/link";
-
+import { useRef } from "react";
+import { useOnClickOutside } from "usehooks-ts";
 
 export default function ResponsiveMenu({
-  zIndex, showModalMenu, handleOnClick, handleOnClickLink
+  zIndex, showModalMenu, handleOnClick, handleOnClickLink, setShowModalMenu
 }: {
-  zIndex: string, showModalMenu: boolean, handleOnClick: any, handleOnClickLink: any
+  zIndex: string, showModalMenu: boolean, handleOnClick: any, handleOnClickLink: any, setShowModalMenu: any
 }) {
+  const myRef = useRef<HTMLDivElement>(null)
+  useOnClickOutside(myRef, handleOnClick)
   return (
     <>
       <div className={`w-full h-screen ${zIndex} bg-black/50 fixed top-0 left-0 transition-opacity duration-350 ${showModalMenu ? "opacity-100" : "opacity-0"}`}>
       </div>
       {/* responsive menu */}
-      <div className={`w-[300px] h-screen bg-main-green px-8 py-6 transition-transform duration-350 fixed z-20 top-0 left-0 md:px-12 md:py-10 ${showModalMenu ? "translate-x-0" : "-translate-x-[300px]"}`}>
+      <div ref={myRef} className={`w-[240px] sm:w-[300px] h-screen bg-main-green px-8 py-6 transition-transform duration-350 fixed z-20 top-0 left-0 md:px-12 md:py-10 ${showModalMenu ? "translate-x-0" : "-translate-x-[300px]"}`}>
         <div className="flex flex-col">
           <svg
             className="h-10 px-2 mx-auto transition-transform duration-200 cursor-pointer hover:rotate-90 w-fit fill-white"

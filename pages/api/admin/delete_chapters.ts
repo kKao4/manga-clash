@@ -68,7 +68,7 @@ export default async function handler(
                 });
                 // set 2 latest chapters for manga collection
                 manga.chapters = chapter.chapters.slice(0, 2);
-                console.log("🚀 ~ file: delete_chapters.ts:64 ~ manga:", manga);
+                // console.log("🚀 ~ file: delete_chapters.ts:64 ~ manga:", manga);
                 await chapter.save();
                 await manga.save();
                 res.status(200).json({ message: "Deleted Chapters" });
