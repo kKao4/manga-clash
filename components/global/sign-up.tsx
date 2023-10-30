@@ -3,7 +3,7 @@ import { toggleSignUp, toggleSignIn, toggleResetPassword } from "@/features/Glob
 import { selectSignUp } from "@/features/GlobalSlice"
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react";
-import { NormalResponse, HOST_URL } from "@/type";
+import { NormalResponse } from "@/type";
 import Input from "./input";
 import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
