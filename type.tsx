@@ -12,6 +12,18 @@ export type MangasResponse = {
   error?: string
 };
 
+export type HistoryMangasResponse = {
+  length?: number;
+  tags?: string;
+  message?: string;
+  data?: {
+    manga: MangaType,
+    chapter: string,
+    createdAt: string
+  }[];
+  error?: string
+}
+
 export type MangaResponse = {
   message?: string;
   error?: string;

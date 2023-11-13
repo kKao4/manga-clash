@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
 
 export const initialUserSettingsState: {
-  menu: "bookmarks" | "account" | "addManga" | "chart";
+  menu: "bookmarks" | "account" | "addManga" | "chart" | "history";
 } = {
   menu: "account",
 };

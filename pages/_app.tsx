@@ -53,7 +53,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [router])
   return (
     <Provider store={store}>
-      <main className={`${openSans.variable} font-sans w-full`}>
+      <main className={`${openSans.className} w-full`}>
         <DarkMode>
           <div className="min-h-[84vh]">
             <SignUp />

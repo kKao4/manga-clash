@@ -18,7 +18,9 @@ export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: 
         router.push(`/manga/${manga.href}`)
       }}
     >
-      <Image src={`${manga.image.url}`} alt="" width={69} height={100} />
+      <div className="w-[69px] h-[100px] relative overflow-hidden">
+        <Image src={`${manga.image.url}`} alt="" fill={true} className="object-cover" />
+      </div>
       <div className="flex flex-col gap-y-1">
         <p className="font-bold transition-colors group-hover:text-second-green line-clamp-2">{manga.name}</p>
         <p className="hidden text-sm md:inline-block"><span className="font-semibold">Tên khác:</span> {manga.otherName ? `${manga.otherName}` : "Đang cập nhật"}</p>

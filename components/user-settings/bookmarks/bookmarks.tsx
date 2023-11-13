@@ -3,25 +3,40 @@ import Paginate from "@/components/global/paginate"
 import { MangasResponse } from "@/type"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
-import { selectBookmarkState, setSearchName } from "@/features/user-settings/BookmarkSlice"
+import { selectBookmarkState, setPageBookmark, setSearchNameBookmark } from "@/features/user-settings/BookmarkSlice"
+import { useEffect } from "react"
 
 const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], mangasLength: number }) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const bookmarkState = useSelector(selectBookmarkState)
+  useEffect(() => {
+    if (router.query.pageBookmark) {
+      dispatch(setPageBookmark(Number(router.query.pageBookmark)))
+    } else {
+      dispatch(setPageBookmark(1))
+    }
+  }, [router.query.pageBookmark, dispatch])
+  useEffect(() => {
+    if (router.query.nameBookmark) {
+      dispatch(setSearchNameBookmark(router.query.nameBookmark as string))
+    } else {
+      dispatch(setSearchNameBookmark(""))
+    }
+  }, [router.query.nameBookmark, dispatch])
   return (
     <>
       {/* table bookmarked manga */}
       <form className="float-right mb-2 space-x-2" onSubmit={async (e) => {
         e.preventDefault()
-        router.push(`/user-settings?pageBookmark=1&name=${name}`)
+        router.push(`/user-settings?pageBookmark=1&nameBookmark=${bookmarkState.name}`)
       }}>
         <label>Tìm kiếm:</label>
         <input
           type="text"
           className="focus:outline-none px-2 py-1 border border-gray-300 rounded-md max-w-[180px]"
           value={bookmarkState.name}
-          onChange={(e) => dispatch(setSearchName(e.target.value))}
+          onChange={(e) => dispatch(setSearchNameBookmark(e.target.value))}
         />
       </form>
       <table className="min-w-full mb-4 table-fixed">
@@ -39,7 +54,7 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
                 return <TableRow key={manga.href} manga={manga} mangasLength={mangasLength} />
               })}
             </>
-          ) : (!router.query.name) ? (
+          ) : (!router.query.nameBookmark) ? (
             <tr>
               <td colSpan={3} className="py-4 font-medium text-center">Bạn chưa thích truyện nào</td>
             </tr>

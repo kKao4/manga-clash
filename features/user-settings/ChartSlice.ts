@@ -36,7 +36,7 @@ export const chartSlice = createSlice({
     ) => {
       state.time = action.payload;
     },
-    setSearchName: (
+    setSearchNameChart: (
       state,
       action: PayloadAction<(typeof initialChartState)["name"]>
     ) => {
@@ -51,8 +51,12 @@ export const chartSlice = createSlice({
   },
 });
 
-export const { setMangasChart, setTimeChart, setSearchName, setPageChart } =
-  chartSlice.actions;
+export const {
+  setMangasChart,
+  setTimeChart,
+  setSearchNameChart,
+  setPageChart,
+} = chartSlice.actions;
 
 export const selectChartState = (state: RootState) => state.chart;
 

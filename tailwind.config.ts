@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: "class",
+  important: true,
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -38,8 +39,16 @@ const config: Config = {
         "107": "1.07",
       },
       boxShadow: {
-        "custom": "rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px"
-      }
+        custom:
+          "rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px",
+      },
+      backgroundImage: {
+        search: "url('../assets/bg-search.jpg')",
+      },
+      cursor: {
+        "arrow-right": "url('../assets/arrow-right.png'), default",
+        "arrow-left": "url('../assets/arrow-left.png'), default",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

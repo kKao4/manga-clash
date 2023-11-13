@@ -11,14 +11,13 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
       <div className="flex flex-row col-span-2 gap-x-4 md:gap-x-8">
         {/* image */}
         <Link href={`/manga/${manga.href}`} className="shrink-0 relative w-[95px] h-[136px] md:h-[230px] overflow-hidden cursor-pointer md:w-[160px] group/image">
-          <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
+          <div className="absolute top-0 left-0 z-10 w-full h-full overflow-hidden transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
           {manga.image ? (
             <Image
-              className="w-full h-full transition-transform duration-550 group-hover/image:scale-110"
+              className="w-full h-full transition-transform duration-550 group-hover/image:scale-110 object-cover"
               src={manga.image.url}
               alt=""
-              width="100"
-              height="144"
+              fill={true}
               quality={100}
             />
           ) : (

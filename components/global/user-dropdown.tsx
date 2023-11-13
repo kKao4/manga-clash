@@ -1,4 +1,4 @@
-import {  UserResponse } from "@/type";
+import { UserResponse } from "@/type";
 import { useRouter } from "next/router";
 import { setMenu } from "@/features/user-settings/UserSettingsSlice";
 import { useDispatch } from "react-redux";
@@ -14,18 +14,18 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
     <button className="relative flex flex-row items-center text-gray-200 gap-x-2 group">
       <p className="font-normal">Xin chào, {user?.role === "admin" ? "admin" : ""} <span className="font-semibold text-main-green">{user?.username}</span></p>
       {/* profile picture */}
-      <div className="flex w-8 h-8 overflow-hidden border rounded-full place-items-center">
+      <div className="w-8 h-8 overflow-hidden border rounded-full relative">
         {user?.profilePicture ? (
-          <Image src={user.profilePicture.url} alt="profile picture" width={32} height={32} />
+          <Image src={user.profilePicture.url} alt="profile picture" fill={true} className="object-cover" />
         ) : (
-          <Image src={blankProfile} alt="" />
+          <Image src={blankProfile} alt="" fill={true} className="object-cover" />
         )}
       </div>
       <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-10 -z-10 opacity-0 hover:opacity-100 hover:z-10 transition-opacity">
         {/* dropdown */}
         <div className="flex flex-col mt-2.5 bg-gray-150 border-b-[3px] py-2 border-b-second-green">
           <Link
-            href="/user-settings?pageBookmark=1&name="
+            href="/user-settings?pageBookmark=1&nameBookmark="
             className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
             onClick={() => dispatch(setMenu("bookmarks"))}
           >
@@ -38,6 +38,13 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           >
             Cài Đặt
           </Link>
+          <Link
+            href="/user-settings?pageHistory=1&nameHistory="
+            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+            onClick={() => dispatch(setMenu("history"))}
+          >
+            Lịch sử
+          </Link>
           {user?.role === "admin" && (
             <Link
               href="/user-settings"
@@ -49,7 +56,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           )}
           {user?.role === "admin" && (
             <Link
-              href="/user-settings?time=oneWeek&pageChart=1&name="
+              href="/user-settings?time=oneWeek&pageChart=1&nameChart="
               className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
               onClick={() => {
                 dispatch(setMenu("chart"))

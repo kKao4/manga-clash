@@ -28,7 +28,7 @@ export const bookmarkSlice = createSlice({
       state.mangas = mangas as any;
       state.length = length;
     },
-    setSearchName: (
+    setSearchNameBookmark: (
       state,
       action: PayloadAction<(typeof initialMangaBookmark)["name"]>
     ) => {
@@ -43,7 +43,7 @@ export const bookmarkSlice = createSlice({
   },
 });
 
-export const { setMangasBookmark, setSearchName, setPageBookmark } =
+export const { setMangasBookmark, setSearchNameBookmark, setPageBookmark } =
   bookmarkSlice.actions;
 
 export const selectBookmarkState = (state: RootState) => state.bookmark;

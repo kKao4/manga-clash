@@ -1,6 +1,6 @@
 import BodyBox from "@/components/global/body-box"
 import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
-import { ChartResponse, MangasResponse, UserResponse } from "@/type"
+import { ChartResponse, HistoryMangasResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
 import { useEffect } from "react"
@@ -13,8 +13,10 @@ import UserMenu from "@/components/global/user-menu"
 import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { setMangasBookmark, selectBookmarkState, setSearchName, setPageBookmark } from "@/features/user-settings/BookmarkSlice"
+import { setMangasBookmark, selectBookmarkState, setSearchNameBookmark, setPageBookmark } from "@/features/user-settings/BookmarkSlice"
 import { selectChartState, setMangasChart, setPageChart } from "@/features/user-settings/ChartSlice"
+import History from "@/components/user-settings/history/history"
+import { setMangasHistory } from "@/features/user-settings/HistorySlice"
 const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
   ssr: false,
   loading: () => <p>Loading...</p>
@@ -24,22 +26,27 @@ const DynamicChart = dynamic(() => import("@/components/user-settings/chart/char
   loading: () => <p>Loading...</p>
 })
 
-export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {
+export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, history: HistoryMangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {
   const token = context.req.cookies.token
-  let { pageChart, pageBookmark, name, time } = context.query
+  let { pageChart, pageBookmark, pageHistory, nameBookmark, nameChart, nameHistory, time } = context.query
   pageChart = pageChart ?? "1"
   pageBookmark = pageBookmark ?? "1"
-  name = name ?? ""
+  pageHistory = pageHistory ?? "1"
+  nameBookmark = nameBookmark ?? ""
+  nameChart = nameChart ?? ""
+  nameHistory = nameHistory ?? ""
   time = time ?? "oneWeek"
-  const [popularMangasRes, mangasRes, userRes, chartRes] = await Promise.all([
+  const [popularMangasRes, mangasRes, historyRes, userRes, chartRes] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&pageBookmark=${pageBookmark}&name=${name}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&pageBookmark=${pageBookmark}&nameBookmark=${nameBookmark}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/history?token=${token}&pageHistory=${pageHistory}&nameHistory=${nameHistory}`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&pageChart=${pageChart}&name=${name}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&pageChart=${pageChart}&nameChart=${nameChart}`)
   ])
-  const [popularMangas, mangas, user, chart] = await Promise.all([popularMangasRes.json(), mangasRes.json(), userRes.json(), chartRes.json()])
+  const [popularMangas, mangas, history, user, chart] = await Promise.all([popularMangasRes.json(), mangasRes.json(), historyRes.json(), userRes.json(), chartRes.json()])
   console.log("🚀 ~ file: user-settings.tsx:28 ~ user.message:", user.message)
   console.log("🚀 ~ file: user-settings.tsx:28 ~ mangas.message:", mangas.message)
+  console.log("🚀 ~ file: user-settings.tsx:28 ~ history.message:", history.data)
   console.log("🚀 ~ file: user-settings.tsx:28 ~ popularMangas.message:", popularMangas.message)
   console.log("🚀 ~ file: user-settings.tsx:31 ~ chart:", chart.message)
   if (!user.data) {
@@ -50,15 +57,13 @@ export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasRespo
       }
     }
   }
-  return { props: { popularMangas, mangas, user, chart } }
+  return { props: { popularMangas, mangas, history, user, chart } }
 }
 
-const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ popularMangas, mangas, history, user, chart }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const userSettingsState = useSelector(selectUserSettingsState)
   const dispatch = useDispatch()
-  const router = useRouter()
   const bookmarkState = useSelector(selectBookmarkState)
-  const chartState = useSelector(selectChartState)
   const userState = useSelector(selectUserState)
   // set mangas bookmark
   useEffect(() => {
@@ -77,28 +82,12 @@ const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsTyp
       dispatch(setMangasChart(chart.data))
     }
   }, [dispatch, chart])
-  // set page bookmark
+  // set history mangas
   useEffect(() => {
-    if (router.query.pageBookmark) {
-      dispatch(setPageBookmark(Number(router.query.pageBookmark)))
-    } else {
-      dispatch(setPageBookmark(1))
+    if (history.data) {
+      dispatch(setMangasHistory({ mangas: history.data, length: history.length as number }))
     }
-  }, [dispatch, router.query.pageBookmark])
-  // set page chart 
-  useEffect(() => {
-    if (router.query.pageChart) {
-      dispatch(setPageChart(Number(router.query.pageChart)))
-    } else {
-      dispatch(setPageChart(1))
-    }
-  }, [router.query.pageChart, dispatch])
-  // set name
-  useEffect(() => {
-    if (router.query.name && typeof router.query.name === "string") {
-      dispatch(setSearchName(router.query.name))
-    }
-  }, [dispatch, router])
+  }, [dispatch, history])
   const title = `${userState.username} - Cài đặt`
   return (
     <>
@@ -120,6 +109,10 @@ const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsTyp
                 <svg className={`${userSettingsState.menu === "account" ? "fill-white" : "group-hover:fill-second-green"} h-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" /></svg>
                 <span>Tài khoản</span>
               </Menu>
+              <Menu isActive={userSettingsState.menu === "history"} handleOnClick={() => dispatch(setMenu("history"))}>
+                <svg className={`${userSettingsState.menu === "history" ? "fill-white" : "group-hover:fill-second-green"} h-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z" /></svg>
+                <span>Lịch sử</span>
+              </Menu>
               {userState.role === "admin" && (
                 <Menu isActive={userSettingsState.menu === "addManga"} handleOnClick={() => dispatch(setMenu("addManga"))}>
                   <svg className={`${userSettingsState.menu === "addManga" ? "fill-white" : "group-hover:fill-second-green"} h-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" /></svg>
@@ -138,6 +131,8 @@ const Page = ({ popularMangas, mangas, user, chart }: InferGetServerSidePropsTyp
                 <Bookmarks mangas={bookmarkState.mangas} mangasLength={bookmarkState.length} />
               ) : userSettingsState.menu === "account" ? (
                 <Account user={userState} />
+              ) : userSettingsState.menu === "history" ? (
+                <History />
               ) : userSettingsState.menu === "addManga" ? (
                 <DynamicAddManga />
               ) : (

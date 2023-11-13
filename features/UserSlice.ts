@@ -12,6 +12,7 @@ export const initialUserState: Omit<UserType, "password"> = {
     url: "",
     publicId: "",
   },
+  history: [],
 };
 
 export const userSlice = createSlice({
@@ -19,7 +20,7 @@ export const userSlice = createSlice({
   initialState: initialUserState,
   reducers: {
     setUser: (state, action: PayloadAction<typeof initialUserState>) => {
-      const { _id, username, email, role, bookmarks, profilePicture } =
+      const { _id, username, email, role, bookmarks, profilePicture, history } =
         action.payload;
       state._id = _id;
       state.username = username;
@@ -27,6 +28,7 @@ export const userSlice = createSlice({
       state.role = role;
       state.bookmarks = bookmarks;
       state.profilePicture = profilePicture;
+      state.history = history;
     },
   },
 });

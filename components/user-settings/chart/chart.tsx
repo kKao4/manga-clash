@@ -1,14 +1,36 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
-import { selectChartState, setSearchName, setTimeChart } from "@/features/user-settings/ChartSlice";
+import { selectChartState, setPageChart, setSearchNameChart, setTimeChart } from "@/features/user-settings/ChartSlice";
 import Paginate from "../../global/paginate";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Chart() {
   const dispatch = useDispatch()
   const router = useRouter()
   const chartState = useSelector(selectChartState)
+  useEffect(() => {
+    if (router.query.pageChart) {
+      dispatch(setPageChart(Number(router.query.pageChart)))
+    } else {
+      dispatch(setPageChart(1))
+    }
+  }, [router.query.pageChart, dispatch])
+  useEffect(() => {
+    if (router.query.nameChart) {
+      dispatch(setSearchNameChart(router.query.nameChart as string))
+    } else {
+      dispatch(setSearchNameChart(""))
+    }
+  }, [router.query.nameChart, dispatch])
+  useEffect(() => {
+    if (router.query.time) {
+      dispatch(setTimeChart(router.query.time as string))
+    } else {
+      dispatch(setTimeChart("oneWeek"))
+    }
+  }, [router.query.time, dispatch])
   return (
     <>
       <div className="space-y-2">
@@ -18,7 +40,7 @@ export default function Chart() {
             value={chartState.time}
             onChange={(e) => {
               dispatch(setTimeChart(e.target.value))
-              router.push(`/user-settings?time=${e.target.value}&pageChart=1&name=${chartState.name}`)
+              router.push(`/user-settings?time=${e.target.value}&pageChart=1&nameChart=${chartState.name}`)
             }}>
             <option value="oneWeek">1 tuần</option>
             <option value="oneMonth">1 tháng</option>
@@ -27,14 +49,14 @@ export default function Chart() {
           </select>
           <form className="ml-auto space-x-2" onSubmit={async (e) => {
             e.preventDefault()
-            router.push(`/user-settings?time=${chartState.time}&pageChart=1&name=${chartState.name}`)
+            router.push(`/user-settings?time=${chartState.time}&pageChart=1&nameChart=${chartState.name}`)
           }}>
-            <label className="sm:inline-block hidden">Tìm kiếm:</label>
+            <label className="hidden sm:inline-block">Tìm kiếm:</label>
             <input
               type="text"
               className="focus:outline-none px-2 py-1 border border-gray-300 rounded-md max-w-[180px]"
               value={chartState.name}
-              onChange={(e) => dispatch(setSearchName(e.target.value))}
+              onChange={(e) => dispatch(setSearchNameChart(e.target.value))}
             />
           </form>
         </div>

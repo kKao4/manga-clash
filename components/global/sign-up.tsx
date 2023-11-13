@@ -42,7 +42,7 @@ export default function SignUp() {
       <div className={`${showSignUp ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid place-items-center`}>
         {!signedUp ? (
           <form
-            className="bg-[url(../assets/bg-search.jpg)] w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+            className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
             onSubmit={async (e) => {
               e.preventDefault()
               setIsLoading(true)
@@ -132,7 +132,7 @@ export default function SignUp() {
           </form>
         ) : (
           <div
-            className="bg-[url(../assets/bg-search.jpg)] w-[650px] px-32 pt-7 pb-12 space-y-4"
+            className="bg-search w-[650px] px-32 pt-7 pb-12 space-y-4"
           >
             <p className="text-2xl font-bold text-center">Đã đăng ký thành công!</p>
             <p className="text-center">Vùi lòng <span className="font-bold cursor-pointer text-main-green hover:text-second-green" onClick={() => {

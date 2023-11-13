@@ -8,13 +8,15 @@ import { selectBookmarkState } from "@/features/user-settings/BookmarkSlice";
 import { selectSearchState } from "@/features/search/SearchSlice";
 import { selectChartState } from "@/features/user-settings/ChartSlice";
 import { selectMangasState } from "@/features/manga/MangasSlice";
+import { selectHistoryState } from "@/features/user-settings/HistorySlice";
 
-export default function Paginate({ mangasLength, page }: { mangasLength: number, page: "manga" | "bookmark" | "search" | "chart" }) {
+export default function Paginate({ mangasLength, page }: { mangasLength: number, page: "manga" | "bookmark" | "search" | "chart" | "history" }) {
   const router = useRouter();
   const mangasState = useSelector(selectMangasState)
   const sortState = useSelector(selectSort);
   const chartState = useSelector(selectChartState)
   const bookmarkState = useSelector(selectBookmarkState)
+  const historyState = useSelector(selectHistoryState)
   const searchState = useSelector(selectSearchState)
   const [itemOffset, setItemOffset] = useState<number>(0);
   const endOffset = itemOffset + mangasPerPage;
@@ -33,9 +35,11 @@ export default function Paginate({ mangasLength, page }: { mangasLength: number,
       searchQuery = searchQueryFn(searchState)
       router.push(`/search?page=${event.selected + 1}&sort=${sortState.toLowerCase()}&${searchQuery}`);
     } else if (page === "bookmark") {
-      router.push(`/user-settings?pageBookmark=${event.selected + 1}&name=${bookmarkState.name}`)
+      router.push(`/user-settings?pageBookmark=${event.selected + 1}&nameBookmark=${bookmarkState.name}`)
     } else if (page === "chart") {
-      router.push(`/user-settings?time=${chartState.time}&pageChart=${event.selected + 1}&name=${chartState.name}`)
+      router.push(`/user-settings?time=${chartState.time}&pageChart=${event.selected + 1}&nameChart=${chartState.name}`)
+    } else if (page === "history") {
+      router.push(`/user-settings?pageHistory=${event.selected + 1}&nameHistory=${historyState.name}`)
     }
   };
   const chevronRight = <svg className="h-3.5 inline-block mb-1 group-hover:fill-white transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" /></svg>
@@ -49,7 +53,7 @@ export default function Paginate({ mangasLength, page }: { mangasLength: number,
       pageRangeDisplayed={3}
       marginPagesDisplayed={2}
       pageCount={pageCount}
-      forcePage={page === "manga" ? mangasState.page - 1 : page === "search" ? searchState.page - 1 : page === "bookmark" ? bookmarkState.page - 1 : chartState.page - 1}
+      forcePage={page === "manga" ? mangasState.page - 1 : page === "search" ? searchState.page - 1 : page === "bookmark" ? bookmarkState.page - 1 : page === "history" ? historyState.page - 1 : chartState.page - 1}
       previousLabel={chevronLeft}
       renderOnZeroPageCount={null}
       activeLinkClassName="active-page"

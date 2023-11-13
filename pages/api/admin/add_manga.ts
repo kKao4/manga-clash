@@ -59,10 +59,6 @@ export default async function handler(
                   "🚀 ~ file: add_manga.ts:61 ~ newObjectId:",
                   newObjectId
                 );
-                // store image in local storage
-                // const newPath = newHref + "_" + files.image[0].originalFilename;
-                // const oldPath = files.image[0].filepath;
-                // await fs.promises.rename(oldPath, "./public/" + newPath);
                 // store image in cloudinary
                 const result = await cloudinary.uploader.upload(
                   files.image[0].filepath,

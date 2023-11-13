@@ -8,6 +8,7 @@ import searchReducer from "./features/search/SearchSlice";
 import chartReducer from "./features/user-settings/ChartSlice";
 import userSettingsReducer from "./features/user-settings/UserSettingsSlice";
 import mangasReducer from "./features/manga/MangasSlice";
+import historyReducer from "./features/user-settings/HistorySlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     chart: chartReducer,
     userSettings: userSettingsReducer,
     mangas: mangasReducer,
+    history: historyReducer,
   },
 });
 

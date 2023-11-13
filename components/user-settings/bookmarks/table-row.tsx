@@ -45,13 +45,13 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               const res1 = await result1.json()
               console.log("🚀 ~ file: info-box.tsx:63 ~ onClick={ ~ res:", res1)
               if (bookmarkState.page > Math.ceil((mangasLength - 1) / mangasPerPage)) {
-                router.replace(router.pathname + "?pageBookmark=" + (bookmarkState.page - 1) + `${router.query.name ? `&name=${router.query.name}` : ""}`, "", { scroll: false, shallow: true })
-                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&name=${bookmarkState.name}`)
+                router.replace(router.pathname + "?pageBookmark=" + (bookmarkState.page - 1) + `${router.query.nameBookmark ? `&nameBookmark=${router.query.nameBookmark}` : ""}`, "", { scroll: false, shallow: true })
+                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&nameBookmark=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               } else {
-                // router.replace(router.asPath, "", { scroll: false })
-                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page}&name=${bookmarkState.name}`)
+                router.replace(router.pathname + "?pageBookmark=" + (bookmarkState.page) + `${router.query.nameBookmark ? `&nameBookmark=${router.query.nameBookmark}` : ""}`, "", { scroll: false, shallow: true })
+                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page}&nameBookmark=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 console.log("🚀 ~ file: table-row.tsx:90 ~ mangasBookmarkRes:", mangasBookmarkRes)
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))

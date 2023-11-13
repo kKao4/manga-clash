@@ -1,11 +1,12 @@
-import { ChaptersResponse } from "@/type";
+import { ChapterResponse, ChaptersResponse } from "@/type";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react"
+import Select from "./select";
 
 export default function Menu({
-  chapters, prevChapter, nextChapter
+  chapters, prevChapter, nextChapter, readingStyle, setReadingStyle, index, setIndex, chapter
 }: {
-  chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string
+  chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, readingStyle: "full" | "single", setReadingStyle: any, index: number, setIndex: any, chapter: ChapterResponse["data"]
 }) {
   const router = useRouter()
   const [isFirstChapter, setIsFirstChapter] = useState<boolean>(false)
@@ -18,12 +19,12 @@ export default function Menu({
   }, [router, chapters])
   return (
     <div className="flex flex-col sm:flex-row gap-y-2">
-      {/* select chapter  */}
-      <div className="relative overflow-hidden">
-        <select
+      <div className="gap-x-3 flex flex-row">
+        {/* select chapter  */}
+        <Select
+          width="w-full sm:w-[400px]"
           value={typeof router.query.chapterNum === "string" ? router.query.chapterNum?.split("-")[1] : ""}
-          className="bg-gray-100 dark:bg-[rgb(77,77,77)] dark:text-white dark:hover:bg-neutral-600 px-3 py-2 w-full sm:min-w-[400px] focus:outline-none peer hover:bg-gray-150 transition-colors rounded-md" id="select-chapter"
-          onChange={(e) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
+          handleOnChange={(e: any) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
         >
           {chapters?.chapters.map(chapter => {
             return (
@@ -35,15 +36,32 @@ export default function Menu({
               </option>
             )
           })}
-        </select>
-        <span className="absolute top-0 right-0 w-6 h-10 transition-colors bg-gray-100 rounded-md dark:bg-[rgb(77,77,77)] peer-hover:bg-gray-150 dark:peer-hover:bg-neutral-600">
-          <svg className="block w-2 h-full mx-auto dark:fill-neutral-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" /></svg>
-        </span>
+        </Select>
+        {/* select reading style  */}
+        <Select
+          width="w-full sm:w-fit"
+          value={readingStyle}
+          handleOnChange={(e: any) => setReadingStyle(e.target.value)}
+        >
+          <option value="full">Full Page</option>
+          <option value="single">Single Page</option>
+        </Select>
       </div>
       {/* prev/next button */}
       {router.query.chapterNum && !Array.isArray(router.query.chapterNum) && (
         <>
           <div className="flex flex-row mx-auto space-x-2 sm:ml-auto sm:mr-0">
+            {readingStyle === "single" && (
+              <Select
+                width="w-full sm:w-[88px]"
+                value={(index + 1).toString()}
+                handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+              >
+                {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {
+                  return <option key={i} value={i}>{i}/{chapter!.chapter.imagesPath.length}</option>
+                })}
+              </Select>
+            )}
             <button
               className={`${isFirstChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}
               disabled={isFirstChapter}

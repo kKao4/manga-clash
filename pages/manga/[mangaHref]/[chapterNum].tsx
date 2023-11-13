@@ -3,7 +3,7 @@ import BodyBox from "@/components/global/body-box"
 import Navigation from "@/components/global/navigation"
 import Image from "next/image"
 import Menu from "@/components/chapterNum/menu"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
@@ -15,6 +15,7 @@ import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/Glob
 import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
+import useMouse from '@react-hook/mouse-position'
 const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
   loading: () => <p className="dark:text-white">Loading...</p>
@@ -23,15 +24,15 @@ const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
   const [chapterRes, chaptersRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/${chapterNum}`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/${chapterNum}?token=${context.req.cookies.token}`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/all_chapters`),
     fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
   ]);
   const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
-  // console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
-  // console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
-  // console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
-  if (!chapters.data || !chapter.data.chapter) {
+  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
+  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
+  console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
+  if (!chapters.data || !chapter.data) {
     return {
       redirect: {
         destination: "/",
@@ -47,23 +48,21 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const dispatch = useDispatch()
   const [bookmark, setBookmark] = useState<boolean>(false)
   const userState = useSelector(selectUserState)
-  const darkMode = useSelector(selectDarkMode)
   const adminMode = useSelector(selectAdminMode)
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
   const [showNavChapter, setShowNavChapter] = useState<boolean>(false)
+  const [readingStyle, setReadingStyle] = useState<"full" | "single">("full")
+  const [index, setIndex] = useState<number>(0)
+  const imagesBoxRef = useRef<HTMLDivElement>(null)
+  const mouse = useMouse(imagesBoxRef, { fps: 60 });
+  const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
   // Set User
   useEffect(() => {
     if (user.data) {
       dispatch(setUser(user.data))
     }
   }, [dispatch, user])
-  // Set Theme Based On Window Theme
-  // useEffect(() => {
-  //   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  //     dispatch(toggleDarkMode(true))
-  //   }
-  // }, [dispatch])
   // Set Bookmark
   useEffect(() => {
     if (chapter.data && userState) {
@@ -86,7 +85,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   // set prev/next chapter
   useEffect(() => {
     const index = chapters.data!.chapters.findIndex(obj => obj.num === chapter.data!.chapter.num)
-    console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
+    // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
     if (index === 0) {
       setPrevChapter(chapters.data!.chapters[index + 1] ? chapters.data!.chapters[index + 1].num : chapters.data!.chapters[0].num)
       setNextChapter(chapters.data!.chapters[chapters.data!.chapters.length - 1].num)
@@ -114,7 +113,28 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
     window.addEventListener("scroll", detectDirection);
     return () => window.removeEventListener("scroll", detectDirection)
   }, [])
-
+  // reset index when router change
+  useEffect(() => {
+    setIndex(0)
+  }, [router.query])
+  // set arrow
+  useEffect(() => {
+    if (readingStyle === "single" && imagesBoxRef.current && mouse.x && mouse.y) {
+      if (mouse.x >= imagesBoxRef.current.clientWidth / 2 && mouse.y > 0) {
+        setDirectionArrow("right")
+      } else if (mouse.x < imagesBoxRef.current.clientWidth / 2 && mouse.y > 0) {
+        setDirectionArrow("left")
+      } else {
+        setDirectionArrow(undefined)
+      }
+    }
+  }, [mouse, imagesBoxRef, readingStyle])
+  // scroll to top when change chapter
+  useEffect(() => {
+    if (imagesBoxRef.current && router.query) {
+      window.scrollTo(0, imagesBoxRef.current.getBoundingClientRect().top + window.scrollY - 100)
+    }
+  }, [router.query])
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
   return (
     <>
@@ -148,7 +168,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                     const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`)
                     const res = await result.json();
                     setBookmark(b => !b)
-                    // console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
+                    console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
                   }}
                 >
                   {bookmark ? (
@@ -169,14 +189,64 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 <DynamicDeleteChapter chapter={chapter} prevChapter={prevChapter} />
               )}
             </div>
-            <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
+            <Menu
+              chapters={chapters.data}
+              prevChapter={prevChapter}
+              nextChapter={nextChapter}
+              readingStyle={readingStyle}
+              setReadingStyle={setReadingStyle}
+              index={index}
+              setIndex={setIndex}
+              chapter={chapter.data}
+            />
             {/* images chapter */}
-            <div className="max-w-[960px] mx-auto py-4 sm:py-8 xl:py-12 flex flex-col">
-              {chapter.data?.chapter.imagesPath.map((c) => {
-                return <Image key={c.publicId} className={`block w-full h-auto mx-auto ${darkMode ? "" : "border border-gray-200"}`} sizes="100vw" src={c.url} alt="" width={960} height={1360} quality={100} />
-              })}
+            <div
+              ref={imagesBoxRef as any}
+              className={directionArrow === "right" ? "cursor-arrow-right" : directionArrow === "left" ? "cursor-arrow-left" : ""}
+              onClick={() => {
+                if (directionArrow === "right") {
+                  if (index === chapter.data!.chapter.imagesPath.length - 1) {
+                    router.push(`/manga/${chapter.data?.href}/chapter-${nextChapter}`)
+                  } else {
+                    setIndex(prevState => prevState + 1)
+                  }
+                } else if (directionArrow === "left") {
+                  if (index === 0) {
+                    router.push(`/manga/${chapter.data?.href}/chapter-${prevChapter}`)
+                  } else {
+                    setIndex(prevState => prevState - 1)
+                  }
+                }
+                // scroll to top when change page
+                if (imagesBoxRef.current) {
+                  window.scrollTo(0, imagesBoxRef.current.getBoundingClientRect().top + window.scrollY - 100)
+                }
+              }}
+            >
+              {readingStyle === "full" ? (
+                <div className="w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
+                  {chapter.data?.chapter.imagesPath.map((c, i) => {
+                    return <Image key={c.publicId} className={`block max-h-[1360px] mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i <= 2} />
+                  })}
+                </div>
+              ) : (
+                <div className="w-[960px] h-[1360px] mx-auto my-4 sm:my-8 xl:my-12 relative">
+                  {chapter.data?.chapter.imagesPath.map((c, i) => {
+                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" fill={true} quality={100} priority={i <= 2} />
+                  })}
+                </div>
+              )}
             </div>
-            <Menu chapters={chapters.data} prevChapter={prevChapter} nextChapter={nextChapter} />
+            <Menu
+              chapters={chapters.data}
+              prevChapter={prevChapter}
+              nextChapter={nextChapter}
+              readingStyle={readingStyle}
+              setReadingStyle={setReadingStyle}
+              index={index}
+              setIndex={setIndex}
+              chapter={chapter.data}
+            />
             <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapter.data?.chapter.num}"`} order={false} />
             </div>

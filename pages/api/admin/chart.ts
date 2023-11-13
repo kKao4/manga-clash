@@ -17,7 +17,7 @@ export default async function handler(
     const method = req.method;
     switch (method) {
       case "GET": {
-        let { token, time, pageChart, name } = req.query;
+        let { token, time, pageChart, nameChart } = req.query;
         if (!token) {
           token = req.cookies.token;
         }
@@ -46,16 +46,18 @@ export default async function handler(
               filterViews(views, mangas, array, 90);
             }
             // filter name
-            array = searchName(name, array);
+            array = searchName(nameChart, array);
             // filter manga by name
-            if (name) {
-              array = array.filter((a: any) => {
-              return name && typeof name === "string"
-                ? a.name.toLowerCase().includes(name.toLowerCase()) ||
-                    a.otherName.toLowerCase().includes(name.toLowerCase())
-                : false;
-            });
-            }
+            // if (nameChart) {
+            //   array = array.filter((a: any) => {
+            //     return nameChart && typeof nameChart === "string"
+            //       ? a.name.toLowerCase().includes(nameChart.toLowerCase()) ||
+            //           a.otherName
+            //             .toLowerCase()
+            //             .includes(nameChart.toLowerCase())
+            //       : false;
+            //   });
+            // }
             // update rank manga
             array.forEach((a: any, i: number) => {
               a.views.rank = i + 1;

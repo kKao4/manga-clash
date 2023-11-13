@@ -30,17 +30,9 @@ export default async function handler(
           if (user) {
             const form = formidable({ maxFileSize: 10 * 1024 * 1024 });
             const [fields, files] = await form.parse(req);
+            // console.log("🚀 ~ file: profile_picture.ts:33 ~ files:", files)
             if (files.profilePicture) {
               if (checkFile(files.profilePicture[0].originalFilename)) {
-                // store image in local storage
-                // const data = fs.readFileSync(files.profilePicture[0].filepath);
-                // fs.writeFileSync(
-                //   `./public/${_id}_${files.profilePicture[0].originalFilename}`,
-                //   data
-                // );
-                // const user = await User.findById(_id);
-                // user.profilePicture = `${_id}_${files.profilePicture[0].originalFilename}`;
-
                 // store image in cloudinary
                 const result = await cloudinary.uploader.upload(
                   files.profilePicture[0].filepath,

@@ -99,11 +99,10 @@ export default function ImageAndDetailManga({
             />
           ) : (
             <Image
-              className="block w-full h-full mx-auto"
+              className="block w-full h-full mx-auto object-cover"
               src={mangaState.image.url}
               alt=""
-              width="193"
-              height="274"
+              fill={true}
               priority={true}
               quality={100}
             />

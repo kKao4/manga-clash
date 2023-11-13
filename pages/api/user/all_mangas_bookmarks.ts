@@ -15,7 +15,7 @@ export default async function handler(
   try {
     await dbConnect();
     if (req.method === "GET") {
-      let { pageBookmark, sort, token, name } = req.query;
+      let { pageBookmark, sort, token, nameBookmark } = req.query;
       // console.log("🚀 ~ file: all_mangas_bookmarks.ts:19 ~ req.query:", req.query)
       if (!token) {
         token = req.cookies.token;
@@ -37,7 +37,7 @@ export default async function handler(
         //   "🚀 ~ file: all_mangas.ts:35 ~ mangas=mangas.filter ~ mangas:",
         //   mangas
         // );
-        mangas = searchName(name, mangas);
+        mangas = searchName(nameBookmark, mangas);
         const mangasLength = mangas.length;
         mangas = sliceMangas(mangas, Number(pageBookmark));
         res.status(200).json({

@@ -3,6 +3,20 @@ import mongoose, { Schema } from "mongoose";
 
 mongoose.set("strictQuery", true);
 
+const historySchema = new mongoose.Schema(
+  {
+    mangaId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    chapter: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -31,7 +45,6 @@ const userSchema = new mongoose.Schema({
   },
   bookmarks: {
     type: [Schema.Types.ObjectId],
-    ref: "mangas",
     default: [],
     required: true,
   },
@@ -47,6 +60,11 @@ const userSchema = new mongoose.Schema({
       },
     },
     default: { url: "", publicId: "" },
+  },
+  history: {
+    type: [historySchema],
+    default: [],
+    required: true,
   },
 });
 
