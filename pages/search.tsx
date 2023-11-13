@@ -10,17 +10,13 @@ import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, 
 import { useRouter } from "next/router";
 import { MyRipples } from "@/components/global/button-ripple";
 import { useRef, useState } from "react";
-// import Advanced from "@/components/search/advanced";
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
 import { setSort } from "@/features/GlobalSlice";
 import dynamic from "next/dynamic";
-import DotLoaderComponent from "@/components/global/dot-loader";
-const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
-})
+const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"))
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort, name, author, completed, tags } = context.query

@@ -17,24 +17,14 @@ import { setUser, selectUserState } from "@/features/UserSlice";
 import { selectMangaState, addOrUpdateManga } from "@/features/mangaHref/MangaSlice";
 import { setUserRating } from "@/features/mangaHref/UserRatingSlice";
 import ImageAndDetailManga from "@/components/mangaHref/image-and-detail-manga";
-// import Summary from "@/components/mangaHref/summary";
-// import Chapters from "@/components/mangaHref/chapters";
 import Name from "@/components/mangaHref/name";
 import { RootState } from "@/store";
 import dynamic from "next/dynamic";
-// import Comments from "@/components/mangaHref/comments";
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
-  loading: () => <p>Loading...</p>
-})
-const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"), {
-  loading: () => <p>Loading...</p>
-})
-const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"), {
-  loading: () => <p>Loading...</p>
-})
-const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"), {
-  loading: () => <p>Loading...</p>
-})
+import DotLoaderComponent from "@/components/global/dot-loader";
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"))
+const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"))
+const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"))
 
 export const getServerSideProps: GetServerSideProps<{ manga: MangaResponse, popularMangas: MangasResponse, user: UserResponse, userRating: UserRatingResponse }> = async (context) => {
   const [mangaRes, popularMangasRes, userRes, userRatingRes] = await Promise.all([

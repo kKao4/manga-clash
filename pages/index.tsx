@@ -1,6 +1,5 @@
 import { MangasResponse, UserResponse } from "@/type"
 import MangaBoxes from "@/components/mangas/manga-boxes"
-// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
 import BodyBox from "@/components/global/body-box"
@@ -10,10 +9,7 @@ import { useEffect } from "react"
 import { setPageMangas } from "@/features/manga/MangasSlice"
 import { selectUserState, setUser } from "@/features/UserSlice"
 import dynamic from "next/dynamic"
-import DotLoaderComponent from "@/components/global/dot-loader"
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
-})
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort } = context.query;

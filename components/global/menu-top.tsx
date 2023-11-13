@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react"
-// import SearchBox from "./search-box";
 import MenuButton from "./menu-button";
 import { useDispatch, useSelector } from "react-redux";
 import { Order, setSort } from "@/features/GlobalSlice";
 import { useRouter } from "next/router";
-// import ResponsiveMenu from "./responsive-menu";
 import Image from "next/image";
 import AliceChan from "@/assets/Kisaragi_Alice_full.jpg"
 import Link from "next/link";
 import { setSearchName } from "@/features/search/SearchSlice";
 import dynamic from "next/dynamic";
-import DotLoaderComponent from "./dot-loader";
-const DynamicSearchBox = dynamic(() => import("./search-box"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
-})
-const DynamicResponsiveMenu = dynamic(() => import("./responsive-menu"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
-})
+const DynamicSearchBox = dynamic(() => import("./search-box"))
+const DynamicResponsiveMenu = dynamic(() => import("./responsive-menu"))
 
 // TODO: add image slider to mangas page
 export default function MenuTop() {

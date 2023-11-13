@@ -6,10 +6,6 @@ import store from "@/store"
 import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
-// import SignUp from "@/components/global/sign-up"
-// import SignIn from "@/components/global/sign-in"
-// import ResetPassword from "@/components/global/reset-password"
-// import Footer from "@/components/global/footer"
 import "@/styles/nprogress.css"
 import NProgress from "nprogress"
 import { useEffect } from "react"
@@ -18,18 +14,10 @@ import DarkMode from "@/components/global/dark-mode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
 import DotLoaderComponent from "@/components/global/dot-loader"
-const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"), {
-  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
-})
-const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"), {
-  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
-})
-const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"), {
-  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
-})
-const DynamicFooter = dynamic(() => import("@/components/global/footer"), {
-  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
-})
+const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"))
+const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"))
+const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"))
+const DynamicFooter = dynamic(() => import("@/components/global/footer"))
 
 const openSans = Open_Sans({
   subsets: ["latin"],

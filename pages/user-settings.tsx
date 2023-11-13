@@ -1,5 +1,4 @@
 import BodyBox from "@/components/global/body-box"
-// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 import { ChartResponse, HistoryMangasResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
@@ -12,29 +11,24 @@ import dynamic from "next/dynamic"
 import { selectUserState, setUser } from "@/features/UserSlice"
 import { setMangasBookmark, selectBookmarkState } from "@/features/user-settings/BookmarkSlice"
 import { setMangasChart } from "@/features/user-settings/ChartSlice"
-const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
-})
-const DynamicHistory = dynamic(() => import("@/components/user-settings/history/history"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
-})
-const DynamicAccount = dynamic(() => import("@/components/user-settings/account/account"), {
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
-})
 import { setMangasHistory } from "@/features/user-settings/HistorySlice"
 import DotLoaderComponent from "@/components/global/dot-loader"
+const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
+  loading: () => <DotLoaderComponent size={40} />
+})
+const DynamicHistory = dynamic(() => import("@/components/user-settings/history/history"), {
+  loading: () => <DotLoaderComponent size={40} />
+})
+const DynamicAccount = dynamic(() => import("@/components/user-settings/account/account"), {
+  loading: () => <DotLoaderComponent size={40} />
+})
 const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
-  ssr: false,
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
+  loading: () => <DotLoaderComponent size={40} />
 })
 const DynamicChart = dynamic(() => import("@/components/user-settings/chart/chart"), {
-  ssr: false,
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
+  loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
-  ssr: false,
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
-})
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
 export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, history: HistoryMangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {
   const token = context.req.cookies.token

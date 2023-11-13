@@ -1,22 +1,19 @@
 import { useEffect, useRef, useState } from "react"
 import Title from "../global/title"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { MangaType } from "@/models/manga"
 import Chapter from "./chapter"
 import ShowMore from "./show-more"
 import dynamic from "next/dynamic"
-import DotLoaderComponent from "../global/dot-loader"
 const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
   ssr: false,
-  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 const DynamicAdminAddChapterModal = dynamic(() => import("./admin/admin-add-chapters-modal"), {
   ssr: false,
 })
 const DynamicAdminDeleteChapters = dynamic(() => import("./admin/admin-delete-chapters"), {
   ssr: false,
-  loading: () => <DotLoaderComponent size={20} heightIsFull={true} />
 })
 
 export default function Chapters({

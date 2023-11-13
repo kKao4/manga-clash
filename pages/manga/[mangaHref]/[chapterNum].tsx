@@ -15,15 +15,10 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
 import useMouse from '@react-hook/mouse-position'
-// import Comments from "@/components/chapterNum/comments"
-const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
+const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
-  loading: () => <p className="dark:text-white">Loading...</p>
 })
-const DynamicComments = dynamic(() => import("@/components/chapterNum/comments"), {
-  ssr: false,
-  loading: () => <p className="dark:text-white">Loading...</p>
-})
+const DynamicComments = dynamic(() => import("@/components/chapterNum/comments"))
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
@@ -201,7 +196,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 </button>
               </div>
               {adminMode && (
-                <DynamicDeleteChapter chapter={chapter} prevChapter={prevChapter} />
+                <DynamicAdminDeleteChapter chapter={chapter} prevChapter={prevChapter} />
               )}
             </div>
             <div ref={divRef}>

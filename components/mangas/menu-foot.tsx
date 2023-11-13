@@ -1,12 +1,9 @@
 import { useRef, useState } from "react"
 import MenuFootBox from "../global/menu-foot-box"
 import { tagsArray } from "@/type"
-// import GenreButton from "./genre-button"
 import Navigation from "../global/navigation"
 import dynamic from "next/dynamic"
-const DynamicGenreButton = dynamic(() => import("./genre-button"), {
-  loading: () => <p>Loading...</p>
-})
+const DynamicGenreButton = dynamic(() => import("./genre-button"))
 
 export default function MenuFoot() {
   const myRef = useRef<HTMLDivElement>(null)

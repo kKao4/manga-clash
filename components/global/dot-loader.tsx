@@ -6,7 +6,7 @@ export default function DotLoaderComponent({
   size?: number, heightIsFull?: boolean
 }) {
   return (
-    <div className={`flex justify-center items-center ${heightIsFull ? "h-full" : ""}`}>
+    <div className={`flex justify-center items-center ${heightIsFull ? "h-full" : "h-fit"}`}>
       <DotLoader color="#409a88" size={size} />
     </div>
   )

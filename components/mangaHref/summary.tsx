@@ -6,10 +6,8 @@ import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Parser from "html-react-parser"
 import ShowMore from "./show-more"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
-import DotLoaderComponent from "../global/dot-loader"
-const DynamicSummary = dynamic(() => import("./admin/admin-summary"), {
+const DynamicAdminSummary = dynamic(() => import("./admin/admin-summary"), {
   ssr: false,
-  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 
 export default function Summary({ mangaState, description, setDescription }: { mangaState: typeof initialMangaState[number], description: string, setDescription: Dispatch<SetStateAction<string>> }) {
@@ -20,7 +18,7 @@ export default function Summary({ mangaState, description, setDescription }: { m
     <>
       <Title content="TÓM TẮT" order={false} />
       {adminMode && (
-        <DynamicSummary mangaState={mangaState} description={description} setDescription={setDescription} />
+        <DynamicAdminSummary mangaState={mangaState} description={description} setDescription={setDescription} />
       )}
       <div className={`${adminMode ? "hidden" : "block"}`}>
         <div
