@@ -8,7 +8,6 @@ import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
 import { useSelector, useDispatch } from "react-redux"
-import { DiscussionEmbed } from 'disqus-react';
 import Title from "@/components/global/title"
 import { selectUserState, setUser } from "@/features/UserSlice"
 import { selectAdminMode, toggleDarkMode } from "@/features/GlobalSlice"
@@ -16,11 +15,15 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
 import useMouse from '@react-hook/mouse-position'
+// import Comments from "@/components/chapterNum/comments"
 const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
   loading: () => <p className="dark:text-white">Loading...</p>
 })
-// import { useLocalStorage } from 'usehooks-ts'
+const DynamicComments = dynamic(() => import("@/components/chapterNum/comments"), {
+  ssr: false,
+  loading: () => <p className="dark:text-white">Loading...</p>
+})
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
@@ -242,13 +245,13 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
               {readingStyle === "full" ? (
                 <div className="max-w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
                   {chapter.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`block max-h-[1360px] mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
+                    return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
                 <div className="max-w-[960px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
                   {chapter.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
+                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
                   })}
                 </div>
               )}
@@ -263,21 +266,11 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
               setIndex={setIndex}
               chapter={chapter.data}
             />
+            {/* comments */}
             <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapter.data?.chapter.num}"`} order={false} />
             </div>
-            <article className="mt-8 disqus">
-              <DiscussionEmbed
-                shortname="manga-clash-disqus-com"
-                config={
-                  {
-                    url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
-                    identifier: chapter.data?.href + "-chapter-" + chapter.data?.chapter.num,
-                    title: chapter.data?.name + " - Chapter " + chapter.data?.chapter.num,
-                  }
-                }
-              />
-            </article>
+            <DynamicComments chapter={chapter} />
           </div>
         </BodyBox>
       </div>

@@ -1,27 +1,36 @@
 import BodyBox from "@/components/global/body-box"
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
+// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 import { ChartResponse, HistoryMangasResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
 import { useEffect } from "react"
 import Menu from "@/components/user-settings/menu"
-import Bookmarks from "@/components/user-settings/bookmarks/bookmarks"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUserSettingsState, setMenu } from "@/features/user-settings/UserSettingsSlice"
-import Account from "@/components/user-settings/account/account"
 import UserMenu from "@/components/global/user-menu"
-import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { setMangasBookmark, selectBookmarkState, setSearchNameBookmark, setPageBookmark } from "@/features/user-settings/BookmarkSlice"
-import { selectChartState, setMangasChart, setPageChart } from "@/features/user-settings/ChartSlice"
-import History from "@/components/user-settings/history/history"
+import { setMangasBookmark, selectBookmarkState } from "@/features/user-settings/BookmarkSlice"
+import { setMangasChart } from "@/features/user-settings/ChartSlice"
+const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicHistory = dynamic(() => import("@/components/user-settings/history/history"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicAccount = dynamic(() => import("@/components/user-settings/account/account"), {
+  loading: () => <p>Loading...</p>
+})
 import { setMangasHistory } from "@/features/user-settings/HistorySlice"
 const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
   ssr: false,
   loading: () => <p>Loading...</p>
 })
 const DynamicChart = dynamic(() => import("@/components/user-settings/chart/chart"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>
+})
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
   ssr: false,
   loading: () => <p>Loading...</p>
 })
@@ -128,11 +137,11 @@ const Page = ({ popularMangas, mangas, history, user, chart }: InferGetServerSid
             </div>
             <div className="basis-3/4">
               {userSettingsState.menu === "bookmarks" ? (
-                <Bookmarks mangas={bookmarkState.mangas} mangasLength={bookmarkState.length} />
+                <DynamicBookmarks mangas={bookmarkState.mangas} mangasLength={bookmarkState.length} />
               ) : userSettingsState.menu === "account" ? (
-                <Account user={userState} />
+                <DynamicAccount user={userState} />
               ) : userSettingsState.menu === "history" ? (
-                <History />
+                <DynamicHistory />
               ) : userSettingsState.menu === "addManga" ? (
                 <DynamicAddManga />
               ) : (
@@ -141,7 +150,7 @@ const Page = ({ popularMangas, mangas, history, user, chart }: InferGetServerSid
             </div>
           </div>
         </div>
-        <MangasBoxesPopular mangas={popularMangas.data} />
+        <DynamicMangasBoxesPopular mangas={popularMangas.data} />
       </BodyBox>
     </>
   )

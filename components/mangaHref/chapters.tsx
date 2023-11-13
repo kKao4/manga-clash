@@ -12,7 +12,7 @@ const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-cha
 })
 const DynamicAdminAddChapterModal = dynamic(() => import("./admin/admin-add-chapters-modal"), {
   ssr: false,
-  // loading: () => <p>Loading...</p>
+  loading: () => <p>Loading...</p>
 })
 const DynamicAdminDeleteChapters = dynamic(() => import("./admin/admin-delete-chapters"), {
   ssr: false,

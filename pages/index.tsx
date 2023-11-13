@@ -1,6 +1,6 @@
 import { MangasResponse, UserResponse } from "@/type"
 import MangaBoxes from "@/components/mangas/manga-boxes"
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
+// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
 import BodyBox from "@/components/global/body-box"
@@ -9,6 +9,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { setPageMangas } from "@/features/manga/MangasSlice"
 import { selectUserState, setUser } from "@/features/UserSlice"
+import dynamic from "next/dynamic"
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
+  loading: () => <p>Loading...</p>
+})
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort } = context.query;
@@ -57,7 +61,7 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
           )}
         </div>
         {/* right row */}
-        <MangasBoxesPopular mangas={popularMangas.data} />
+        <DynamicMangasBoxesPopular mangas={popularMangas.data} />
       </BodyBox >
     </>
   )

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react"
-import SearchBox from "./search-box";
+// import SearchBox from "./search-box";
 import MenuButton from "./menu-button";
 import { useDispatch, useSelector } from "react-redux";
 import { Order, setSort } from "@/features/GlobalSlice";
 import { useRouter } from "next/router";
-import ResponsiveMenu from "./responsive-menu";
+// import ResponsiveMenu from "./responsive-menu";
 import Image from "next/image";
 import AliceChan from "@/assets/Kisaragi_Alice_full.jpg"
 import Link from "next/link";
 import { setSearchName } from "@/features/search/SearchSlice";
-
+import dynamic from "next/dynamic";
+const DynamicSearchBox = dynamic(() => import("./search-box"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicResponsiveMenu = dynamic(() => import("./responsive-menu"), {
+  loading: () => <p>Loading...</p>
+})
+// TODO: add dynamic loading animation for all dynamic import and fix user dropdown on search
 export default function MenuTop() {
   const dispatch = useDispatch()
   const [showModalMenu, setShowModalMenu] = useState<boolean>(false)
@@ -21,8 +28,8 @@ export default function MenuTop() {
   }
   return (
     <>
-      <SearchBox showSearchBox={showSearchBox} setShowSearchBox={setShowSearchBox} />
-      <ResponsiveMenu
+      <DynamicSearchBox showSearchBox={showSearchBox} setShowSearchBox={setShowSearchBox} />
+      <DynamicResponsiveMenu
         zIndex={zIndex}
         showModalMenu={showModalMenu}
         setShowModalMenu={setShowModalMenu}

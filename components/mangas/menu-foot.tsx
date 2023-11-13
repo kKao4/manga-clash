@@ -1,8 +1,12 @@
 import { useRef, useState } from "react"
 import MenuFootBox from "../global/menu-foot-box"
 import { tagsArray } from "@/type"
-import GenreButton from "./genre-button"
+// import GenreButton from "./genre-button"
 import Navigation from "../global/navigation"
+import dynamic from "next/dynamic"
+const DynamicGenreButton = dynamic(() => import("./genre-button"), {
+  loading: () => <p>Loading...</p>
+})
 
 export default function MenuFoot() {
   const myRef = useRef<HTMLDivElement>(null)
@@ -35,7 +39,7 @@ export default function MenuFoot() {
         <div ref={myRef} className={`grid grid-cols-3 sm:grid-cols-6 relative transition-all duration-400 overflow-hidden max-h-0 ${showGenres ? "opacity-100 py-3" : "opacity-0 py-0"}`}>
           <div className={`absolute left-3 w-0 h-0 inline-block border-[10px] border-transparent border-t-second-green ${showGenres ? " block" : "hidden"}`}></div>
           {tagsArray.map(tag => {
-            return <GenreButton key={tag.id} tag={tag} />
+            return <DynamicGenreButton key={tag.id} tag={tag} />
           })}
         </div>
       </MenuFootBox>

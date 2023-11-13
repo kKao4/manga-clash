@@ -6,16 +6,29 @@ import store from "@/store"
 import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
-import SignUp from "@/components/global/sign-up"
-import SignIn from "@/components/global/sign-in"
-import ResetPassword from "@/components/global/reset-password"
-import Footer from "@/components/global/footer"
+// import SignUp from "@/components/global/sign-up"
+// import SignIn from "@/components/global/sign-in"
+// import ResetPassword from "@/components/global/reset-password"
+// import Footer from "@/components/global/footer"
 import "@/styles/nprogress.css"
 import NProgress from "nprogress"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import DarkMode from "@/components/global/dark-mode"
 import { Analytics } from '@vercel/analytics/react';
+import dynamic from "next/dynamic"
+const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicFooter = dynamic(() => import("@/components/global/footer"), {
+  loading: () => <p>Loading...</p>
+})
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -56,14 +69,14 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <main className={`${openSans.className} w-full`}>
         <DarkMode>
           <div className="min-h-[84vh]">
-            <SignUp />
-            <SignIn />
-            <ResetPassword />
+            <DynamicSignUp />
+            <DynamicSignIn />
+            <DynamicResetPassword />
             <MenuTop />
             {getLayout(<Component {...pageProps} />)}
             <Analytics />
           </div>
-          <Footer />
+          <DynamicFooter />
         </DarkMode>
       </main>
     </Provider >

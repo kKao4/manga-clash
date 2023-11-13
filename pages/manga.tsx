@@ -1,5 +1,5 @@
 import MenuFoot from "@/components/mangas/menu-foot";
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
+// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
 import { MangasResponse, UserResponse } from "@/type";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import MangaBoxes from "@/components/mangas/manga-boxes";
@@ -14,6 +14,11 @@ import { setPageMangas } from "@/features/manga/MangasSlice";
 import { setUser, selectUserState } from "@/features/UserSlice";
 import { addSearchTags, resetSearchTags } from "@/features/search/SearchSlice";
 import { setSort } from "@/features/GlobalSlice";
+import dynamic from "next/dynamic"
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
+  loading: () => <p>Loading...</p>
+})
+
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort, tags } = context.query;
@@ -82,7 +87,7 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
           <MangaBoxes mangas={mangas.data} mangasLength={mangas.length} />
         </div>
         {/* right row */}
-        <MangasBoxesPopular mangas={popularMangas.data} />
+        <DynamicMangasBoxesPopular mangas={popularMangas.data} />
       </BodyBox>
     </>
   )

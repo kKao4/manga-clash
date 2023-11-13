@@ -4,7 +4,7 @@ import Navigation from "@/components/global/navigation";
 import MenuFootBox from "@/components/global/menu-foot-box";
 import BodyBox from "@/components/global/body-box";
 import Title from "@/components/global/title";
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
+// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
 import { useRef, useState } from "react"
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
@@ -17,10 +17,24 @@ import { setUser, selectUserState } from "@/features/UserSlice";
 import { selectMangaState, addOrUpdateManga } from "@/features/mangaHref/MangaSlice";
 import { setUserRating } from "@/features/mangaHref/UserRatingSlice";
 import ImageAndDetailManga from "@/components/mangaHref/image-and-detail-manga";
-import Summary from "@/components/mangaHref/summary";
-import Chapters from "@/components/mangaHref/chapters";
+// import Summary from "@/components/mangaHref/summary";
+// import Chapters from "@/components/mangaHref/chapters";
 import Name from "@/components/mangaHref/name";
 import { RootState } from "@/store";
+import dynamic from "next/dynamic";
+// import Comments from "@/components/mangaHref/comments";
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"), {
+  loading: () => <p>Loading...</p>
+})
+const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"), {
+  loading: () => <p>Loading...</p>
+})
 
 export const getServerSideProps: GetServerSideProps<{ manga: MangaResponse, popularMangas: MangasResponse, user: UserResponse, userRating: UserRatingResponse }> = async (context) => {
   const [mangaRes, popularMangasRes, userRes, userRatingRes] = await Promise.all([
@@ -119,13 +133,13 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
           <BodyBox>
             <div className="basis-9/12">
               {/* summary */}
-              <Summary
+              <DynamicSummary
                 mangaState={mangaState}
                 description={description}
                 setDescription={setDescription}
               />
               {/* chapters */}
-              <Chapters
+              <DynamicChapters
                 mangaState={mangaState as any}
                 chaptersOrder={chaptersOrder}
                 chapters={chapters as any}
@@ -133,21 +147,10 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
                 setChapters={setChapters}
               />
               {/* comments */}
-              <div ref={commentsRef} className="mb-4">
-                <Title content="BÌNH LUẬN" order={false} />
-                <div className="mt-8">
-                  <DiscussionEmbed shortname="manga-clash-disqus-com" config={
-                    {
-                      url: process.env.NEXT_PUBLIC_HOST_URL + router.asPath,
-                      identifier: mangaState.href,
-                      title: mangaState.name,
-                    }
-                  } />
-                </div>
-              </div>
+              <DynamicComments mangaState={mangaState} ref={commentsRef} />
             </div>
             {/* popular mangas */}
-            <MangasBoxesPopular mangas={popularMangas.data} />
+            <DynamicMangasBoxesPopular mangas={popularMangas.data} />
           </BodyBox>
         </main>
       </>

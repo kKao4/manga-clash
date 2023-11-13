@@ -10,12 +10,16 @@ import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, 
 import { useRouter } from "next/router";
 import { MyRipples } from "@/components/global/button-ripple";
 import { useRef, useState } from "react";
-import Advanced from "@/components/search/advanced";
+// import Advanced from "@/components/search/advanced";
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
 import { setSort } from "@/features/GlobalSlice";
+import dynamic from "next/dynamic";
+const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"), {
+  loading: () => <p>Loading...</p>
+})
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {
   let { page, sort, name, author, completed, tags } = context.query
@@ -149,7 +153,7 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
           </MyRipples>
         </div>
         <div className={`${showAdvanced ? "opacity-100 max-h-[820px] sm:max-h-[600px] md:max-h-[500px]" : "max-h-0 opacity-0"} overflow-hidden transition-all duration-400`}>
-          <Advanced setSearched={setSearched} />
+          <DynamicAdvanced setSearched={setSearched} />
         </div>
       </MenuFootBox>
       <BodyBox>
