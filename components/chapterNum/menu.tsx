@@ -18,11 +18,11 @@ export default function Menu({
     }
   }, [router, chapters])
   return (
-    <div className="flex flex-col sm:flex-row gap-y-2">
-      <div className="gap-x-3 flex flex-row">
+    <div className="flex flex-col md:flex-row gap-y-2">
+      <div className="gap-x-3 gap-y-2 flex flex-col md:flex-row">
         {/* select chapter  */}
         <Select
-          width="w-full sm:w-[400px]"
+          width="w-full md:w-[320px] xl:w-[400px]"
           value={typeof router.query.chapterNum === "string" ? router.query.chapterNum?.split("-")[1] : ""}
           handleOnChange={(e: any) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
         >
@@ -38,22 +38,22 @@ export default function Menu({
           })}
         </Select>
         {/* select reading style  */}
-        <Select
-          width="w-full sm:w-fit"
-          value={readingStyle}
-          handleOnChange={(e: any) => setReadingStyle(e.target.value)}
-        >
-          <option value="full">Full Page</option>
-          <option value="single">Single Page</option>
-        </Select>
-      </div>
-      {/* prev/next button */}
-      {router.query.chapterNum && !Array.isArray(router.query.chapterNum) && (
-        <>
-          <div className="flex flex-row mx-auto space-x-2 sm:ml-auto sm:mr-0">
-            {readingStyle === "single" && (
+        <div className="flex flex-row gap-x-2">
+          <Select
+            width="w-fit"
+            value={readingStyle}
+            handleOnChange={(e: any) => {
+              setReadingStyle(e.target.value)
+              localStorage.setItem("readingStyle", e.target.value)
+            }}
+          >
+            <option value="full">Full Page</option>
+            <option value="single">Single Page</option>
+          </Select>
+          {readingStyle === "single" && (
+            <div className="md:hidden block">
               <Select
-                width="w-full sm:w-[88px]"
+                width="w-[88px]"
                 value={(index + 1).toString()}
                 handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
               >
@@ -61,6 +61,26 @@ export default function Menu({
                   return <option key={i} value={i}>{i}/{chapter!.chapter.imagesPath.length}</option>
                 })}
               </Select>
+            </div>
+          )}
+        </div>
+      </div>
+      {/* prev/next button */}
+      {router.query.chapterNum && !Array.isArray(router.query.chapterNum) && (
+        <>
+          <div className="flex flex-row mx-auto space-x-2 sm:ml-auto sm:mr-0">
+            {readingStyle === "single" && (
+              <div className="md:block hidden">
+                <Select
+                  width="w-[88px]"
+                  value={(index + 1).toString()}
+                  handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+                >
+                  {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {
+                    return <option key={i} value={i}>{i}/{chapter!.chapter.imagesPath.length}</option>
+                  })}
+                </Select>
+              </div>
             )}
             <button
               className={`${isFirstChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}

@@ -1,9 +1,9 @@
 export default function Select({ value, handleOnChange, children, width }: { value: string, handleOnChange: any, children: React.ReactNode, width: string }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className={`relative overflow-hidden ${width}`}>
       <select
         value={value}
-        className={`bg-gray-100 dark:bg-[rgb(77,77,77)] dark:text-white dark:hover:bg-neutral-600 px-3 py-2 ${width} focus:outline-none peer hover:bg-gray-150 transition-colors rounded-md`} id="select-chapter"
+        className={`bg-gray-100 dark:bg-[rgb(77,77,77)] dark:text-white dark:hover:bg-neutral-600 px-3 py-2 w-full focus:outline-none peer hover:bg-gray-150 transition-colors rounded-md`} id="select-chapter"
         onChange={(e) => handleOnChange(e)}
       >
         {children}

@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { DiscussionEmbed } from 'disqus-react';
 import Title from "@/components/global/title"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
+import { selectAdminMode, toggleDarkMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
@@ -20,6 +20,7 @@ const DynamicDeleteChapter = dynamic(() => import("@/components/chapterNum/admin
   ssr: false,
   loading: () => <p className="dark:text-white">Loading...</p>
 })
+// import { useLocalStorage } from 'usehooks-ts'
 
 export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
   const { mangaHref, chapterNum } = context.query
@@ -55,6 +56,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const [readingStyle, setReadingStyle] = useState<"full" | "single">("full")
   const [index, setIndex] = useState<number>(0)
   const imagesBoxRef = useRef<HTMLDivElement>(null)
+  const divRef = useRef<HTMLDivElement>(null)
   const mouse = useMouse(imagesBoxRef, { fps: 60 });
   const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
   // Set User
@@ -131,10 +133,15 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   }, [mouse, imagesBoxRef, readingStyle])
   // scroll to top when change chapter
   useEffect(() => {
-    if (imagesBoxRef.current && router.query) {
-      window.scrollTo(0, imagesBoxRef.current.getBoundingClientRect().top + window.scrollY - 100)
+    if (divRef.current && router.query) {
+      divRef.current.scrollIntoView()
     }
   }, [router.query])
+  // set localStorage for reading style 
+  useEffect(() => {
+    setReadingStyle(localStorage.getItem("readingStyle") as any)
+  }, [])
+  // title for page
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
   return (
     <>
@@ -189,16 +196,18 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 <DynamicDeleteChapter chapter={chapter} prevChapter={prevChapter} />
               )}
             </div>
-            <Menu
-              chapters={chapters.data}
-              prevChapter={prevChapter}
-              nextChapter={nextChapter}
-              readingStyle={readingStyle}
-              setReadingStyle={setReadingStyle}
-              index={index}
-              setIndex={setIndex}
-              chapter={chapter.data}
-            />
+            <div ref={divRef}>
+              <Menu
+                chapters={chapters.data}
+                prevChapter={prevChapter}
+                nextChapter={nextChapter}
+                readingStyle={readingStyle}
+                setReadingStyle={setReadingStyle}
+                index={index}
+                setIndex={setIndex}
+                chapter={chapter.data}
+              />
+            </div>
             {/* images chapter */}
             <div
               ref={imagesBoxRef as any}
@@ -217,22 +226,24 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                     setIndex(prevState => prevState - 1)
                   }
                 }
-                // scroll to top when change page
-                if (imagesBoxRef.current) {
-                  window.scrollTo(0, imagesBoxRef.current.getBoundingClientRect().top + window.scrollY - 100)
+                if (directionArrow) {
+                  // scroll to top when change page
+                  if (divRef.current) {
+                    divRef.current?.scrollIntoView()
+                  }
                 }
               }}
             >
               {readingStyle === "full" ? (
-                <div className="w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
+                <div className="max-w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
                   {chapter.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`block max-h-[1360px] mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i <= 2} />
+                    return <Image key={c.publicId} className={`block max-h-[1360px] mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
-                <div className="w-[960px] h-[1360px] mx-auto my-4 sm:my-8 xl:my-12 relative">
+                <div className="max-w-[960px] max-h-[1360px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
                   {chapter.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" fill={true} quality={100} priority={i <= 2} />
+                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               )}
