@@ -10,8 +10,9 @@ import { useEffect } from "react"
 import { setPageMangas } from "@/features/manga/MangasSlice"
 import { selectUserState, setUser } from "@/features/UserSlice"
 import dynamic from "next/dynamic"
+import DotLoaderComponent from "@/components/global/dot-loader"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {

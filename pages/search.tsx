@@ -17,8 +17,9 @@ import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
 import { setSort } from "@/features/GlobalSlice";
 import dynamic from "next/dynamic";
+import DotLoaderComponent from "@/components/global/dot-loader";
 const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 
 export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {

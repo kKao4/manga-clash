@@ -4,9 +4,10 @@ import { useEffect } from "react"
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import dynamic from "next/dynamic";
+import DotLoaderComponent from "../global/dot-loader";
 const DynamicAdminDeleteManga = dynamic(() => import("./admin/admin-delete-manga"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={20} heightIsFull={true} />
 })
 
 export default function Name({ mangaState }: { mangaState: typeof initialMangaState[number] }) {

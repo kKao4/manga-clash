@@ -1,11 +1,9 @@
 import Link from "next/link"
 import { useSelector, useDispatch } from "react-redux"
-import { selectSort } from "@/features/GlobalSlice"
 import { resetSearchTags } from "@/features/search/SearchSlice"
 import { tagsArray } from "@/type"
 
 export default function GenreButton({ tag }: { tag: typeof tagsArray[number] }) {
-  const sort = useSelector(selectSort)
   const dispatch = useDispatch()
   return (
     <Link

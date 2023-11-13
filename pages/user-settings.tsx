@@ -13,26 +13,27 @@ import { selectUserState, setUser } from "@/features/UserSlice"
 import { setMangasBookmark, selectBookmarkState } from "@/features/user-settings/BookmarkSlice"
 import { setMangasChart } from "@/features/user-settings/ChartSlice"
 const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 const DynamicHistory = dynamic(() => import("@/components/user-settings/history/history"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 const DynamicAccount = dynamic(() => import("@/components/user-settings/account/account"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 import { setMangasHistory } from "@/features/user-settings/HistorySlice"
+import DotLoaderComponent from "@/components/global/dot-loader"
 const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 const DynamicChart = dynamic(() => import("@/components/user-settings/chart/chart"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 
 export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, history: HistoryMangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {

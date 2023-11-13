@@ -10,13 +10,15 @@ import AliceChan from "@/assets/Kisaragi_Alice_full.jpg"
 import Link from "next/link";
 import { setSearchName } from "@/features/search/SearchSlice";
 import dynamic from "next/dynamic";
+import DotLoaderComponent from "./dot-loader";
 const DynamicSearchBox = dynamic(() => import("./search-box"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 const DynamicResponsiveMenu = dynamic(() => import("./responsive-menu"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
-// TODO: add dynamic loading animation for all dynamic import and fix user dropdown on search
+
+// TODO: add image slider to mangas page
 export default function MenuTop() {
   const dispatch = useDispatch()
   const [showModalMenu, setShowModalMenu] = useState<boolean>(false)
@@ -31,21 +33,16 @@ export default function MenuTop() {
       <DynamicSearchBox showSearchBox={showSearchBox} setShowSearchBox={setShowSearchBox} />
       <DynamicResponsiveMenu
         zIndex={zIndex}
+        setZIndex={setZIndex}
         showModalMenu={showModalMenu}
         setShowModalMenu={setShowModalMenu}
         handleOnClick={() => {
           if (showModalMenu) {
             setShowModalMenu(false)
-            setTimeout(() => {
-              setZIndex("-z-20")
-            }, 350)
           }
         }}
         handleOnClickLink={() => {
           setShowModalMenu(false)
-          setTimeout(() => {
-            setZIndex("-z-20")
-          }, 350)
         }}
       />
       {/* normal menu */}

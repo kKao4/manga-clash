@@ -6,17 +6,17 @@ import { MangaType } from "@/models/manga"
 import Chapter from "./chapter"
 import ShowMore from "./show-more"
 import dynamic from "next/dynamic"
+import DotLoaderComponent from "../global/dot-loader"
 const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 const DynamicAdminAddChapterModal = dynamic(() => import("./admin/admin-add-chapters-modal"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
 })
 const DynamicAdminDeleteChapters = dynamic(() => import("./admin/admin-delete-chapters"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={20} heightIsFull={true} />
 })
 
 export default function Chapters({

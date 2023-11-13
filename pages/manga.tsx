@@ -15,8 +15,9 @@ import { setUser, selectUserState } from "@/features/UserSlice";
 import { addSearchTags, resetSearchTags } from "@/features/search/SearchSlice";
 import { setSort } from "@/features/GlobalSlice";
 import dynamic from "next/dynamic"
+import DotLoaderComponent from "@/components/global/dot-loader";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 
 

@@ -21,7 +21,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           <Image src={blankProfile} alt="" fill={true} className="object-cover" />
         )}
       </div>
-      <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-10 -z-10 opacity-0 hover:opacity-100 hover:z-10 transition-opacity">
+      <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-20 -z-10 opacity-0 hover:opacity-100 transition-opacity">
         {/* dropdown */}
         <div className="flex flex-col mt-2.5 bg-gray-150 border-b-[3px] py-2 border-b-second-green">
           <Link

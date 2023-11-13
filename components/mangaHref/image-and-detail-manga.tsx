@@ -9,13 +9,14 @@ import Image from "next/image"
 import { BarLoader } from "react-spinners"
 import DetailManga from "./detail-manga"
 import dynamic from "next/dynamic"
+import DotLoaderComponent from "../global/dot-loader"
 const DynamicAdminImage = dynamic(() => import("./admin/admin-image"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 const DynamicAdminDetailManga = dynamic(() => import("./admin/admin-detail-manga"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
 })
 
 export default function ImageAndDetailManga({

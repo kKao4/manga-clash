@@ -6,9 +6,10 @@ import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Parser from "html-react-parser"
 import ShowMore from "./show-more"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
+import DotLoaderComponent from "../global/dot-loader"
 const DynamicSummary = dynamic(() => import("./admin/admin-summary"), {
   ssr: false,
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={40} heightIsFull={false} />
 })
 
 export default function Summary({ mangaState, description, setDescription }: { mangaState: typeof initialMangaState[number], description: string, setDescription: Dispatch<SetStateAction<string>> }) {

@@ -17,17 +17,18 @@ import { useRouter } from "next/router"
 import DarkMode from "@/components/global/dark-mode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
+import DotLoaderComponent from "@/components/global/dot-loader"
 const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
 })
 const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
 })
 const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
 })
 const DynamicFooter = dynamic(() => import("@/components/global/footer"), {
-  loading: () => <p>Loading...</p>
+  loading: () => <DotLoaderComponent size={60} heightIsFull={true} />
 })
 
 const openSans = Open_Sans({
