@@ -139,7 +139,12 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   }, [router.query])
   // set localStorage for reading style 
   useEffect(() => {
-    setReadingStyle(localStorage.getItem("readingStyle") as any)
+    // console.log("🚀 ~ file: [chapterNum].tsx:143 ~ useEffect ~ localStorage:", localStorage.getItem("readingStyle"))
+    if (localStorage.getItem("readingStyle")) {
+      setReadingStyle(localStorage.getItem("readingStyle") as any)
+    } else {
+      setReadingStyle("full")
+    }
   }, [])
   // title for page
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
