@@ -246,9 +246,9 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                   })}
                 </div>
               ) : (
-                <div className="max-w-[960px] max-h-[1360px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
+                <div className="max-w-[960px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
                   {chapter.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
+                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
                   })}
                 </div>
               )}
