@@ -12,7 +12,7 @@ export const initialUserState: Omit<UserType, "password"> = {
     url: "",
     publicId: "",
   },
-  history: [],
+  history: [] as any,
 };
 
 export const userSlice = createSlice({
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
       state.role = role;
       state.bookmarks = bookmarks;
       state.profilePicture = profilePicture;
-      state.history = history;
+      state.history = history as any;
     },
   },
 });

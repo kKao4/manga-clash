@@ -44,6 +44,7 @@ export default function Menu({
             value={readingStyle}
             handleOnChange={(e: any) => {
               setReadingStyle(e.target.value)
+              // set localStorage for reading style
               localStorage.setItem("readingStyle", e.target.value)
             }}
           >
