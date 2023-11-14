@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   page = page ?? "1"
   sort = sort ?? "latest"
   const { token } = req.cookies
-  const [{ mangasLength, mangas }, popularMangas, user] = await Promise.all([
+  const [{ mangasLength, mangas }, popularMangas, { user }] = await Promise.all([
     getAllMangas({ page, sort } as GetALlMangas),
     getAllPopularMangas(),
     getUser(token)

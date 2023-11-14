@@ -15,23 +15,37 @@ import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
 import useMouse from '@react-hook/mouse-position'
+import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
+import { auth } from "@/lib/auth"
+import dbConnect from "@/lib/dbConnect"
+import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
 const DynamicComments = dynamic(() => import("@/components/chapterNum/comments"))
 
-export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, chapters: ChaptersResponse, user: UserResponse }> = (async (context) => {
-  const { mangaHref, chapterNum } = context.query
-  const [chapterRes, chaptersRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/${chapterNum}?token=${context.req.cookies.token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${mangaHref}/all_chapters`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
-  ]);
-  const [chapter, chapters, user] = await Promise.all([chapterRes.json(), chaptersRes.json(), userRes.json()])
-  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ user.message:", user.message)
-  console.log("🚀 ~ file: [chapterNum].tsx:18 ~ chapters.message:", chapters.message)
-  console.log("🚀 ~ file: [chapterNum].tsx:34 ~ getServerSideProps ~ res:", chapter.message)
-  if (!chapters.data || !chapter.data) {
+export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, userRes: UserResponse }> = async ({ req, query }) => {
+  await dbConnect()
+  const { mangaHref, chapterNum } = query
+  const { token } = req.cookies
+  const [chapter, chapters, { user }] = await Promise.all([
+    getChapter({ href: mangaHref, chapterNum, token } as GetChapter),
+    getAllChapters({ href: mangaHref } as GetAllChapters),
+    auth(token)
+  ])
+  const chapterRes = JSON.parse(JSON.stringify({
+    message: "Fetched Chapter",
+    data: chapter
+  }))
+  const chaptersRes = JSON.parse(JSON.stringify({
+    message: "Fetched All Chapters",
+    data: chapters
+  }))
+  const userRes = JSON.parse(JSON.stringify({
+    message: "Fetched User",
+    data: user
+  }))
+  if (!chapter) {
     return {
       redirect: {
         destination: "/",
@@ -39,10 +53,12 @@ export const getServerSideProps: GetServerSideProps<{ chapter: ChapterResponse, 
       }
     }
   }
-  return { props: { chapter, chapters, user } }
-})
+  return {
+    props: { chapterRes, chaptersRes, userRes }
+  }
+}
 
-const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const [bookmark, setBookmark] = useState<boolean>(false)
@@ -59,44 +75,44 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
   const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
   // Set User
   useEffect(() => {
-    if (user.data) {
-      dispatch(setUser(user.data))
+    if (userRes.data) {
+      dispatch(setUser(userRes.data))
     }
-  }, [dispatch, user])
+  }, [dispatch, userRes])
   // Set Bookmark
   useEffect(() => {
-    if (chapter.data && userState) {
-      setBookmark(userState.bookmarks.includes(chapter.data._id as any))
+    if (chapterRes.data && userState) {
+      setBookmark(userState.bookmarks.includes(chapterRes.data._id as any))
     }
-  }, [chapter, userState])
+  }, [chapterRes, userState])
   // Set/Update localStorage For This Manga
   useEffect(() => {
-    const array = localStorage.getItem(`${chapter.data?.href}`)
-    if (array && chapter.data) {
+    const array = localStorage.getItem(`${chapterRes.data?.href}`)
+    if (array && chapterRes.data) {
       let newArray: string[] = JSON.parse(array)
-      if (!newArray.includes(chapter.data.chapter.num.toString())) {
-        newArray.push(chapter.data.chapter.num.toString())
-        localStorage.setItem(`${chapter.data?.href}`, JSON.stringify(newArray))
+      if (!newArray.includes(chapterRes.data.chapter.num.toString())) {
+        newArray.push(chapterRes.data.chapter.num.toString())
+        localStorage.setItem(`${chapterRes.data?.href}`, JSON.stringify(newArray))
       }
     } else {
-      localStorage.setItem(`${chapter.data?.href}`, JSON.stringify([chapter.data?.chapter.num.toString()]))
+      localStorage.setItem(`${chapterRes.data?.href}`, JSON.stringify([chapterRes.data?.chapter.num.toString()]))
     }
-  }, [chapter])
+  }, [chapterRes])
   // set prev/next chapter
   useEffect(() => {
-    const index = chapters.data!.chapters.findIndex(obj => obj.num === chapter.data!.chapter.num)
+    const index = chaptersRes.data!.chapters.findIndex(obj => obj.num === chapterRes.data!.chapter.num)
     // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ useEffect ~ index:", index)
     if (index === 0) {
-      setPrevChapter(chapters.data!.chapters[index + 1] ? chapters.data!.chapters[index + 1].num : chapters.data!.chapters[0].num)
-      setNextChapter(chapters.data!.chapters[chapters.data!.chapters.length - 1].num)
-    } else if (index === chapters.data!.chapters.length - 1) {
-      setPrevChapter(chapters.data!.chapters[0].num)
-      setNextChapter(chapters.data!.chapters[index - 1].num)
+      setPrevChapter(chaptersRes.data!.chapters[index + 1] ? chaptersRes.data!.chapters[index + 1].num : chaptersRes.data!.chapters[0].num)
+      setNextChapter(chaptersRes.data!.chapters[chaptersRes.data!.chapters.length - 1].num)
+    } else if (index === chaptersRes.data!.chapters.length - 1) {
+      setPrevChapter(chaptersRes.data!.chapters[0].num)
+      setNextChapter(chaptersRes.data!.chapters[index - 1].num)
     } else {
-      setPrevChapter(chapters.data!.chapters[index + 1].num)
-      setNextChapter(chapters.data!.chapters[index - 1].num)
+      setPrevChapter(chaptersRes.data!.chapters[index + 1].num)
+      setNextChapter(chaptersRes.data!.chapters[index - 1].num)
     }
-  }, [chapter, chapters])
+  }, [chapterRes, chaptersRes])
   // detect direction scroll
   useEffect(() => {
     let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -145,7 +161,7 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
     }
   }, [])
   // title for page
-  const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chapters.data?.name}`
+  const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
   return (
     <>
       <Head>
@@ -154,8 +170,8 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
       <UserMenu user={userState} />
       <NavChapter
         showNavChapter={showNavChapter}
-        chapter={chapter.data}
-        chapters={chapters.data}
+        chapter={chapterRes.data}
+        chapters={chaptersRes.data}
         prevChapter={prevChapter}
         nextChapter={nextChapter}
       />
@@ -163,10 +179,10 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
-            <p className="text-3xl font-bold dark:text-white">{chapter.data?.name} - Chapter {chapter.data?.chapter.num}</p>
+            <p className="text-3xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
             {/* navigation */}
             <div className="w-full grow">
-              <Navigation manga={chapter.data} />
+              <Navigation manga={chapterRes.data} />
             </div>
             <div className="flex flex-row items-center">
               {/* bookmark/theme button */}
@@ -196,19 +212,19 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
                 </button>
               </div>
               {adminMode && (
-                <DynamicAdminDeleteChapter chapter={chapter} prevChapter={prevChapter} />
+                <DynamicAdminDeleteChapter chapter={chapterRes} prevChapter={prevChapter} />
               )}
             </div>
             <div ref={divRef}>
               <Menu
-                chapters={chapters.data}
+                chapters={chaptersRes.data}
                 prevChapter={prevChapter}
                 nextChapter={nextChapter}
                 readingStyle={readingStyle}
                 setReadingStyle={setReadingStyle}
                 index={index}
                 setIndex={setIndex}
-                chapter={chapter.data}
+                chapter={chapterRes.data}
               />
             </div>
             {/* images chapter */}
@@ -217,14 +233,14 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
               className={directionArrow === "right" ? "cursor-arrow-right" : directionArrow === "left" ? "cursor-arrow-left" : ""}
               onClick={() => {
                 if (directionArrow === "right") {
-                  if (index === chapter.data!.chapter.imagesPath.length - 1) {
-                    router.push(`/manga/${chapter.data?.href}/chapter-${nextChapter}`)
+                  if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
+                    router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
                   } else {
                     setIndex(prevState => prevState + 1)
                   }
                 } else if (directionArrow === "left") {
                   if (index === 0) {
-                    router.push(`/manga/${chapter.data?.href}/chapter-${prevChapter}`)
+                    router.push(`/manga/${chapterRes.data?.href}/chapter-${prevChapter}`)
                   } else {
                     setIndex(prevState => prevState - 1)
                   }
@@ -239,33 +255,33 @@ const Page = ({ chapter, chapters, user }: InferGetServerSidePropsType<typeof ge
             >
               {readingStyle === "full" ? (
                 <div className="max-w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
-                  {chapter.data?.chapter.imagesPath.map((c, i) => {
+                  {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
                 <div className="max-w-[960px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
-                  {chapter.data?.chapter.imagesPath.map((c, i) => {
+                  {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
                   })}
                 </div>
               )}
             </div>
             <Menu
-              chapters={chapters.data}
+              chapters={chaptersRes.data}
               prevChapter={prevChapter}
               nextChapter={nextChapter}
               readingStyle={readingStyle}
               setReadingStyle={setReadingStyle}
               index={index}
               setIndex={setIndex}
-              chapter={chapter.data}
+              chapter={chapterRes.data}
             />
             {/* comments */}
             <div className="mt-6 sm:mt-12">
-              <Title content={`BÌNH LUẬN CHO "Chapter ${chapter.data?.chapter.num}"`} order={false} />
+              <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} />
             </div>
-            <DynamicComments chapter={chapter} />
+            <DynamicComments chapter={chapterRes} />
           </div>
         </BodyBox>
       </div>

@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   author = author ?? ""
   completed = completed ?? ""
   tags = tags ?? ""
-  const [{ mangasLength, mangas }, user] = await Promise.all([
+  const [{ mangasLength, mangas }, { user }] = await Promise.all([
     getAllMangas({ page, sort, name, author, completed, tags } as GetALlMangas),
     getUser(token)
   ])

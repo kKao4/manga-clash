@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, p
   await dbConnect()
   const { mangaHref } = query
   const { token } = req.cookies
-  const [manga, userRating, user, popularMangas] = await Promise.all([
+  const [manga, userRating, { user }, popularMangas] = await Promise.all([
     getManga({ href: mangaHref } as GetManga),
     getUserRating({ token, href: mangaHref } as GetUserRating),
     getUser(token),
