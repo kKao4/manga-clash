@@ -62,7 +62,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <DynamicResetPassword />
             <MenuTop />
             {getLayout(<Component {...pageProps} />)}
-            <Analytics />
+            {/* <Analytics /> */}
           </div>
           <DynamicFooter />
         </DarkMode>
