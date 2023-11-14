@@ -1,24 +1,24 @@
-import { MangasResponse } from "@/type"
 import OrderButton from "./order-button"
 import Title from "./title"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Order, setSort } from "@/features/GlobalSlice"
+import { selectSearchState } from "@/features/search/SearchSlice"
+import { useRouter } from "next/router"
 
 export default function OrderNavigation({
   mangasLength,
   search,
-  searchValue
 }: {
   mangasLength: number | undefined,
   search: boolean,
-  searchValue: MangasResponse["search"]
 }) {
   const dispatch = useDispatch()
   const handleOnClick = (value: Order) => {
     dispatch(setSort(value))
   }
+  const router = useRouter()
   return (
-    <Title content={`${mangasLength} KẾT QUẢ ${search ? `CHO "${searchValue}"` : ""}`} order={true}>
+    <Title content={`${mangasLength} KẾT QUẢ ${search ? `CHO "${router.query.name}"` : ""}`} order={true}>
       <div className="flex flex-row flex-wrap items-center">
         <p className="mb-0.5 mr-4 text-right">Sắp xếp</p>
         <OrderButton content="Mới Cập Nhật" search={search} handleOnClick={() => handleOnClick("latest")} />

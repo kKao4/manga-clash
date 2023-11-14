@@ -3,20 +3,15 @@ import { MangaType } from "./models/manga";
 import { ChapterType } from "./models/chapter";
 import { initialSearchState } from "./features/search/SearchSlice";
 
-// TODO: fix production build user dropdown click link
-
 export type MangasResponse = {
   length?: number;
-  search?: string;
-  tags?: string;
   message?: string;
   data?: MangaType[];
   error?: string
 };
 
-export type HistoryMangasResponse = {
+export type HistoryResponse = {
   length?: number;
-  tags?: string;
   message?: string;
   data?: {
     manga: MangaType,
@@ -62,18 +57,14 @@ export type UserResponse = {
 export type UserRatingResponse = {
   message?: string;
   error?: string;
-  data?: {
-    star: number
-  }
+  data?: number
 }
 
 export type ChartResponse = {
   message?: string,
   error?: string,
-  data?: {
-    mangas: MangaType[],
-    length: number
-  }
+  length?: number
+  data?: MangaType[],
 }
 
 export type NormalResponse = {

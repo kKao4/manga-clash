@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/dbConnect";
 import { NextApiRequest, NextApiResponse } from "next";
 import View from "@/models/view";
-import Manga from "@/models/manga";
+import Manga, { MangaType } from "@/models/manga";
 import filterViews from "@/lib/filterViews";
 import { sliceMangas } from "@/lib/sliceMangas";
 import { ChartResponse } from "@/type";
@@ -25,7 +25,7 @@ export default async function handler(
           const { user } = await auth(token as string);
           if (user && user.role === "admin") {
             const views = await View.find({});
-            let array: any[] = [];
+            let chartMangas: MangaType[] = [];
             const mangas = await Manga.find({});
             if (time === "all") {
               // sort views desc
@@ -34,41 +34,31 @@ export default async function handler(
               views.forEach((view: any) => {
                 mangas.forEach((manga: any) => {
                   if (view.mangaId.equals(manga._id)) {
-                    array.push(manga);
+                    chartMangas.push(manga);
                   }
                 });
               });
             } else if (time === "oneWeek") {
-              filterViews(views, mangas, array, 7);
+              filterViews(views, mangas, chartMangas, 7);
             } else if (time === "oneMonth") {
-              filterViews(views, mangas, array, 30);
+              filterViews(views, mangas, chartMangas, 30);
             } else if (time === "threeMonth") {
-              filterViews(views, mangas, array, 90);
+              filterViews(views, mangas, chartMangas, 90);
             }
             // filter name
-            array = searchName(nameChart, array);
-            // filter manga by name
-            // if (nameChart) {
-            //   array = array.filter((a: any) => {
-            //     return nameChart && typeof nameChart === "string"
-            //       ? a.name.toLowerCase().includes(nameChart.toLowerCase()) ||
-            //           a.otherName
-            //             .toLowerCase()
-            //             .includes(nameChart.toLowerCase())
-            //       : false;
-            //   });
-            // }
+            chartMangas = searchName(nameChart as string, chartMangas);
             // update rank manga
-            array.forEach((a: any, i: number) => {
+            chartMangas.forEach((a: any, i: number) => {
               a.views.rank = i + 1;
             });
             // get array length
-            const arrayLength = array.length;
+            const chartMangasLength = chartMangas.length;
             // slice mangas for 1 page
-            array = sliceMangas(array, Number(pageChart));
+            chartMangas = sliceMangas(chartMangas, Number(pageChart));
             res.status(200).json({
               message: "Ok",
-              data: { mangas: array, length: arrayLength },
+              data: chartMangas,
+              length: chartMangasLength,
             });
           } else {
             res.status(401).json({ error: "Not Allowed" });

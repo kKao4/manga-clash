@@ -4,12 +4,12 @@ import { searchName } from "@/lib/searchName";
 import { sliceMangas } from "@/lib/sliceMangas";
 import Manga, { MangaType } from "@/models/manga";
 import { UserType } from "@/models/user";
-import { HistoryMangasResponse, MangasResponse } from "@/type";
+import { HistoryResponse, MangasResponse } from "@/type";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HistoryMangasResponse>
+  res: NextApiResponse<HistoryResponse>
 ) {
   try {
     await dbConnect();

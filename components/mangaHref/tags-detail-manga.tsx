@@ -15,7 +15,6 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
                 <Link
                   key={tag}
                   href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`} className="font-semibold capitalize text-main-green"
-                  onClick={() => dispatch(resetSearchTags())}
                 >
                   {tag}
                 </Link>
@@ -25,7 +24,6 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
                 <Link
                   key={tag}
                   href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`}
-                  onClick={() => dispatch(resetSearchTags())}
                 >
                   <button
                     className="font-semibold capitalize text-main-green">

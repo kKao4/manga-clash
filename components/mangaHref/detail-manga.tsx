@@ -81,7 +81,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       const [mangaRes, userRatingRes]: [MangaResponse, UserRatingResponse] = await Promise.all([mangaResult.json(), userRatingResult.json()])
       if (mangaRes.data && userRatingRes.data) {
         dispatch(addOrUpdateManga(mangaRes.data))
-        dispatch(setUserRating(userRatingRes.data.star))
+        dispatch(setUserRating(userRatingRes.data))
       }
       // if (res.data) {
       //   router.replace(router.asPath, "", { scroll: false })

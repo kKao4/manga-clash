@@ -20,20 +20,17 @@ export default async function handler(
       // console.log("🚀 ~ file: all_mangas.ts:14 ~ req.query:", req.query);
       let mangas: MangaType[] = [];
       let mangasLength: number = 0;
-      mangas = await findAndSortMangas(sort, mangas);
+      mangas = await findAndSortMangas(sort as string);
       // console.log("🚀 ~ file: all_mangas.ts:25 ~ mangas:", mangas)
 
       // filter name mangas
-      mangas = searchName(name, mangas);
+      mangas = searchName(name as string, mangas);
       // filter author mangas
       mangas = searchAuthor(author, mangas);
       // filter status mangas
       mangas = searchCompleted(completed, mangas);
       // filter tags mangas
       mangas = searchTags(tags, mangas);
-      // if (year) {
-      //   mangas = mangas.filter((manga) => manga.year === year)
-      // }
       // get length of the mangas
       mangasLength = mangas.length;
       // slice mangas per page
@@ -44,33 +41,16 @@ export default async function handler(
           (a: { num: any }, b: { num: any }) => Number(b.num) - Number(a.num)
         );
       });
-      // take 2 latest chapters
-      // mangas.forEach((manga: MangaType) => {
-      //   manga.chapters = manga.chapters.slice(0, 2);
-      // });
-      // console.log(
-      //   "🚀 ~ file: all_mangas.ts:38 ~ mangas.forEach ~ mangas:",
-      //   mangas
-      // );
-      // console.log(
-      //   "🚀 ~ file: all_mangas.ts:44 ~ sortManga:",
-      //   sortMangas[0].chapters
-      // );
-      // console.log("🚀 ~ file: all_mangas.ts:41 ~ mangas:", mangas[0].chapters);
       if (mangas.length) {
         res.status(200).json({
           message: "Fetched Mangas",
           length: mangasLength,
           data: mangas,
-          search: name as string,
-          tags: tags as string,
         });
       } else {
         res.status(200).json({
           message: "No Mangas",
           length: 0,
-          search: name as string,
-          tags: tags as string,
         });
       }
     }

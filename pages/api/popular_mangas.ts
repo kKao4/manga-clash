@@ -19,7 +19,6 @@ export default async function handler(
           message: "Fetched Popular Mangas",
           data: mangas,
           length: 10,
-          search: "",
         });
       } else {
         res.status(200).json({

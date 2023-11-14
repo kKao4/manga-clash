@@ -32,7 +32,7 @@ export default async function handler(
                 });
                 res.status(200).json({
                   message: "Fetched User Rating",
-                  data: { star: star },
+                  data: star,
                 });
               } else {
                 res

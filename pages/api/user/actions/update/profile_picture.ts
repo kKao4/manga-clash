@@ -26,7 +26,7 @@ export default async function handler(
       case "POST": {
         const token = req.cookies.token;
         if (token) {
-          const { user, _id } = await auth(token);
+          const { user } = await auth(token);
           if (user) {
             const form = formidable({ maxFileSize: 10 * 1024 * 1024 });
             const [fields, files] = await form.parse(req);

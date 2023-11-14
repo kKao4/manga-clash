@@ -1,5 +1,4 @@
 import MenuFoot from "@/components/mangas/menu-foot";
-// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
 import { MangasResponse, UserResponse } from "@/type";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import MangaBoxes from "@/components/mangas/manga-boxes";
@@ -12,40 +11,58 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router"
 import { setPageMangas } from "@/features/manga/MangasSlice";
 import { setUser, selectUserState } from "@/features/UserSlice";
-import { addSearchTags, resetSearchTags } from "@/features/search/SearchSlice";
+import { resetSearchTags, selectSearchState, setSearchTags } from "@/features/search/SearchSlice";
 import { setSort } from "@/features/GlobalSlice";
 import dynamic from "next/dynamic"
+import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas";
+import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas";
+import { getUser } from "@/lib/getServerSideProps/getUser";
+import dbConnect from "@/lib/dbConnect";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
-
-export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, popularMangas: MangasResponse, user: UserResponse }> = async (context) => {
-  let { page, sort, tags } = context.query;
-  sort = sort ?? "latest";
-  page = page ?? "1";
-  tags = tags ?? ""
-  const [mangasRes, popularMangasRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?page=${page}&sort=${sort}&tags=${tags}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
+  await dbConnect()
+  let { page, sort, tags } = query
+  const { token } = req.cookies
+  page = page ?? "1"
+  sort = sort ?? "latest"
+  tags = tags ?? []
+  const [{ mangas, mangasLength }, popularMangas, user] = await Promise.all([
+    getAllMangas({ page, sort, tags } as GetALlMangas),
+    getAllPopularMangas(),
+    getUser(token)
   ])
-  const [mangas, popularMangas, user] = await Promise.all([mangasRes.json(), popularMangasRes.json(), userRes.json()])
-  console.log("🚀 ~ file: manga.tsx:27 ~ user.message:", user.message)
-  console.log("🚀 ~ file: manga.tsx:27 ~ popularMangas.message:", popularMangas.message)
-  console.log("🚀 ~ file: manga.tsx:27 ~ mangas.message:", mangas.message)
-  return { props: { mangas, popularMangas, user } }
+  const mangasRes = JSON.parse(JSON.stringify({
+    message: "Fetched Mangas",
+    length: mangasLength,
+    data: mangas,
+  }))
+  const popularMangasRes = JSON.parse(JSON.stringify({
+    message: "Fetched Popular Mangas",
+    data: popularMangas
+  }))
+  const userRes = JSON.parse(JSON.stringify({
+    message: "Fetched User",
+    data: user
+  }))
+  console.log("🚀 ~ file: manga.tsx:27 ~ userRes.message:", userRes.message)
+  console.log("🚀 ~ file: manga.tsx:27 ~ popularMangasRes.message:", popularMangasRes.message)
+  console.log("🚀 ~ file: manga.tsx:27 ~ mangasRes.message:", mangasRes.message)
+  return { props: { mangasRes, popularMangasRes, userRes } }
 }
 
-const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const userState = useSelector(selectUserState)
-  // set user state
+  const searchState = useSelector(selectSearchState)
+  // set user
   useEffect(() => {
-    if (user.data) {
-      dispatch(setUser(user.data))
+    if (userRes.data) {
+      dispatch(setUser(userRes.data))
     }
-  }, [dispatch, user])
-  // set page paginate
+  }, [dispatch, userRes])
+  // set page
   useEffect(() => {
     if (router.query.page) {
       dispatch(setPageMangas(Number(router.query.page)))
@@ -64,7 +81,7 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
   // set tags
   useEffect(() => {
     if (router.query.tags) {
-      dispatch(addSearchTags(router.query.tags as string))
+      dispatch(setSearchTags(router.query.tags as string))
     } else {
       dispatch(resetSearchTags())
     }
@@ -79,13 +96,13 @@ const Page = ({ mangas, popularMangas, user }: InferGetServerSidePropsType<typeo
       <BodyBox>
         {/* left row */}
         <div className="basis-9/12">
-          <h2 className="mb-6 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {mangas.tags ? `Thể Loại "${mangas.tags}"` : ""}</h2>
-          <OrderNavigation mangasLength={mangas.length} search={false} searchValue={mangas.search} />
+          <h2 className="mb-6 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {router.query.tags ? `Thể Loại "${router.query.tags}"` : ""}</h2>
+          <OrderNavigation mangasLength={mangasRes.length} search={false} />
           {/* mangas loop */}
-          <MangaBoxes mangas={mangas.data} mangasLength={mangas.length} />
+          <MangaBoxes mangas={mangasRes.data} mangasLength={mangasRes.length} />
         </div>
         {/* right row */}
-        <DynamicMangasBoxesPopular mangas={popularMangas.data} />
+        <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
       </BodyBox>
     </>
   )

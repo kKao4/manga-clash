@@ -42,6 +42,9 @@ export const searchSlice = createSlice({
         state.tags.push(action.payload);
       }
     },
+    setSearchTags: (state, action: PayloadAction<string>) => {
+      state.tags = [action.payload];
+    },
     resetSearchTags: (state) => {
       state.tags = [];
     },
@@ -78,6 +81,7 @@ export const {
   addOrDeleteSearchTags,
   resetSearch,
   setPageSearch,
+  setSearchTags,
 } = searchSlice.actions;
 
 export const selectSearchState = (state: RootState) => state.search;

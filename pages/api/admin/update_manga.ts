@@ -47,10 +47,12 @@ export default async function handler(
               fields.description
             ) {
               const _id = fields._id[0];
-              const manga = await Manga.findById(_id);
-              const rating = await Rating.findOne({ mangaId: _id });
-              const chapter = await Chapter.findOne({ mangaId: _id });
-              const bookmark = await Bookmark.findOne({ mangaId: _id });
+              const [manga, rating, chapter, bookmark] = await Promise.all([
+                Manga.findById(_id),
+                Rating.findOne({ mangaId: _id }),
+                Chapter.findOne({ mangaId: _id }),
+                Bookmark.findOne({ mangaId: _id }),
+              ]);
               if (manga) {
                 const newHref = toLowerCaseNonAccentVietnamese(fields.name[0])
                   .trim()
@@ -83,13 +85,6 @@ export default async function handler(
                 // save image
                 if (files.image) {
                   if (checkFile(files.image[0].originalFilename)) {
-                    // store image in local storage
-                    // const oldPath = files.image[0].filepath;
-                    // const newPath =
-                    //   newHref + "_" + files.image[0].originalFilename;
-                    // manga.image = newPath;
-                    // await fs.promises.rename(oldPath, "./public/" + newPath);
-
                     // store image in cloudinary
                     const result = await cloudinary.uploader.upload(
                       files.image[0].filepath,

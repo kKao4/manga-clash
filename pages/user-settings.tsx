@@ -1,5 +1,5 @@
 import BodyBox from "@/components/global/body-box"
-import { ChartResponse, HistoryMangasResponse, MangasResponse, UserResponse } from "@/type"
+import { ChartResponse, HistoryResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
 import { useEffect } from "react"
@@ -13,6 +13,12 @@ import { setMangasBookmark, selectBookmarkState } from "@/features/user-settings
 import { setMangasChart } from "@/features/user-settings/ChartSlice"
 import { setMangasHistory } from "@/features/user-settings/HistorySlice"
 import DotLoaderComponent from "@/components/global/dot-loader"
+import { auth } from "@/lib/auth"
+import { GetAllMangasBookmarks, getAllMangasBookmarks } from "@/lib/getServerSideProps/getAllMangasBookmarks"
+import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas"
+import { GetAllMangasHistory, getAllMangasHistory } from "@/lib/getServerSideProps/getAllMangasHistory"
+import { GetAllMangasChart, getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
+import dbConnect from "@/lib/dbConnect"
 const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
   loading: () => <DotLoaderComponent size={40} />
 })
@@ -30,30 +36,66 @@ const DynamicChart = dynamic(() => import("@/components/user-settings/chart/char
 })
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
-export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasResponse, mangas: MangasResponse, history: HistoryMangasResponse, user: UserResponse, chart: ChartResponse }> = async (context) => {
-  const token = context.req.cookies.token
-  let { pageChart, pageBookmark, pageHistory, nameBookmark, nameChart, nameHistory, time } = context.query
+export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasResponse, bookmarkRes: MangasResponse, historyRes: HistoryResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ req, query }) => {
+  await dbConnect()
+  let { pageChart, pageBookmark, pageHistory, nameBookmark, nameChart, nameHistory, time } = query
+  const { token } = req.cookies
   pageChart = pageChart ?? "1"
   pageBookmark = pageBookmark ?? "1"
   pageHistory = pageHistory ?? "1"
   nameBookmark = nameBookmark ?? ""
-  nameChart = nameChart ?? ""
   nameHistory = nameHistory ?? ""
+  nameChart = nameChart ?? ""
   time = time ?? "oneWeek"
-  const [popularMangasRes, mangasRes, historyRes, userRes, chartRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/all_mangas_bookmarks?token=${token}&sort=latest&pageBookmark=${pageBookmark}&nameBookmark=${nameBookmark}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/history?token=${token}&pageHistory=${pageHistory}&nameHistory=${nameHistory}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/admin/chart?token=${token}&time=${time}&pageChart=${pageChart}&nameChart=${nameChart}`)
-  ])
-  const [popularMangas, mangas, history, user, chart] = await Promise.all([popularMangasRes.json(), mangasRes.json(), historyRes.json(), userRes.json(), chartRes.json()])
-  console.log("🚀 ~ file: user-settings.tsx:28 ~ user.message:", user.message)
-  console.log("🚀 ~ file: user-settings.tsx:28 ~ mangas.message:", mangas.message)
-  console.log("🚀 ~ file: user-settings.tsx:28 ~ history.message:", history.data)
-  console.log("🚀 ~ file: user-settings.tsx:28 ~ popularMangas.message:", popularMangas.message)
-  console.log("🚀 ~ file: user-settings.tsx:31 ~ chart:", chart.message)
-  if (!user.data) {
+  const { user } = await auth(token)
+  if (user) {
+    const [popularMangas, { bookmarkMangas, bookmarkMangasLength }, { historyMangas, historyMangasLength }] = await Promise.all([
+      getAllPopularMangas(),
+      getAllMangasBookmarks({ pageBookmark, nameBookmark, bookmarks: user.bookmarks } as GetAllMangasBookmarks),
+      getAllMangasHistory({ pageHistory, nameHistory, history: user.history } as GetAllMangasHistory)
+    ])
+    const popularMangasRes = JSON.parse(JSON.stringify({
+      message: "Fetched Popular Mangas",
+      data: popularMangas
+    }))
+    const bookmarkRes = JSON.parse(JSON.stringify({
+      message: "Fetched Bookmark Mangas",
+      data: bookmarkMangas,
+      length: bookmarkMangasLength
+    }))
+    const historyRes = JSON.parse(JSON.stringify({
+      message: "Fetched History Mangas",
+      data: historyMangas,
+      length: historyMangasLength
+    }))
+    let chartRes = JSON.parse(JSON.stringify({
+      message: "User Not Allowed",
+      data: [],
+      length: 0
+    }))
+    const userRes = JSON.parse(JSON.stringify({
+      message: "Fetched User",
+      data: user
+    }))
+    if (user.role === "admin") {
+      const { chartMangas, chartMangasLength } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
+      chartRes = JSON.parse(JSON.stringify({
+        message: "Fetched Chart Mangas",
+        data: chartMangas,
+        length: chartMangasLength
+      }))
+    }
+    console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:76 ~ chartRes.message:", chartRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:81 ~ userRes.message:", userRes.message)
+    return {
+      props: {
+        popularMangasRes, bookmarkRes, historyRes, chartRes, userRes
+      }
+    }
+  } else {
     return {
       redirect: {
         destination: "/",
@@ -61,37 +103,36 @@ export const getServerSideProps: GetServerSideProps<{ popularMangas: MangasRespo
       }
     }
   }
-  return { props: { popularMangas, mangas, history, user, chart } }
 }
 
-const Page = ({ popularMangas, mangas, history, user, chart }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ popularMangasRes, bookmarkRes, historyRes, userRes, chartRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const userSettingsState = useSelector(selectUserSettingsState)
   const dispatch = useDispatch()
   const bookmarkState = useSelector(selectBookmarkState)
   const userState = useSelector(selectUserState)
   // set mangas bookmark
   useEffect(() => {
-    if (mangas.data) {
-      dispatch(setMangasBookmark({ mangas: mangas.data, length: mangas.length as number }))
+    if (bookmarkRes.data) {
+      dispatch(setMangasBookmark({ mangas: bookmarkRes.data, length: bookmarkRes.length as number }))
     }
-  }, [dispatch, mangas])
+  }, [dispatch, bookmarkRes])
   // set user
   useEffect(() => {
-    if (user.data) {
-      dispatch(setUser(user.data))
+    if (userRes.data) {
+      dispatch(setUser(userRes.data))
     }
-  }, [dispatch, user])
+  }, [dispatch, userRes])
   useEffect(() => {
-    if (chart.data) {
-      dispatch(setMangasChart(chart.data))
+    if (chartRes.data) {
+      dispatch(setMangasChart({ mangas: chartRes.data, length: chartRes.length as number }))
     }
-  }, [dispatch, chart])
+  }, [dispatch, chartRes])
   // set history mangas
   useEffect(() => {
-    if (history.data) {
-      dispatch(setMangasHistory({ mangas: history.data, length: history.length as number }))
+    if (historyRes.data) {
+      dispatch(setMangasHistory({ mangas: historyRes.data, length: historyRes.length as number }))
     }
-  }, [dispatch, history])
+  }, [dispatch, historyRes])
   const title = `${userState.username} - Cài đặt`
   return (
     <>
@@ -145,7 +186,7 @@ const Page = ({ popularMangas, mangas, history, user, chart }: InferGetServerSid
             </div>
           </div>
         </div>
-        <DynamicMangasBoxesPopular mangas={popularMangas.data} />
+        <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
       </BodyBox>
     </>
   )

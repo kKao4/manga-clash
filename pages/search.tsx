@@ -6,7 +6,7 @@ import Paginate from "@/components/global/paginate";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { MangasResponse, UserResponse } from "@/type";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch, resetSearchTags } from "@/features/search/SearchSlice";
+import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch, resetSearchTags, setSearchTags } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
 import { MyRipples } from "@/components/global/button-ripple";
 import { useRef, useState } from "react";
@@ -16,35 +16,40 @@ import { useEffect } from "react";
 import { selectUserState, setUser } from "@/features/UserSlice";
 import { setSort } from "@/features/GlobalSlice";
 import dynamic from "next/dynamic";
+import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas";
+import { getUser } from "@/lib/getServerSideProps/getUser";
+import dbConnect from "@/lib/dbConnect";
 const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"))
 
-export const getServerSideProps: GetServerSideProps<{ mangas: MangasResponse, user: UserResponse }> = async (context) => {
-  let { page, sort, name, author, completed, tags } = context.query
+export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
+  await dbConnect()
+  let { page, sort, name, author, completed, tags } = query
+  const { token } = req.cookies
   page = page ?? "1"
   sort = sort ?? "latest"
   name = name ?? ""
   author = author ?? ""
   completed = completed ?? ""
   tags = tags ?? ""
-  let query = `page=${page}&sort=${sort}&name=${name}&author=${author}&completed=${completed}`
-  if (Array.isArray(tags)) {
-    tags.forEach((tag) => {
-      query += `&tags=${tag}`
-    })
-  } else {
-    query += `&tags=${tags}`
-  }
-  const [mangasRes, userRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/all_mangas?${query}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`)
+  const [{ mangasLength, mangas }, user] = await Promise.all([
+    getAllMangas({ page, sort, name, author, completed, tags } as GetALlMangas),
+    getUser(token)
   ])
-  const [mangas, user] = await Promise.all([mangasRes.json(), userRes.json()])
-  console.log("🚀 ~ file: search.tsx:42 ~ user.message:", user.message)
-  console.log("🚀 ~ file: search.tsx:42 ~ mangas.message:", mangas.message)
-  return { props: { mangas, user } }
+  const mangasRes = JSON.parse(JSON.stringify({
+    message: "Fetched Mangas",
+    length: mangasLength,
+    data: mangas,
+  }))
+  const userRes = JSON.parse(JSON.stringify({
+    message: "Fetched User",
+    data: user
+  }))
+  console.log("🚀 ~ file: search.tsx:33 ~ mangasRes.message:", mangasRes.message)
+  console.log("🚀 ~ file: search.tsx:38 ~ userRes.message:", userRes.message)
+  return { props: { mangasRes: mangasRes, userRes: userRes } }
 }
 
-const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ mangasRes, userRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const searchState = useSelector(selectSearchState)
   const dispatch = useDispatch()
   const router = useRouter()
@@ -59,10 +64,10 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
     }
   }, [searched])
   useEffect(() => {
-    if (user.data) {
-      dispatch(setUser(user.data))
+    if (userRes.data) {
+      dispatch(setUser(userRes.data))
     }
-  }, [dispatch, user])
+  }, [dispatch, userRes])
   useEffect(() => {
     if (router.query.page) {
       dispatch(setPageSearch(Number(router.query.page)))
@@ -100,7 +105,7 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
         // console.log("🚀 ~ file: search.tsx:69 ~ router.query.tags.forEach ~ tag:", tag)
       })
     } else if (router.query.tags && !Array.isArray(router.query.tags)) {
-      dispatch(addSearchTags(router.query.tags))
+      dispatch(setSearchTags(router.query.tags))
     } else if (!router.query.tags) {
       dispatch(resetSearchTags())
     }
@@ -111,7 +116,7 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
       setShowAdvanced(true)
     }
   }, [router])
-  const title = `Tìm kiếm cho ${router.query.name} - Manga Clash`
+  const title = `Tìm kiếm cho ${searchState.name} - Manga Clash`
   return (
     <>
       <Head>
@@ -155,12 +160,12 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
       </MenuFootBox>
       <BodyBox>
         <div ref={myRef} className="basis-full">
-          <OrderNavigation mangasLength={mangas.length} search={true} searchValue={mangas.search} />
+          <OrderNavigation mangasLength={mangasRes.length} search={true} />
           <div className="w-full py-8">
             <div className="grid grid-cols-2 gap-y-12">
-              {mangas.data ? (
+              {mangasRes.data ? (
                 <>
-                  {mangas.data.map(manga => {
+                  {mangasRes.data.map(manga => {
                     return <MangaBox key={manga.href} manga={manga} />
                   })}
                 </>
@@ -170,8 +175,8 @@ const Page = ({ mangas, user }: InferGetServerSidePropsType<typeof getServerSide
             </div>
           </div>
           <div className="flex justify-center">
-            {mangas.length ? (
-              <Paginate mangasLength={mangas.length} page="search" />
+            {mangasRes.length ? (
+              <Paginate mangasLength={mangasRes.length} page="search" />
             ) : ""}
           </div>
         </div>

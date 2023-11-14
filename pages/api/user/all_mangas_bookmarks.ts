@@ -22,8 +22,7 @@ export default async function handler(
       }
       const { user } = await auth(token as string);
       if (user) {
-        let mangas: any[] = [];
-        mangas = await findAndSortMangas(sort, mangas);
+        let mangas = await findAndSortMangas(sort as string);
         mangas = mangas.filter((manga) => {
           let a = false;
           user.bookmarks.forEach((bookmark: UserType["bookmarks"][number]) => {
@@ -37,7 +36,7 @@ export default async function handler(
         //   "🚀 ~ file: all_mangas.ts:35 ~ mangas=mangas.filter ~ mangas:",
         //   mangas
         // );
-        mangas = searchName(nameBookmark, mangas);
+        mangas = searchName(nameBookmark as string, mangas);
         const mangasLength = mangas.length;
         mangas = sliceMangas(mangas, Number(pageBookmark));
         res.status(200).json({

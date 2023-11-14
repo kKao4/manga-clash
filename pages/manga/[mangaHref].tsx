@@ -3,15 +3,11 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Navigation from "@/components/global/navigation";
 import MenuFootBox from "@/components/global/menu-foot-box";
 import BodyBox from "@/components/global/body-box";
-import Title from "@/components/global/title";
-// import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes";
 import { useRef, useState } from "react"
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { DiscussionEmbed } from "disqus-react";
-import { useRouter } from "next/router";
 import { MangaType } from "@/models/manga";
 import { setUser, selectUserState } from "@/features/UserSlice";
 import { selectMangaState, addOrUpdateManga } from "@/features/mangaHref/MangaSlice";
@@ -20,21 +16,47 @@ import ImageAndDetailManga from "@/components/mangaHref/image-and-detail-manga";
 import Name from "@/components/mangaHref/name";
 import { RootState } from "@/store";
 import dynamic from "next/dynamic";
-import DotLoaderComponent from "@/components/global/dot-loader";
+import dbConnect from "@/lib/dbConnect";
+import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas";
+import { getUser } from "@/lib/getServerSideProps/getUser";
+import { GetManga, getManga } from "@/lib/getServerSideProps/getManga";
+import { GetUserRating, getUserRating } from "@/lib/getServerSideProps/getUserRating";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"))
 const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"))
 const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"))
 
-export const getServerSideProps: GetServerSideProps<{ manga: MangaResponse, popularMangas: MangasResponse, user: UserResponse, userRating: UserRatingResponse }> = async (context) => {
-  const [mangaRes, popularMangasRes, userRes, userRatingRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/manga/${context.params?.mangaHref}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/popular_mangas`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/account?token=${context.req.cookies.token}`),
-    fetch(`${process.env.NEXT_PUBLIC_HOST_URL}/api/user/user_rating?href=${context.params?.mangaHref}&token=${context.req.cookies.token}`)
+export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
+  await dbConnect()
+  const { mangaHref } = query
+  const { token } = req.cookies
+  const [manga, userRating, user, popularMangas] = await Promise.all([
+    getManga({ href: mangaHref } as GetManga),
+    getUserRating({ token, href: mangaHref } as GetUserRating),
+    getUser(token),
+    getAllPopularMangas(),
   ])
-  const [manga, popularMangas, user, userRating] = await Promise.all([mangaRes.json(), popularMangasRes.json(), userRes.json(), userRatingRes.json()])
-  if (!manga.data) {
+  const popularMangasRes = JSON.parse(JSON.stringify({
+    message: "Fetched Popular Mangas",
+    data: popularMangas
+  }))
+  const userRes = JSON.parse(JSON.stringify({
+    message: "Fetched User",
+    data: user
+  }))
+  const userRatingRes = JSON.parse(JSON.stringify({
+    message: "Fetched User Rating",
+    data: userRating
+  }))
+  const mangaRes = JSON.parse(JSON.stringify({
+    message: "Fetched Manga",
+    data: manga
+  }))
+  console.log("🚀 ~ file: [mangaHref].tsx:43 ~ popularMangasRes.message:", popularMangasRes.message)
+  console.log("🚀 ~ file: [mangaHref].tsx:48 ~ userRes.message:", userRes.message)
+  console.log("🚀 ~ file: [mangaHref].tsx:53 ~ userRatingRes.message:", userRatingRes.message)
+  console.log("🚀 ~ file: [mangaHref].tsx:57 ~ mangaRes.message:", mangaRes.message)
+  if (!manga) {
     return {
       redirect: {
         destination: "/",
@@ -42,39 +64,40 @@ export const getServerSideProps: GetServerSideProps<{ manga: MangaResponse, popu
       }
     }
   }
-  return { props: { manga, popularMangas, user, userRating } }
+  return {
+    props: { mangaRes, userRatingRes, userRes, popularMangasRes }
+  }
 }
 
-const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const dispatch = useDispatch()
-  const router = useRouter()
   const [chaptersOrder, setChaptersOrder] = useState<"latest" | "earliest">("latest")
   const [chapters, setChapters] = useState<MangaType["chapters"]>()
-  const mangaState = useSelector((state: RootState) => selectMangaState(state, manga.data!._id))
+  const mangaState = useSelector((state: RootState) => selectMangaState(state, mangaRes.data!._id))
   const userState = useSelector(selectUserState)
   const [description, setDescription] = useState<string>("")
   const commentsRef = useRef<HTMLDivElement>(null)
   // Add Manga
   useEffect(() => {
-    dispatch(addOrUpdateManga(manga.data!))
-  }, [dispatch, manga])
+    dispatch(addOrUpdateManga(mangaRes.data!))
+  }, [dispatch, mangaRes])
   // Set User Rating
   useEffect(() => {
-    if (userRating.data) {
-      dispatch(setUserRating(userRating.data.star))
+    if (userRatingRes.data) {
+      dispatch(setUserRating(userRatingRes.data))
     }
-  }, [userRating, dispatch])
+  }, [userRatingRes, dispatch])
   // Set User
   useEffect(() => {
-    if (user.data) {
-      dispatch(setUser(user.data))
+    if (userRes.data) {
+      dispatch(setUser(userRes.data))
     }
-  }, [dispatch, user])
+  }, [dispatch, userRes])
   // Set Chapters
   useEffect(() => {
-    setChapters(manga.data?.chapters)
-    console.log("🚀 ~ file: [mangaHref].tsx:72 ~ useEffect ~ manga.data?.chapters:", manga.data?.chapters)
-  }, [manga])
+    setChapters(mangaRes.data?.chapters)
+    console.log("🚀 ~ file: [mangaHref].tsx:72 ~ useEffect ~ manga.data?.chapters:", mangaRes.data?.chapters)
+  }, [mangaRes])
   // Sort Chapters
   useEffect(() => {
     if (chaptersOrder === "latest" && chapters) {
@@ -140,7 +163,7 @@ const Page = ({ manga, popularMangas, user, userRating }: InferGetServerSideProp
               <DynamicComments mangaState={mangaState} ref={commentsRef} />
             </div>
             {/* popular mangas */}
-            <DynamicMangasBoxesPopular mangas={popularMangas.data} />
+            <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
           </BodyBox>
         </main>
       </>

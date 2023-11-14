@@ -26,8 +26,10 @@ export default async function handler(
             const chapters: string[] = req.body.chapters;
             // console.log("🚀 ~ file: delete_chapters.ts:21 ~ chapters:", chapters)
             const href = req.query.href as string;
-            const chapter = await Chapter.findOne({ mangaHref: href });
-            const manga = await Manga.findOne({ href: href });
+            const [chapter, manga] = await Promise.all([
+              Chapter.findOne({ mangaHref: href }),
+              Manga.findOne({ href: href }),
+            ]);
             if (chapter && manga) {
               if (chapters.length) {
                 chapters.forEach(async (c) => {
@@ -69,8 +71,7 @@ export default async function handler(
                 // set 2 latest chapters for manga collection
                 manga.chapters = chapter.chapters.slice(0, 2);
                 // console.log("🚀 ~ file: delete_chapters.ts:64 ~ manga:", manga);
-                await chapter.save();
-                await manga.save();
+                await Promise.all([chapter.save(), manga.save()]);
                 res.status(200).json({ message: "Deleted Chapters" });
               } else {
                 res.status(400).json({ error: "Invalid Form" });

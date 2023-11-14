@@ -1,7 +1,8 @@
 import { MangaType } from "@/models/manga";
 import Manga from "@/models/manga";
 
-export async function findAndSortMangas(sort: any, mangas: MangaType[]) {
+export async function findAndSortMangas(sort: string) {
+  let mangas = [];
   if (sort === "latest") {
     mangas = await Manga.find({}).sort({ "chapters.updatedAt": -1 });
   } else if (sort === "a-z") {

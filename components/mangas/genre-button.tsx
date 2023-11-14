@@ -9,7 +9,6 @@ export default function GenreButton({ tag }: { tag: typeof tagsArray[number] }) 
     <Link
       href={`/manga/?page=1&sort=latest&tags=${tag.id}`}
       className="col-span-1 py-2 font-bold text-center transition-colors cursor-pointer hover:text-second-green"
-      onClick={() => dispatch(resetSearchTags())}
     >
       {tag.title}
     </Link>
