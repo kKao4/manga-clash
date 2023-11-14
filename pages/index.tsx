@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   page = page ?? "1"
   sort = sort ?? "latest"
   const { token } = req.cookies
-  const [{ mangasLength, mangas }, popularMangas, { user }] = await Promise.all([
+  const [{ mangasLength, mangas }, popularMangas, user] = await Promise.all([
     getAllMangas({ page, sort } as GetALlMangas),
     getAllPopularMangas(),
     getUser(token)
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   }))
   console.log("🚀 ~ file: index.tsx:42 ~ mangasRes.message:", mangasRes.message)
   console.log("🚀 ~ file: index.tsx:47 ~ popularMangasRes.message:", popularMangasRes.message)
-  console.log("🚀 ~ file: index.tsx:52 ~ userRes.message:", userRes.message)
+  console.log("🚀 ~ file: index.tsx:52 ~ userRes.message:", userRes)
   return {
     props: {
       mangasRes: mangasRes as any, popularMangasRes: popularMangasRes as any, userRes
@@ -59,6 +59,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsT
   }, [dispatch])
   // set user
   useEffect(() => {
+    console.log("🚀 ~ file: index.tsx:63 ~ useEffect ~ userRes:", userRes)
     if (userRes.data) {
       dispatch(setUser(userRes.data))
     }

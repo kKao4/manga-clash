@@ -16,9 +16,9 @@ import dynamic from "next/dynamic"
 import NavChapter from "@/components/chapterNum/nav-chapter"
 import useMouse from '@react-hook/mouse-position'
 import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
-import { auth } from "@/lib/auth"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
+import { getUser } from "@/lib/getServerSideProps/getUser"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -28,10 +28,10 @@ export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterRespons
   await dbConnect()
   const { mangaHref, chapterNum } = query
   const { token } = req.cookies
-  const [chapter, chapters, { user }] = await Promise.all([
+  const [chapter, chapters, user] = await Promise.all([
     getChapter({ href: mangaHref, chapterNum, token } as GetChapter),
     getAllChapters({ href: mangaHref } as GetAllChapters),
-    auth(token)
+    getUser(token)
   ])
   const chapterRes = JSON.parse(JSON.stringify({
     message: "Fetched Chapter",
