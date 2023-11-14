@@ -13,7 +13,6 @@ import { useRouter } from "next/router"
 import DarkMode from "@/components/global/dark-mode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
-import DotLoaderComponent from "@/components/global/dot-loader"
 const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"))
@@ -63,7 +62,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <DynamicResetPassword />
             <MenuTop />
             {getLayout(<Component {...pageProps} />)}
-            <Analytics />
+            {/* <Analytics /> */}
           </div>
           <DynamicFooter />
         </DarkMode>

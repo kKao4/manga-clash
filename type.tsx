@@ -3,6 +3,8 @@ import { MangaType } from "./models/manga";
 import { ChapterType } from "./models/chapter";
 import { initialSearchState } from "./features/search/SearchSlice";
 
+// TODO: fix production build user dropdown click link
+
 export type MangasResponse = {
   length?: number;
   search?: string;
