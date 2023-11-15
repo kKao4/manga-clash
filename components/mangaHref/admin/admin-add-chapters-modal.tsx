@@ -66,10 +66,10 @@ export default function AdminAddChapterModal({
           uploadSignature: signatureRes.signature,
         },
         (error: any, result: any) => {
-          console.log(
-            "🚀 ~ file: upload-widget.jsx:12 ~ useEffect ~ result:",
-            result
-          );
+          // console.log(
+          //   "🚀 ~ file: upload-widget.jsx:12 ~ useEffect ~ result:",
+          //   result
+          // );
           if (result.event === "success") {
             setArrayImages((prevArrayChapter) => [
               ...prevArrayChapter,
@@ -116,7 +116,7 @@ export default function AdminAddChapterModal({
           }
         );
         const res = await result.json();
-        console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
+        // console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
         if (res.message) {
           setNum("")
           setChapterDescription("")

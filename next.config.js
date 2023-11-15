@@ -4,6 +4,14 @@ const nextConfig = {
   transpilePackages: ["smooth-scrollbar/plugins/overscroll"],
   images: {
     domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/dnjlnj9dy/**",
+      },
+    ],
   },
 };
 

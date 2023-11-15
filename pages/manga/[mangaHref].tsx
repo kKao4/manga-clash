@@ -21,6 +21,8 @@ import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularManga
 import { getUser } from "@/lib/getServerSideProps/getUser";
 import { GetManga, getManga } from "@/lib/getServerSideProps/getManga";
 import { GetUserRating, getUserRating } from "@/lib/getServerSideProps/getUserRating";
+import Script from "next/script";
+import { selectAdminMode } from "@/features/GlobalSlice";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"))
 const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"))
@@ -77,6 +79,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   const userState = useSelector(selectUserState)
   const [description, setDescription] = useState<string>("")
   const commentsRef = useRef<HTMLDivElement>(null)
+  const adminMode = useSelector(selectAdminMode)
   // Add Manga
   useEffect(() => {
     dispatch(addOrUpdateManga(mangaRes.data!))
@@ -96,7 +99,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   // Set Chapters
   useEffect(() => {
     setChapters(mangaRes.data?.chapters)
-    console.log("🚀 ~ file: [mangaHref].tsx:72 ~ useEffect ~ manga.data?.chapters:", mangaRes.data?.chapters)
+    // console.log("🚀 ~ file: [mangaHref].tsx:72 ~ useEffect ~ manga.data?.chapters:", mangaRes.data?.chapters)
   }, [mangaRes])
   // Sort Chapters
   useEffect(() => {
@@ -124,6 +127,15 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   if (mangaState) {
     return (
       <>
+        {adminMode && (
+          <Script
+            src="https://upload-widget.cloudinary.com/global/all.js"
+            type="text/javascript"
+            strategy="lazyOnload"
+            // onLoad={() => console.log("Loading")}
+            // onReady={() => console.log("Ready")}
+          />
+        )}
         <Head>
           <title>{title}</title>
         </Head>

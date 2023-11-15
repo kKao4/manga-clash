@@ -15,7 +15,7 @@ import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllManga
 import dbConnect from "@/lib/dbConnect"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
-// TODO: fix user rating action in client redux state and 3 KẾT QUẢ CHO "undefined"
+// TODO: fix user rating action in client redux state
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ query, req }) => {
   await dbConnect()
   let { page, sort } = query

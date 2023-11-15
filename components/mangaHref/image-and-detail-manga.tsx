@@ -105,7 +105,7 @@ export default function ImageAndDetailManga({
               alt=""
               fill={true}
               priority={true}
-              quality={75}
+              quality={50}
             />
           )}
         </div>
