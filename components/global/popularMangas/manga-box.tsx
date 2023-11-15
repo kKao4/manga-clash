@@ -11,7 +11,7 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
       <Link href={`/manga/${manga.href}`} className="relative w-16 h-[86px] overflow-hidden cursor-pointer group/image shrink-0">
         <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors overflow-hidden duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
         {manga.image ? (
-          <Image className="w-full h-full transition-transform duration-550 group-hover/image:scale-107 object-cover" src={manga.image.url} alt="" fill={true} />
+          <Image className="w-full h-full transition-transform duration-550 group-hover/image:scale-107 object-cover" src={manga.image.url} alt="" fill={true} quality={0} />
         ) : (
           <div className="w-full h-full bg-gray-150 animate-pulse"></div>
         )}

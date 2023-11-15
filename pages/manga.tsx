@@ -23,14 +23,14 @@ const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popu
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
   let { page, sort, tags } = query
-  const { token } = req.cookies
+  const { _id } = req.headers
   page = page ?? "1"
   sort = sort ?? "latest"
   tags = tags ?? []
   const [{ mangas, mangasLength }, popularMangas, user] = await Promise.all([
     getAllMangas({ page, sort, tags } as GetALlMangas),
     getAllPopularMangas(),
-    getUser(token)
+    getUser(_id as string)
   ])
   const mangasRes = JSON.parse(JSON.stringify({
     message: "Fetched Mangas",

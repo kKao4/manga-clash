@@ -41,7 +41,7 @@ export default async function handler(
             await user.save();
             res.status(200).json({ message: "Changed Password" });
           } else {
-            res.status(403).json({ error: "Invalid Token" });
+            res.status(403).json({ error: "Unverified" });
           }
         } else {
           res.status(400).json({ error: "Invalid Form" });

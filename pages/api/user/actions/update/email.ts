@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { NormalResponse } from "@/type";
 import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "@/lib/auth";
+import User from "@/models/user";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,19 +12,15 @@ export default async function handler(
     const method = req.method;
     switch (method) {
       case "POST": {
-        const token = req.cookies.token;
-        if (token) {
-          const { user } = await auth(token);
-          if (user) {
-            const email = req.body.email;
-            user.email = email;
-            await user.save();
-            res.status(200).json({ message: "Updated Email" });
-          } else {
-            res.status(401).json({ error: "Invalid Token" });
-          }
+        const { _id } = req.headers;
+        const user = await User.findById(_id);
+        if (user) {
+          const email = req.body.email;
+          user.email = email;
+          await user.save();
+          res.status(200).json({ message: "Updated Email" });
         } else {
-          res.status(401).json({ error: "Invalid Token" });
+          res.status(401).json({ error: "Unverified" });
         }
       }
     }

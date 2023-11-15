@@ -29,11 +29,11 @@ const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"))
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
   await dbConnect()
   const { mangaHref } = query
-  const { token } = req.cookies
+  const { _id } = req.headers
   const [manga, userRating, user, popularMangas] = await Promise.all([
     getManga({ href: mangaHref } as GetManga),
-    getUserRating({ token, href: mangaHref } as GetUserRating),
-    getUser(token),
+    getUserRating({ _id, href: mangaHref } as GetUserRating),
+    getUser(_id as string),
     getAllPopularMangas(),
   ])
   const popularMangasRes = JSON.parse(JSON.stringify({

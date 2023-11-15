@@ -1,16 +1,15 @@
 import Manga from "@/models/manga";
 import Chapter, { ChapterType } from "@/models/chapter";
 import View from "@/models/view";
-import { auth } from "../auth";
-import { UserType } from "@/models/user";
+import User, { UserType } from "@/models/user";
 
 export interface GetChapter {
   href: string;
   chapterNum: string;
-  token: string;
+  _id: string;
 }
 
-export const getChapter = async ({ href, chapterNum, token }: GetChapter) => {
+export const getChapter = async ({ href, chapterNum, _id }: GetChapter) => {
   const manga = await Manga.findOne({ href: href });
   if (manga) {
     const chapter = await Chapter.findOne({ mangaId: manga._id });
@@ -56,19 +55,16 @@ export const getChapter = async ({ href, chapterNum, token }: GetChapter) => {
         manga.views.value = view.views.length;
         await manga.save();
         // update user history
-        if (token) {
-          const { user } = await auth(token);
-          if (user) {
-            user.history = user.history.filter(
-              (obj: UserType["history"][number]) =>
-                !obj.mangaId.equals(manga._id)
-            );
-            user.history.unshift({
-              mangaId: manga._id,
-              chapter: num,
-            });
-            await user.save();
-          }
+        const user = await User.findById(_id);
+        if (user) {
+          user.history = user.history.filter(
+            (obj: UserType["history"][number]) => !obj.mangaId.equals(manga._id)
+          );
+          user.history.unshift({
+            mangaId: manga._id,
+            chapter: num,
+          });
+          await user.save();
         }
         return {
           name: manga.name,

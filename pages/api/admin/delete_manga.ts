@@ -1,4 +1,3 @@
-import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/dbConnect";
 import { NormalResponse } from "@/type";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -9,6 +8,7 @@ import Bookmark from "@/models/bookmark";
 import View from "@/models/view";
 import { v2 as cloudinary } from "cloudinary";
 import { cloudinaryConfig } from "@/lib/cloudinaryConfig";
+import User, { UserType } from "@/models/user";
 
 cloudinaryConfig();
 
@@ -21,62 +21,65 @@ export default async function handler(
     const method = req.method;
     switch (method) {
       case "GET": {
-        const token = req.cookies.token;
-        if (token) {
-          const { user } = await auth(token);
-          if (user && user.role === "admin") {
-            const href = req.query.href;
-            console.log("🚀 ~ file: delete_manga.ts:24 ~ href:", href);
-            let message = "";
-            const [manga, rating, chapter, bookmark, view] = await Promise.all([
+        const { _id } = req.headers;
+        const user = await User.findById(_id);
+        if (user && user.role === "admin") {
+          const href = req.query.href;
+          let message = "";
+          const [manga, rating, chapter, bookmark, view, users] =
+            await Promise.all([
               Manga.findOneAndDelete({ href: href }),
               Rating.findOneAndDelete({ mangaHref: href }),
               Chapter.findOneAndDelete({ mangaHref: href }),
               Bookmark.findOneAndDelete({ mangaHref: href }),
               View.findOneAndDelete({ mangaHref: href }),
+              User.find({}),
             ]);
-            if (rating) message += ", Deleted Rating";
-            if (chapter) {
-              message += ", Deleted Chapter";
-              chapter.chapters.forEach(
-                async (c: ChapterType["chapters"][number]) => {
-                  // delete images in cloudinary
-                  const folder = c.imagesPath[0].publicId.slice(
-                    0,
-                    c.imagesPath[0].publicId.lastIndexOf("/")
-                  );
-                  const result =
-                    await cloudinary.api.delete_resources_by_prefix(folder);
-                  console.log(
-                    "🚀 ~ file: delete_manga.ts:48 ~ chapter.chapters.forEach ~ result:",
-                    result
-                  );
-                }
-              );
-            }
-            if (bookmark) message += ", Deleted Bookmark";
-            if (view) message += ", Deleted View";
-            if (manga) {
-              // delete image in cloudinary
-              const folder = manga.image.publicId.slice(
-                0,
-                manga.image.publicId.lastIndexOf("/")
-              );
-              const result1 = await cloudinary.uploader.destroy(
-                manga.image.publicId
-              );
-              const result2 = await cloudinary.api.delete_folder(folder);
-              console.log("🚀 ~ file: delete_manga.ts:77 ~ result1:", result1);
-              console.log("🚀 ~ file: delete_manga.ts:77 ~ result2:", result2);
-              res.status(200).json({ message: "Deleted Manga" + message });
-            } else {
-              res.status(400).json({ error: "Invalid Manga" });
-            }
+          if (rating) message += ", Deleted Rating";
+          if (chapter) {
+            message += ", Deleted Chapter";
+            chapter.chapters.forEach(
+              async (c: ChapterType["chapters"][number]) => {
+                // delete images in cloudinary
+                const folder = c.imagesPath[0].publicId.slice(
+                  0,
+                  c.imagesPath[0].publicId.lastIndexOf("/")
+                );
+                const result = await cloudinary.api.delete_resources_by_prefix(
+                  folder
+                );
+              }
+            );
+          }
+          if (bookmark) message += ", Deleted Bookmark";
+          if (view) message += ", Deleted View";
+          if (manga) {
+            // delete image in cloudinary
+            const folder = manga.image.publicId.slice(
+              0,
+              manga.image.publicId.lastIndexOf("/")
+            );
+            const result1 = await cloudinary.uploader.destroy(
+              manga.image.publicId
+            );
+            // delete bookmark manga from all users
+            users.forEach(async (user: UserType) => {
+              let exist = false;
+              user.bookmarks = user.bookmarks.filter((bookmark) => {
+                exist = true;
+                return !bookmark.equals(manga._id);
+              });
+              if (exist) {
+                await (user as any).save()
+              }
+            });
+            const result2 = await cloudinary.api.delete_folder(folder);
+            res.status(200).json({ message: "Deleted Manga" + message });
           } else {
-            res.status(403).json({ error: "Not Allowed" });
+            res.status(400).json({ error: "Invalid Manga" });
           }
         } else {
-          res.status(401).json({ error: "Invalid Token" });
+          res.status(403).json({ error: "Unverified" });
         }
       }
     }

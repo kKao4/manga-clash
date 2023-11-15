@@ -23,7 +23,7 @@ export default async function handler(
       case "POST": {
         const formData = formidable({});
         const [fields, files] = await formData.parse(req);
-        console.log("🚀 ~ file: sign_in.ts:26 ~ fields:", fields)
+        console.log("🚀 ~ file: sign_in.ts:26 ~ fields:", fields);
         if (fields.email && fields.password) {
           let email = fields.email[0];
           let password = fields.password[0];
@@ -36,6 +36,7 @@ export default async function handler(
               );
               const token = await new jose.SignJWT({
                 _id: user._id,
+                role: user.role,
               })
                 .setProtectedHeader({ alg: "HS256" })
                 .setIssuedAt()

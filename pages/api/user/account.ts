@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { UserResponse } from "@/type";
-import { auth } from "@/lib/auth";
+import User from "@/models/user";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,27 +12,17 @@ export default async function handler(
     const { method } = req;
     switch (method) {
       case "GET": {
-        let { token } = req.query;
-        // console.log("🚀 ~ file: account.ts:16 ~ token:", token)
-        if (!token) {
-          token = req.cookies.token;
-          // console.log("🚀 ~ file: account.ts:18 ~ req.cookies.token:", req.cookies.token)
-        }
-        // console.log("🚀 ~ file: account.ts:18 ~ token:", token);
-        if (token !== "undefined" && token) {
-          const { user } = await auth(token as string);
-          if (user) {
-            let data = { ...user };
-            data = data._doc;
-            // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
-            delete data.password;
-            // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
-            res.status(200).json({ message: "Verified", data: data });
-          } else {
-            res.status(200).json({ error: "Invalid Token" });
-          }
+        const { _id } = req.headers;
+        const user = await User.findById(_id);
+        if (user) {
+          let data = { ...user };
+          data = data._doc;
+          // console.log("🚀 ~ file: account.ts:20 ~ user:", user);
+          delete data.password;
+          // console.log("🚀 ~ file: account.ts:25 ~ data:", data);
+          res.status(200).json({ message: "Verified", data: data });
         } else {
-          res.status(401).json({ error: "Invalid Token" });
+          res.status(200).json({ error: "Unverified" });
         }
       }
     }

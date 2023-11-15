@@ -21,7 +21,7 @@ export default function AdminImage({ handleOnChange, file, mangaState }: { handl
         width="193"
         height="274"
         priority={true}
-        quality={100}
+        quality={75}
       />
     </>
   )

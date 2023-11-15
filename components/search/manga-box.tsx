@@ -18,7 +18,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
               src={manga.image.url}
               alt=""
               fill={true}
-              quality={100}
+              quality={0}
             />
           ) : (
             <div className="w-[95px] h-[136px] md:h-[230px] md:w-[160px] bg-neutral-200 animate-pulse"></div>

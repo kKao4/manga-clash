@@ -1,9 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
-import Manga from "@/models/manga";
 import { MangasResponse, mangasPerPage } from "@/type";
 import type { NextApiRequest, NextApiResponse } from "next";
 import User, { UserType } from "@/models/user";
-import { auth } from "@/lib/auth";
 import { sliceMangas } from "@/lib/sliceMangas";
 import { findAndSortMangas } from "@/lib/findAndSortMangas";
 import { searchName } from "@/lib/searchName";
@@ -15,12 +13,9 @@ export default async function handler(
   try {
     await dbConnect();
     if (req.method === "GET") {
-      let { pageBookmark, sort, token, nameBookmark } = req.query;
-      // console.log("🚀 ~ file: all_mangas_bookmarks.ts:19 ~ req.query:", req.query)
-      if (!token) {
-        token = req.cookies.token;
-      }
-      const { user } = await auth(token as string);
+      let { pageBookmark, sort, nameBookmark } = req.query;
+      const { _id } = req.headers;
+      const user = await User.findById(_id);
       if (user) {
         let mangas = await findAndSortMangas(sort as string);
         mangas = mangas.filter((manga) => {
@@ -45,7 +40,7 @@ export default async function handler(
           length: mangasLength,
         });
       } else {
-        res.status(401).json({ error: "Invalid Token" });
+        res.status(401).json({ error: "Unverified" });
       }
     }
   } catch (error: any) {

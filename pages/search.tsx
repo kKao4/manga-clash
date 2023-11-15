@@ -24,7 +24,7 @@ const DynamicAdvanced = dynamic(() => import("@/components/search/advanced"))
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
   let { page, sort, name, author, completed, tags } = query
-  const { token } = req.cookies
+  const { _id } = req.headers
   page = page ?? "1"
   sort = sort ?? "latest"
   name = name ?? ""
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   tags = tags ?? ""
   const [{ mangasLength, mangas }, user] = await Promise.all([
     getAllMangas({ page, sort, name, author, completed, tags } as GetALlMangas),
-    getUser(token)
+    getUser(_id as string)
   ])
   const mangasRes = JSON.parse(JSON.stringify({
     message: "Fetched Mangas",

@@ -13,12 +13,12 @@ import { setMangasBookmark, selectBookmarkState } from "@/features/user-settings
 import { setMangasChart } from "@/features/user-settings/ChartSlice"
 import { setMangasHistory } from "@/features/user-settings/HistorySlice"
 import DotLoaderComponent from "@/components/global/dot-loader"
-import { auth } from "@/lib/auth"
 import { GetAllMangasBookmarks, getAllMangasBookmarks } from "@/lib/getServerSideProps/getAllMangasBookmarks"
 import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas"
 import { GetAllMangasHistory, getAllMangasHistory } from "@/lib/getServerSideProps/getAllMangasHistory"
 import { GetAllMangasChart, getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import dbConnect from "@/lib/dbConnect"
+import User from "@/models/user"
 const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
   loading: () => <DotLoaderComponent size={40} />
 })
@@ -39,7 +39,7 @@ const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popu
 export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasResponse, bookmarkRes: MangasResponse, historyRes: HistoryResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ req, query }) => {
   await dbConnect()
   let { pageChart, pageBookmark, pageHistory, nameBookmark, nameChart, nameHistory, time } = query
-  const { token } = req.cookies
+  const { _id } = req.headers
   pageChart = pageChart ?? "1"
   pageBookmark = pageBookmark ?? "1"
   pageHistory = pageHistory ?? "1"
@@ -47,60 +47,51 @@ export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasRe
   nameHistory = nameHistory ?? ""
   nameChart = nameChart ?? ""
   time = time ?? "oneWeek"
-  const { user } = await auth(token)
-  if (user) {
-    const [popularMangas, { bookmarkMangas, bookmarkMangasLength }, { historyMangas, historyMangasLength }] = await Promise.all([
-      getAllPopularMangas(),
-      getAllMangasBookmarks({ pageBookmark, nameBookmark, bookmarks: user.bookmarks } as GetAllMangasBookmarks),
-      getAllMangasHistory({ pageHistory, nameHistory, history: user.history } as GetAllMangasHistory)
-    ])
-    const popularMangasRes = JSON.parse(JSON.stringify({
-      message: "Fetched Popular Mangas",
-      data: popularMangas
+  const user = await User.findById(_id)
+  const [popularMangas, { bookmarkMangas, bookmarkMangasLength }, { historyMangas, historyMangasLength }] = await Promise.all([
+    getAllPopularMangas(),
+    getAllMangasBookmarks({ pageBookmark, nameBookmark, bookmarks: user.bookmarks } as GetAllMangasBookmarks),
+    getAllMangasHistory({ pageHistory, nameHistory, history: user.history } as GetAllMangasHistory)
+  ])
+  const popularMangasRes = JSON.parse(JSON.stringify({
+    message: "Fetched Popular Mangas",
+    data: popularMangas
+  }))
+  const bookmarkRes = JSON.parse(JSON.stringify({
+    message: "Fetched Bookmark Mangas",
+    data: bookmarkMangas,
+    length: bookmarkMangasLength
+  }))
+  const historyRes = JSON.parse(JSON.stringify({
+    message: "Fetched History Mangas",
+    data: historyMangas,
+    length: historyMangasLength
+  }))
+  let chartRes = JSON.parse(JSON.stringify({
+    message: "User Unverified",
+    data: [],
+    length: 0
+  }))
+  const userRes = JSON.parse(JSON.stringify({
+    message: "Fetched User",
+    data: user
+  }))
+  if (user.role === "admin") {
+    const { chartMangas, chartMangasLength } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
+    chartRes = JSON.parse(JSON.stringify({
+      message: "Fetched Chart Mangas",
+      data: chartMangas,
+      length: chartMangasLength
     }))
-    const bookmarkRes = JSON.parse(JSON.stringify({
-      message: "Fetched Bookmark Mangas",
-      data: bookmarkMangas,
-      length: bookmarkMangasLength
-    }))
-    const historyRes = JSON.parse(JSON.stringify({
-      message: "Fetched History Mangas",
-      data: historyMangas,
-      length: historyMangasLength
-    }))
-    let chartRes = JSON.parse(JSON.stringify({
-      message: "User Not Allowed",
-      data: [],
-      length: 0
-    }))
-    const userRes = JSON.parse(JSON.stringify({
-      message: "Fetched User",
-      data: user
-    }))
-    if (user.role === "admin") {
-      const { chartMangas, chartMangasLength } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
-      chartRes = JSON.parse(JSON.stringify({
-        message: "Fetched Chart Mangas",
-        data: chartMangas,
-        length: chartMangasLength
-      }))
-    }
-    console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
-    console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
-    console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
-    console.log("🚀 ~ file: user-settings.tsx:76 ~ chartRes.message:", chartRes.message)
-    console.log("🚀 ~ file: user-settings.tsx:81 ~ userRes.message:", userRes.message)
-    return {
-      props: {
-        popularMangasRes, bookmarkRes, historyRes, chartRes, userRes
-      }
-    }
-  } else {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false
-      }
+  }
+  console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
+  console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
+  console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
+  console.log("🚀 ~ file: user-settings.tsx:76 ~ chartRes.message:", chartRes.message)
+  console.log("🚀 ~ file: user-settings.tsx:81 ~ userRes.message:", userRes.message)
+  return {
+    props: {
+      popularMangasRes, bookmarkRes, historyRes, chartRes, userRes
     }
   }
 }

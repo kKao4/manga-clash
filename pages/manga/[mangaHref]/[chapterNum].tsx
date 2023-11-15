@@ -27,11 +27,11 @@ const DynamicComments = dynamic(() => import("@/components/chapterNum/comments")
 export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
   const { mangaHref, chapterNum } = query
-  const { token } = req.cookies
+  const { _id } = req.headers
   const [chapter, chapters, user] = await Promise.all([
-    getChapter({ href: mangaHref, chapterNum, token } as GetChapter),
+    getChapter({ href: mangaHref, chapterNum, _id } as GetChapter),
     getAllChapters({ href: mangaHref } as GetAllChapters),
-    getUser(token)
+    getUser(_id as string)
   ])
   const chapterRes = JSON.parse(JSON.stringify({
     message: "Fetched Chapter",

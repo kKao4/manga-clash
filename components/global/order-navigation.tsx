@@ -18,7 +18,7 @@ export default function OrderNavigation({
   }
   const router = useRouter()
   return (
-    <Title content={`${mangasLength} KẾT QUẢ ${search ? `CHO "${router.query.name}"` : ""}`} order={true}>
+    <Title content={`${mangasLength} KẾT QUẢ ${search ? `CHO "${router.query.name ?? ""}"` : ""}`} order={true}>
       <div className="flex flex-row flex-wrap items-center">
         <p className="mb-0.5 mr-4 text-right">Sắp xếp</p>
         <OrderButton content="Mới Cập Nhật" search={search} handleOnClick={() => handleOnClick("latest")} />

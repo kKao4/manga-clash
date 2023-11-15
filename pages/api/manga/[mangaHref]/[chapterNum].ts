@@ -5,7 +5,6 @@ import Chapter from "@/models/chapter";
 import { ChapterType } from "@/models/chapter";
 import { ChapterResponse } from "@/type";
 import View from "@/models/view";
-import { auth } from "@/lib/auth";
 import User, { UserType } from "@/models/user";
 
 export default async function handler(
@@ -17,7 +16,8 @@ export default async function handler(
     const { method } = req;
     switch (method) {
       case "GET": {
-        const { mangaHref, chapterNum, token } = req.query;
+        const { mangaHref, chapterNum } = req.query;
+        const { _id } = req.headers;
         // console.log("🚀 ~ file: [chapterNum].ts:17 ~ req.query:", req.query)
         const manga = await Manga.findOne({ href: mangaHref });
         if (manga) {
@@ -63,19 +63,17 @@ export default async function handler(
             manga.views.value = view.views.length;
             await manga.save();
             // update user history
-            if (token !== "undefined") {
-              const { user } = await auth(token as string);
-              if (user) {
-                user.history = user.history.filter(
-                  (obj: UserType["history"][number]) =>
-                    !obj.mangaId.equals(manga._id)
-                );
-                user.history.unshift({
-                  mangaId: manga._id,
-                  chapter: num,
-                });
-                await user.save();
-              }
+            const user = await User.findById(_id);
+            if (user) {
+              user.history = user.history.filter(
+                (obj: UserType["history"][number]) =>
+                  !obj.mangaId.equals(manga._id)
+              );
+              user.history.unshift({
+                mangaId: manga._id,
+                chapter: num,
+              });
+              await user.save();
             }
             res.status(200).json({
               message: "Fetched Chapter",

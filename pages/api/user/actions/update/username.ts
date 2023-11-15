@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { NormalResponse } from "@/type";
 import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "@/lib/auth";
+import User from "@/models/user";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,18 +13,20 @@ export default async function handler(
     switch (method) {
       case "POST": {
         const token = req.cookies.token;
+        const _id = req.headers._id;
+        // console.log("🚀 ~ file: username.ts:17 ~ _id:", _id);
         if (token) {
-          const { user } = await auth(token);
+          const user = await User.findById(_id);
           if (user) {
             const username = req.body.username;
             user.username = username;
             await user.save();
             res.status(200).json({ message: "Updated Username" });
           } else {
-            res.status(401).json({ error: "Invalid Token" });
+            res.status(401).json({ error: "Unverified" });
           }
         } else {
-          res.status(401).json({ error: "Invalid Token" });
+          res.status(401).json({ error: "Unverified" });
         }
       }
     }

@@ -15,16 +15,18 @@ import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllManga
 import dbConnect from "@/lib/dbConnect"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
+// TODO: fix user rating action in client redux state and 3 KẾT QUẢ CHO "undefined"
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ query, req }) => {
   await dbConnect()
   let { page, sort } = query
   page = page ?? "1"
   sort = sort ?? "latest"
-  const { token } = req.cookies
+  const { _id } = req.headers
+  console.log("🚀 ~ file: index.tsx:25 ~ _id:", _id)
   const [{ mangasLength, mangas }, popularMangas, user] = await Promise.all([
     getAllMangas({ page, sort } as GetALlMangas),
     getAllPopularMangas(),
-    getUser(token)
+    getUser(_id as string)
   ])
   const mangasRes = JSON.parse(JSON.stringify({
     message: "Fetched Mangas",
@@ -41,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
   }))
   console.log("🚀 ~ file: index.tsx:42 ~ mangasRes.message:", mangasRes.message)
   console.log("🚀 ~ file: index.tsx:47 ~ popularMangasRes.message:", popularMangasRes.message)
-  console.log("🚀 ~ file: index.tsx:52 ~ userRes.message:", userRes)
+  console.log("🚀 ~ file: index.tsx:52 ~ userRes.message:", userRes.message)
   return {
     props: {
       mangasRes: mangasRes as any, popularMangasRes: popularMangasRes as any, userRes

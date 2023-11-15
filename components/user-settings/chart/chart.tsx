@@ -77,7 +77,8 @@ export default function Chart() {
                   </td>
                   {/* image and name */}
                   <td className="flex flex-row p-2.5 pr-0 text-sm gap-x-4">
-                    <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144} />
+                    <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144}
+                      quality={0} />
                     <Link
                       href={`/manga/${manga.href}`}
                       className="font-bold transition-colors cursor-pointer hover:text-second-green"
