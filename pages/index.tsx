@@ -15,7 +15,7 @@ import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllManga
 import dbConnect from "@/lib/dbConnect"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
-// TODO: fix user rating action in client redux state and make px bigger for mobile and make modal sign in/up higher for mobile and add a custom 404 page
+// TODO: add a custom 404 page
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ query, req }) => {
   await dbConnect()
   let { page, sort } = query
