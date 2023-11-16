@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import SearchDropdown from "./search-dropdown"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { BarLoader } from "react-spinners"
 
 export default function SearchBox({
@@ -14,9 +14,23 @@ export default function SearchBox({
   const searchState = useSelector(selectSearchState)
   const dispatch = useDispatch()
   const [isLoadingMangas, setIsLoadingMangas] = useState<boolean>(false)
+  const myRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (myRef.current) {
+      if (showSearchBox) {
+        let padding = window.innerWidth > 768 ? 32 : 16
+        myRef.current.style.maxHeight = myRef.current.scrollHeight + padding + "px"
+      } else {
+        myRef.current.style.maxHeight = "0px"
+      }
+    }
+  }, [showSearchBox])
   return (
     <>
-      <div className={`w-full px-2 md:px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "max-h-[82px] py-2 md:py-4 opacity-100" : "max-h-0 py-0 opacity-0"}`}>
+      <div
+        ref={myRef}
+        className={`w-full px-2 md:px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "py-2 md:py-4 opacity-100" : "py-0 opacity-0"}`}
+      >
         <form className="relative flex flex-row justify-center max-w-fit mx-auto" onSubmit={(e) => {
           e.preventDefault()
         }}>

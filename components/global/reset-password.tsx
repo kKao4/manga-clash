@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { selectResetPassword, toggleResetPassword } from "@/features/GlobalSlice"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Input from "./input"
 import { emailReg } from "@/type"
 import CloseButton from "./close-button"
+import { useOnClickOutside } from 'usehooks-ts'
 
 export default function ResetPassword() {
   const showResetPassword = useSelector(selectResetPassword)
@@ -12,6 +13,14 @@ export default function ResetPassword() {
   const [emailValid, setEmailValid] = useState<boolean>(false)
   const [emailSent, setEmailSent] = useState<boolean>(false)
   const [emailNotFound, setEmailNotFound] = useState<boolean>(false)
+  const [zIndex, setZIndex] = useState<string>("-z-10")
+  const formRef = useRef<HTMLFormElement>(null)
+  useOnClickOutside(formRef, () => dispatch(toggleResetPassword(false)))
+  useEffect(() => {
+    if (showResetPassword) {
+      setZIndex("z-50")
+    }
+  }, [showResetPassword])
   const emailChange = (value: string) => {
     setEmail(value)
     setEmailValid(() => value.match(emailReg) ? true : false)
@@ -28,8 +37,16 @@ export default function ResetPassword() {
   }, [email])
   return (
     <>
-      <div className={`${showResetPassword ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center`}>
+      <div
+        className={`${showResetPassword ? "opacity-100" : "opacity-0"} ${zIndex} transition-opacity px-4 duration-300 ease-out w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center`}
+        onTransitionEnd={() => {
+          if (!showResetPassword) {
+            setZIndex("-z-10")
+          }
+        }}
+      >
         <form
+          ref={formRef}
           className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()

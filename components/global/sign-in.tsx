@@ -2,9 +2,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectSignIn, toggleSignIn, toggleResetPassword } from "@/features/GlobalSlice"
 import { NormalResponse, emailReg, passwordReg, UserResponse } from "@/type"
 import Input from "./input"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
+import { useOnClickOutside } from 'usehooks-ts'
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
@@ -15,6 +16,14 @@ export default function SignIn() {
   const [passwordValid, setPasswordValid] = useState<boolean>(false)
   const [wrongInformation, setWrongInformation] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [zIndex, setZIndex] = useState<string>("-z-10")
+  const formRef = useRef<HTMLFormElement>(null)
+  useOnClickOutside(formRef, () => dispatch(toggleSignIn(false)))
+  useEffect(() => {
+    if (showSignIn) {
+      setZIndex("z-50")
+    }
+  }, [showSignIn])
   const emailChange = (value: string) => {
     setEmail(value)
     setEmailValid(() => value.match(emailReg) ? true : false)
@@ -30,8 +39,16 @@ export default function SignIn() {
   }, [email, password])
   return (
     <>
-      <div className={`${showSignIn ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center`}>
+      <div
+        className={`${showSignIn ? "opacity-100" : "opacity-0"} ${zIndex} transition-opacity px-4 duration-300 ease-out w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center`}
+        onTransitionEnd={() => {
+          if (!showSignIn) {
+            setZIndex("-z-10")
+          }
+        }}
+      >
         <form
+          ref={formRef}
           className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()

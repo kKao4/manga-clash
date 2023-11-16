@@ -12,7 +12,7 @@ export default function ResponsiveMenu({
   return (
     <>
       <div
-        className={`w-full h-screen ${zIndex} bg-black/50 fixed top-0 left-0 transition-opacity duration-350 ${showModalMenu ? "opacity-100" : "opacity-0"}`}
+        className={`w-full h-screen ${zIndex} bg-black/50 fixed top-0 left-0 transition-opacity duration-300 ease-out ${showModalMenu ? "opacity-100" : "opacity-0"}`}
         onTransitionEnd={() => {
           if (!showModalMenu) {
             setZIndex("-z-20")
