@@ -27,14 +27,18 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
       }
     }
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("_id", payload._id as string);
-    const response = NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
-    return response;
+    if (payload._id) {
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set("_id", payload._id as string);
+      const response = NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        },
+      });
+      return response;
+    } else {
+      return NextResponse.next();
+    }
   } else {
     return NextResponse.next();
   }
