@@ -47,10 +47,7 @@ export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterRespons
   }))
   if (!chapter) {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false
-      }
+      notFound: true
     }
   }
   return {

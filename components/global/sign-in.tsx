@@ -30,7 +30,7 @@ export default function SignIn() {
   }, [email, password])
   return (
     <>
-      <div className={`${showSignIn ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid place-items-center`}>
+      <div className={`${showSignIn ? "translate-x-0 opacity-100 z-50" : "-translate-x-full opacity-0 -z-10"} transition-opacity px-4 duration-400 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-10 md:py-0 items-start md:place-items-center`}>
         <form
           className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
@@ -48,7 +48,6 @@ export default function SignIn() {
               const userRes = await userResult.json()
               dispatch(setUser(userRes.data))
               setIsLoading(false)
-              // router.replace(`${router.asPath}`, "", { scroll: false })
               setEmail("")
               setPassword("")
               dispatch(toggleSignIn(false))

@@ -14,13 +14,14 @@ import { selectUserRating, setUserRating } from "@/features/mangaHref/UserRating
 import { PulseLoader } from "react-spinners";
 import { selectUserState } from "@/features/UserSlice";
 import numeral from "numeral"
+import { RootState } from "@/store";
 
 export default function DetailManga({ manga, chapters, handleScroll }: { manga: MangaType, chapters: MangaType["chapters"] | undefined, handleScroll: () => void }) {
   const router = useRouter()
   const dispatch = useDispatch()
   const myRef = useRef<HTMLDivElement>(null)
   const userState = useSelector(selectUserState)
-  const userRatingState = useSelector(selectUserRating)
+  const userRatingState = useSelector((state: RootState) => selectUserRating(state, manga.href))
   const [bookmark, setBookmark] = useState<boolean>(false)
   const [yourRating, setYourRating] = useState<StarType>(1)
   const [isLoadingUserRating, setIsLoadingUserRating] = useState<boolean>(false)
@@ -81,11 +82,8 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       const [mangaRes, userRatingRes]: [MangaResponse, UserRatingResponse] = await Promise.all([mangaResult.json(), userRatingResult.json()])
       if (mangaRes.data && userRatingRes.data) {
         dispatch(addOrUpdateManga(mangaRes.data))
-        dispatch(setUserRating(userRatingRes.data))
+        dispatch(setUserRating({ href: mangaRes.data.href, star: userRatingRes.data }))
       }
-      // if (res.data) {
-      //   router.replace(router.asPath, "", { scroll: false })
-      // }
     } else if (res.error) {
       alert(res.error)
       dispatch(toggleSignIn(true))

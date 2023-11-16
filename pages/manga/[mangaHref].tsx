@@ -60,10 +60,7 @@ export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, p
   console.log("🚀 ~ file: [mangaHref].tsx:57 ~ mangaRes.message:", mangaRes.message)
   if (!manga) {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false
-      }
+      notFound: true
     }
   }
   return {
@@ -87,9 +84,9 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   // Set User Rating
   useEffect(() => {
     if (userRatingRes.data) {
-      dispatch(setUserRating(userRatingRes.data))
+      dispatch(setUserRating({ href: mangaRes.data!.href, star: userRatingRes.data }))
     }
-  }, [userRatingRes, dispatch])
+  }, [userRatingRes, dispatch, mangaRes])
   // Set User
   useEffect(() => {
     if (userRes.data) {
@@ -132,8 +129,8 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
             src="https://upload-widget.cloudinary.com/global/all.js"
             type="text/javascript"
             strategy="lazyOnload"
-            // onLoad={() => console.log("Loading")}
-            // onReady={() => console.log("Ready")}
+          // onLoad={() => console.log("Loading")}
+          // onReady={() => console.log("Ready")}
           />
         )}
         <Head>

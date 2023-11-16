@@ -9,7 +9,7 @@ export default function RowChapter({ manga, i }: { manga: MangaType, i: number }
       <div className="basis-1/2">
         <Link
           href={`/manga/${manga.href}/chapter-${manga.chapters[i].num}`}
-          className="px-2.5 py-1 text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
+          className="px-2.5 py-[5px] text-sm font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white shrink-0"
         >
           Chapter {manga.chapters[i].num}
         </Link>

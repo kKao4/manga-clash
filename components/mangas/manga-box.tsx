@@ -7,7 +7,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
     <div className="flex flex-row col-span-2 md:col-span-1 gap-x-5">
       {/* image */}
-      <Link href={`/manga/${manga.href}`} className="relative h-36 overflow-hidden cursor-pointer w-[100px] group/image shrink-0">
+      <Link href={`/manga/${manga.href}`} className="relative h-36 mt-0.5 overflow-hidden cursor-pointer w-[100px] group/image shrink-0">
         <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
         {manga.image ? (
           <Image
@@ -60,12 +60,14 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           <span className="text-xs font-bold ml-1.5">{manga.rating.star ? `${manga.rating.star.toFixed(1)}` : "No Rating"}</span>
         </div>
         {/* 2 chapters */}
-        {manga.chapters[0] && (
-          <RowChapter manga={manga} i={0} />
-        )}
-        {manga.chapters[1] && (
-          <RowChapter manga={manga} i={1} />
-        )}
+        <div className="flex flex-col gap-y-3">
+          {manga.chapters[0] && (
+            <RowChapter manga={manga} i={0} />
+          )}
+          {manga.chapters[1] && (
+            <RowChapter manga={manga} i={1} />
+          )}
+        </div>
       </div>
     </div>
   )
