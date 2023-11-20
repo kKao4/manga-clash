@@ -13,9 +13,9 @@ import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularManga
 import { getUser } from "@/lib/getServerSideProps/getUser"
 import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas"
 import dbConnect from "@/lib/dbConnect"
+import Slider from "@/components/global/slider"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
-// TODO: add a custom 404 page
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ query, req }) => {
   await dbConnect()
   let { page, sort } = query
@@ -75,6 +75,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsT
       <BodyBox>
         {/* left row */}
         <div className="basis-9/12">
+          <Slider />
           <h2 className="mb-2 text-lg font-bold uppercase">ĐỌC TRUYỆN MỚI CẬP NHẬT</h2>
           <hr />
           {mangasRes.data ? (
