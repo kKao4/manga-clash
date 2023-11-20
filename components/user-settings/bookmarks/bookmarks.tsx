@@ -56,7 +56,7 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
             </>
           ) : (!router.query.nameBookmark) ? (
             <tr>
-              <td colSpan={3} className="py-4 font-medium text-center">Bạn chưa thích truyện nào</td>
+              <td colSpan={3} className="py-4 font-medium text-center">Bạn chưa theo dõi truyện nào</td>
             </tr>
           ) : (
             <tr>

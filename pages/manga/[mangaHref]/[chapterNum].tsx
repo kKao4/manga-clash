@@ -3,7 +3,7 @@ import BodyBox from "@/components/global/body-box"
 import Navigation from "@/components/global/navigation"
 import Image from "next/image"
 import Menu from "@/components/chapterNum/menu"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
@@ -19,6 +19,7 @@ import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
+import { useEventListener } from 'usehooks-ts'
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -157,6 +158,33 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       setReadingStyle("full")
     }
   }, [])
+  const nextPage = useCallback(() => {
+    if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
+      router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
+    } else {
+      setIndex(prevState => prevState + 1)
+    }
+  }, [chapterRes, index, nextChapter, router])
+  const prevPage = useCallback(() => {
+    if (index === 0) {
+      router.push(`/manga/${chapterRes.data?.href}/chapter-${prevChapter}`)
+    } else {
+      setIndex(prevState => prevState - 1)
+    }
+  }, [chapterRes, index, prevChapter, router])
+  useEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      nextPage()
+      if (divRef.current) {
+        divRef.current?.scrollIntoView()
+      }
+    } else if (e.key === "ArrowLeft") {
+      prevPage()
+      if (divRef.current) {
+        divRef.current?.scrollIntoView()
+      }
+    }
+  })
   // title for page
   const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
   return (
@@ -176,7 +204,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
-            <p className="text-3xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
+            <p className="text-2xl sm:text-3xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
             {/* navigation */}
             <div className="w-full grow">
               <Navigation manga={chapterRes.data} />
@@ -230,17 +258,9 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               className={directionArrow === "right" ? "cursor-arrow-right" : directionArrow === "left" ? "cursor-arrow-left" : ""}
               onClick={() => {
                 if (directionArrow === "right") {
-                  if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
-                    router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
-                  } else {
-                    setIndex(prevState => prevState + 1)
-                  }
+                  nextPage()
                 } else if (directionArrow === "left") {
-                  if (index === 0) {
-                    router.push(`/manga/${chapterRes.data?.href}/chapter-${prevChapter}`)
-                  } else {
-                    setIndex(prevState => prevState - 1)
-                  }
+                  prevPage()
                 }
                 if (directionArrow) {
                   // scroll to top when change page
@@ -259,7 +279,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               ) : (
                 <div className="max-w-[960px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`absolute transition-opacity duration-400 ease-out ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
+                    return <Image key={c.publicId} className={`absolute ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
                   })}
                 </div>
               )}

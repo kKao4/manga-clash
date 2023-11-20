@@ -39,6 +39,7 @@
     "react-ripples": "^2.2.1",
     "react-scroll": "^1.9.0",
     "react-spinners": "^0.13.8",
+    "sharp": "^0.32.6",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "usehooks-ts": "^2.9.1"
