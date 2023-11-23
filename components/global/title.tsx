@@ -13,7 +13,7 @@ export default function Title({
     setEnableDarkMode(() => router.query.chapterNum ? true : false)
   }, [router])
   return (
-    <div className={`${order ? "flex-col sm:flex-row" : "flex-row"} relative flex items-center mt-6`}>
+    <div className={`${order ? "flex-col sm:flex-row" : "flex-row"} relative flex items-center mt-4`}>
       <div className="flex flex-row items-center w-full sm:w-auto grow">
         <GreenStar />
         <p className={`ml-1 text-lg font-bold ${enableDarkMode ? "dark:text-white" : ""}`}>{content}</p>

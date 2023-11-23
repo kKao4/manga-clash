@@ -2,7 +2,7 @@ import BodyBox from "@/components/global/body-box"
 import { ChartResponse, HistoryResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import Menu from "@/components/user-settings/menu"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUserSettingsState, setMenu } from "@/features/user-settings/UserSettingsSlice"
@@ -76,14 +76,13 @@ export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasRe
     message: "Fetched User",
     data: user
   }))
-  if (user.role === "admin") {
-    const { chartMangas, chartMangasLength } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
-    chartRes = JSON.parse(JSON.stringify({
-      message: "Fetched Chart Mangas",
-      data: chartMangas,
-      length: chartMangasLength
-    }))
-  }
+  const { chartMangas, chartMangasLength, trendingManga } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
+  chartRes = JSON.parse(JSON.stringify({
+    message: "Fetched Chart Mangas",
+    data: chartMangas,
+    length: chartMangasLength,
+    trendingManga
+  }))
   console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
   console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
   console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
@@ -124,7 +123,9 @@ const Page = ({ popularMangasRes, bookmarkRes, historyRes, userRes, chartRes }: 
       dispatch(setMangasHistory({ mangas: historyRes.data, length: historyRes.length as number }))
     }
   }, [dispatch, historyRes])
-  const title = `${userState.username} - Cài đặt`
+  const title = useMemo(() => {
+    return `${userState.username} - Cài đặt`
+  }, [userState.username])
   return (
     <>
       <Head>

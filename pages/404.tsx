@@ -5,7 +5,7 @@ export default function Custom404() {
   return (
     <>
       <div className="flex justify-center mt-10 mb-4">
-        <Image src={img} alt="404 image" quality={0} />
+        <Image src={img} alt="404 image" quality={50} />
       </div>
       <p className="font-bold text-2xl text-center">Oops! page not found.</p>
     </>

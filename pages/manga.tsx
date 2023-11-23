@@ -96,7 +96,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsT
       <BodyBox>
         {/* left row */}
         <div className="basis-9/12">
-          <h2 className="mb-6 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {router.query.tags ? `Thể Loại "${router.query.tags}"` : ""}</h2>
+          <h2 className="mb-4 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {router.query.tags ? `Thể Loại "${router.query.tags}"` : ""}</h2>
           <OrderNavigation mangasLength={mangasRes.length} search={false} />
           {/* mangas loop */}
           <MangaBoxes mangas={mangasRes.data} mangasLength={mangasRes.length} />

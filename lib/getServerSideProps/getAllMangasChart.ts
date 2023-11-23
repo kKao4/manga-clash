@@ -17,7 +17,11 @@ export const getAllMangasChart = async ({
 }: GetAllMangasChart) => {
   const views = await View.find({});
   let chartMangas: any[] = [];
+  let trendingMangas: any[] = [];
   const mangas = await Manga.find({});
+  if (time === "oneDay") {
+    filterViews(views, mangas, trendingMangas, 7);
+  }
   if (time === "all") {
     // sort views desc
     views.sort((a: any, b: any) => b.views.length - a.views.length);
@@ -35,6 +39,8 @@ export const getAllMangasChart = async ({
     filterViews(views, mangas, chartMangas, 30);
   } else if (time === "threeMonth") {
     filterViews(views, mangas, chartMangas, 90);
+  } else if (time === "oneDay") {
+    filterViews(views, mangas, chartMangas, 1);
   }
   // filter name
   chartMangas = searchName(nameChart, chartMangas);
@@ -46,5 +52,9 @@ export const getAllMangasChart = async ({
   const chartMangasLength = chartMangas.length;
   // slice mangas for 1 page
   chartMangas = sliceMangas(chartMangas, Number(pageChart));
-  return { chartMangas, chartMangasLength };
+  return {
+    chartMangas,
+    chartMangasLength,
+    trendingManga: trendingMangas[0] as any,
+  };
 };

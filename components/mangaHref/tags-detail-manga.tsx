@@ -1,10 +1,7 @@
 import { MangaResponse } from "@/type"
 import Link from "next/link"
-import { useDispatch } from "react-redux"
-import { resetSearchTags } from "@/features/search/SearchSlice"
 
 export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"] }) {
-  const dispatch = useDispatch()
   return (
     <>
       {manga!.tags.length ? (

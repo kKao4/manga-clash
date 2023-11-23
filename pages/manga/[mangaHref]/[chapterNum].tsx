@@ -3,7 +3,7 @@ import BodyBox from "@/components/global/body-box"
 import Navigation from "@/components/global/navigation"
 import Image from "next/image"
 import Menu from "@/components/chapterNum/menu"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
 import UserMenu from "@/components/global/user-menu"
@@ -141,6 +141,8 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       } else {
         setDirectionArrow(undefined)
       }
+    } else if (readingStyle === "full") {
+      setDirectionArrow(undefined)
     }
   }, [mouse, imagesBoxRef, readingStyle])
   // scroll to top when change chapter
@@ -172,6 +174,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       setIndex(prevState => prevState - 1)
     }
   }, [chapterRes, index, prevChapter, router])
+  // add keyboard next/prev page
   useEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") {
       nextPage()
@@ -186,7 +189,9 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     }
   })
   // title for page
-  const title = `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
+  const title = useMemo(() => {
+    return `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
+  }, [router.query.chapterNum, chaptersRes.data?.name])
   return (
     <>
       <Head>
@@ -271,13 +276,13 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               }}
             >
               {readingStyle === "full" ? (
-                <div className="max-w-[960px] mx-auto my-4 sm:my-8 xl:my-12 flex flex-col relative">
+                <div className="max-w-[960px] mx-auto my-3 lg:my-6 xl:my-8 flex flex-col relative">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
-                <div className="max-w-[960px] aspect-[960/1360] mx-auto my-4 sm:my-8 xl:my-12 relative">
+                <div className="max-w-[960px] aspect-[960/1360] mx-auto my-3 lg:my-6 xl:my-8 relative">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`absolute ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
                   })}

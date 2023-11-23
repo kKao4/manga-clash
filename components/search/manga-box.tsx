@@ -26,7 +26,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
         </Link>
         <div className="flex flex-col gap-y-1.5 flex-1">
           {/* name */}
-          <Link href={`/manga/${manga.href}`} className="text-lg font-bold cursor-pointer line-clamp-2 hover:text-second-green">
+          <Link href={`/manga/${manga.href}`} className="text-lg font-bold cursor-pointer line-clamp-2 hover:text-second-green transition-colors">
             {manga.name}
           </Link>
           <div className="px-5 py-3 bg-neutral-100">

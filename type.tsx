@@ -65,6 +65,7 @@ export type ChartResponse = {
   error?: string,
   length?: number
   data?: MangaType[],
+  trendingManga?: MangaType
 }
 
 export type NormalResponse = {

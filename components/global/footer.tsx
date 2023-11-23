@@ -17,11 +17,16 @@ export default function Footer() {
             <span className={enableDarkMode ? "dark:text-neutral-300" : ""}>|</span>
             <Link href={"/"} className={`hover:text-second-green transition-colors font-medium ${enableDarkMode ? "dark:text-neutral-300 dark:hover:hover:text-second-green" : ""}`}>Privacy Policy</Link>
             <span className={enableDarkMode ? "dark:text-neutral-300" : ""}>|</span>
-            <Link href={"/"} className={`hover:text-second-green transition-colors font-medium ${enableDarkMode ? "dark:text-neutral-300 dark:hover:hover:text-second-green" : ""}`}>Contact Us</Link>
+            <button
+              className={`hover:text-second-green transition-colors font-medium ${enableDarkMode ? "dark:text-neutral-300 dark:hover:hover:text-second-green" : ""}`}
+              onClick={() => window.open("https://github.com/kKao4", "_blank")}
+            >
+              Contact Me
+            </button>
           </div>
-          <p className={`text-xs text-center ${enableDarkMode ? "dark:text-neutral-300" : ""}`}>@ 2020 - 2023 Manga Clash by kKao4</p>
+          <p className={`text-xs text-center ${enableDarkMode ? "dark:text-neutral-300" : ""}`}>@ 2023 Manga Website by kKao4</p>
         </div>
-      </div>
+      </div >
     </>
   )
 }

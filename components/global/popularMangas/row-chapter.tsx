@@ -5,7 +5,7 @@ import Link from "next/link"
 
 export default function RowChapter({ manga, i }: { manga: MangaType, i: number }) {
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center max-w-[240px]">
       <div className=" basis-1/2">
         <Link
           href={`/manga/${manga.href}/chapter-${manga.chapters[i].num}`}

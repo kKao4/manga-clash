@@ -3,7 +3,7 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Navigation from "@/components/global/navigation";
 import MenuFootBox from "@/components/global/menu-foot-box";
 import BodyBox from "@/components/global/body-box";
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,7 +116,9 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
     }
   }
   // Title For Page
-  const title = `Đọc ${mangaState?.name} - Manga Clash`
+  const title = useMemo(() => {
+    return `Đọc ${mangaState?.name} - Manga Clash`
+  }, [mangaState?.name])
 
   const handleChangeChaptersOrder = () => {
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")

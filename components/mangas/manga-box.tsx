@@ -23,7 +23,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
       </Link>
       <div className="flex flex-col w-full gap-y-2">
         {/* name */}
-        <Link href={`/manga/${manga.href}`} className="font-bold cursor-pointer line-clamp-2 hover:text-second-green">
+        <Link href={`/manga/${manga.href}`} className="font-bold cursor-pointer line-clamp-2 hover:text-second-green transition-colors">
           {manga.name}
         </Link>
         {/* star */}

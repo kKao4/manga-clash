@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectSearchState, setSearchName, setSearchAuthor, setSearchCompleted, addSearchTags, setPageSearch, resetSearchTags, setSearchTags } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
 import { MyRipples } from "@/components/global/button-ripple";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import UserMenu from "@/components/global/user-menu";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -116,7 +116,9 @@ const Page = ({ mangasRes, userRes }: InferGetServerSidePropsType<typeof getServ
       setShowAdvanced(true)
     }
   }, [router])
-  const title = `Tìm kiếm cho ${searchState.name} - Manga Clash`
+  const title = useMemo(() => {
+    return `Tìm kiếm cho ${searchState.name} - Manga Clash`
+  }, [searchState.name])
   return (
     <>
       <Head>

@@ -11,7 +11,6 @@ import dynamic from "next/dynamic";
 const DynamicSearchBox = dynamic(() => import("./search-box"))
 const DynamicResponsiveMenu = dynamic(() => import("./responsive-menu"))
 
-// TODO: add image slider to mangas page
 export default function MenuTop() {
   const dispatch = useDispatch()
   const [showModalMenu, setShowModalMenu] = useState<boolean>(false)
@@ -49,7 +48,7 @@ export default function MenuTop() {
             }}>
               <svg className="h-6 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" /></svg>
             </div>
-            <Link href="/manga?page=1&sort=latest" className="max-w-[180px] max-h-[32px] md:max-h-[44px] mr-auto overflow-hidden flex justify-center items-center xl:mr-12">
+            <Link href="/" className="max-w-[180px] max-h-[32px] md:max-h-[44px] mr-auto overflow-hidden flex justify-center items-center xl:mr-12">
               <Image src={AliceChan} alt="alice-chan" className="mt-8" priority={true} quality={0} />
             </Link>
             <div className="flex-row hidden md:flex grow">
