@@ -35,7 +35,7 @@ const NavBar = forwardRef(
               <div className="relative w-full h-full overflow-hidden">
                 <select
                   value={chapter?.chapter.num}
-                  className="w-full h-full px-0 py-2 text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis text-sm md:px-4 -mt-px md:text-lg bg-neutral-700 focus:outline-none" id="select-chapter"
+                  className="w-full h-full px-0 py-2 text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis text-sm md:px-4 md:text-lg bg-neutral-700 focus:outline-none" id="select-chapter"
                   onChange={(e) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
                   style={{ appearance: "none", textAlignLast: "center" }}
                 >
