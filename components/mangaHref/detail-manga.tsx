@@ -127,8 +127,8 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             </>
           )}
         </div>
-        <span className={`block ml-2 text-2xl font-bold group-hover/stars:hidden ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>{manga.rating.star ? `${manga.rating.star.toFixed(1)}` : <p className="text-lg md:text-xl">Chưa Có Đánh Giá</p>}</span>
-        <span className={`hidden ml-2 text-2xl font-bold group-hover/stars:block ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>Đánh Giá Truyện</span>
+        <span className={`block ml-2 text-2xl font-bold lg:group-hover/stars:hidden ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>{manga.rating.star ? `${manga.rating.star.toFixed(1)}` : <p className="text-lg md:text-xl">Chưa Có Đánh Giá</p>}</span>
+        <span className={`hidden ml-2 text-2xl font-bold lg:group-hover/stars:block ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>Đánh Giá Truyện</span>
         {userRatingState?.star ? (
           <span
             key={manga!.href}

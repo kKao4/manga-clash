@@ -14,7 +14,7 @@ export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
   return (
     <>
       <Slider
-        className="w-screen sm:w-[572px] lg:w-[580px] h-[250px]"
+        className="w-screen md:w-[572px] lg:w-[580px] h-[250px]"
         dots={true}
         infinite={true}
         speed={400}

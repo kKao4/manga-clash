@@ -57,6 +57,7 @@ export default function Menu({
                 width="w-[88px]"
                 value={(index + 1).toString()}
                 handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+                contentCenter={true}
               >
                 {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {
                   return <option key={i} value={i}>{i}/{chapter!.chapter.imagesPath.length}</option>
@@ -66,7 +67,7 @@ export default function Menu({
           )}
         </div>
       </div>
-      {/* prev/next button */}
+      {/* prev/next button & select page */}
       {router.query.chapterNum && !Array.isArray(router.query.chapterNum) && (
         <>
           <div className="flex flex-row mx-auto space-x-2 sm:ml-auto sm:mr-0">
@@ -76,6 +77,7 @@ export default function Menu({
                   width="w-[88px]"
                   value={(index + 1).toString()}
                   handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+                  contentCenter={true}
                 >
                   {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {
                     return <option key={i} value={i}>{i}/{chapter!.chapter.imagesPath.length}</option>

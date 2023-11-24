@@ -37,7 +37,7 @@ export default function Navigation({ manga }: { manga: typeof initialMangaState[
                 className={`text-[13px] md:text-sm transition-colors text-gray-text hover:text-second-green ${router.query.chapterNum === "chapter-" + (manga.chapter.num).toString() ? "text-second-green" : "text-gray-text hover:text-second-green"}`}
               >
                 Chapter {manga.chapter.num}
-              </Link>.
+              </Link>
             </>
           )}
         </>

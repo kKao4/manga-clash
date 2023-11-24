@@ -7,7 +7,7 @@ import Parser from "html-react-parser"
 export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
   const router = useRouter()
   return (
-    <div className="w-screen sm:w-[572px] lg:w-[580px] h-[250px] relative overflow-hidden">
+    <div className="w-screen md:w-[572px] lg:w-[580px] h-[250px] relative overflow-hidden">
       <Image className="absolute left-1/2 -translate-x-1/2 -translate-y-[10%] w-full blur-lg" quality={50} src={manga!.image.url} alt="" width={100} height={144} />
       <div className="absolute w-full h-full slick-shadow bg-gradient-to-r from-black/40 to-black/90 blur-none" />
       <div className="absolute w-full h-full pl-2 pr-3 sm:px-8 py-4 sm:py-6 z-10 flex flex-row">

@@ -65,7 +65,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
   const [showNavChapter, setShowNavChapter] = useState<boolean>(false)
-  const [readingStyle, setReadingStyle] = useState<"full" | "single">("full")
+  const [readingStyle, setReadingStyle] = useState<"full" | "single">()
   const [index, setIndex] = useState<number>(0)
   const imagesBoxRef = useRef<HTMLDivElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
@@ -209,7 +209,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
-            <p className="text-2xl sm:text-3xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
+            <p className="text-xl md:text-2xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
             {/* navigation */}
             <div className="w-full grow">
               <Navigation manga={chapterRes.data} />
@@ -246,16 +246,18 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               )}
             </div>
             <div ref={divRef}>
-              <Menu
-                chapters={chaptersRes.data}
-                prevChapter={prevChapter}
-                nextChapter={nextChapter}
-                readingStyle={readingStyle}
-                setReadingStyle={setReadingStyle}
-                index={index}
-                setIndex={setIndex}
-                chapter={chapterRes.data}
-              />
+              {readingStyle && (
+                <Menu
+                  chapters={chaptersRes.data}
+                  prevChapter={prevChapter}
+                  nextChapter={nextChapter}
+                  readingStyle={readingStyle}
+                  setReadingStyle={setReadingStyle}
+                  index={index}
+                  setIndex={setIndex}
+                  chapter={chapterRes.data}
+                />
+              )}
             </div>
             {/* images chapter */}
             <div
@@ -276,29 +278,31 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               }}
             >
               {readingStyle === "full" ? (
-                <div className="max-w-[960px] mx-auto my-3 lg:my-6 xl:my-8 flex flex-col relative">
+                <div className="max-w-[960px] my-3 lg:my-6 xl:my-8 flex flex-col relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
-                <div className="max-w-[960px] aspect-[960/1360] mx-auto my-3 lg:my-6 xl:my-8 relative">
+                <div className="max-w-[960px] h-fit my-3 lg:my-6 xl:my-8 relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
-                    return <Image key={c.publicId} className={`absolute ${index === i ? "opacity-100" : "opacity-0"} object-contain object-center md:object-top`} src={c.url} alt="" fill={true} quality={100} priority={i < 2} />
+                    return <Image key={c.publicId} className={`${i !== 0 ? "absolute" : ""} ${index === i ? "opacity-100 " : "opacity-0"} object-contain object-center md:object-top top-0`} src={c.url} alt="" width={960} height={1360} />
                   })}
                 </div>
               )}
             </div>
-            <Menu
-              chapters={chaptersRes.data}
-              prevChapter={prevChapter}
-              nextChapter={nextChapter}
-              readingStyle={readingStyle}
-              setReadingStyle={setReadingStyle}
-              index={index}
-              setIndex={setIndex}
-              chapter={chapterRes.data}
-            />
+            {readingStyle && (
+              <Menu
+                chapters={chaptersRes.data}
+                prevChapter={prevChapter}
+                nextChapter={nextChapter}
+                readingStyle={readingStyle}
+                setReadingStyle={setReadingStyle}
+                index={index}
+                setIndex={setIndex}
+                chapter={chapterRes.data}
+              />
+            )}
             {/* comments */}
             <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} />
