@@ -6,12 +6,11 @@ import Link from "next/link"
 export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
   return (
     <div className="flex flex-row col-span-1 gap-x-5">
-      {/* TODO: lazy loading in settings and image slider in homepage fix user dropdown in search page */}
       {/* image */}
       <Link href={`/manga/${manga.href}`} className="relative w-16 h-[86px] overflow-hidden cursor-pointer group/image shrink-0">
         <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors overflow-hidden duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
         {manga.image ? (
-          <Image className="w-full h-full transition-transform duration-550 group-hover/image:scale-107 object-cover" src={manga.image.url} alt="" fill={true} quality={0} />
+          <Image className="transition-transform duration-550 group-hover/image:scale-107 object-fill" src={manga.image.url} alt="" fill={true} quality={0} />
         ) : (
           <div className="w-full h-full bg-gray-150 animate-pulse"></div>
         )}

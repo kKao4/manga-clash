@@ -16,9 +16,9 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
       {/* profile picture */}
       <div className="w-8 h-8 overflow-hidden border rounded-full relative">
         {user?.profilePicture.url ? (
-          <Image src={user.profilePicture.url} alt="profile picture" fill={true} className="object-cover" quality={0} />
+          <Image src={user.profilePicture.url} alt="profile picture" fill={true} className="object-fill" quality={0} />
         ) : (
-          <Image src={blankProfile} alt="" fill={true} className="object-cover" quality={0} />
+          <Image src={blankProfile} alt="" fill={true} className="object-fill" quality={0} />
         )}
       </div>
       <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-20 -z-10 opacity-0 hover:opacity-100 transition-opacity">

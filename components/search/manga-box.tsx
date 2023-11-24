@@ -14,7 +14,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
           <div className="absolute top-0 left-0 z-10 w-full h-full overflow-hidden transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
           {manga.image ? (
             <Image
-              className="w-full h-full transition-transform duration-550 group-hover/image:scale-110 object-cover"
+              className="w-full h-full transition-transform duration-550 group-hover/image:scale-110 object-fill"
               src={manga.image.url}
               alt=""
               fill={true}

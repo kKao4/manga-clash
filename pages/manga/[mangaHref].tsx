@@ -131,8 +131,6 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
             src="https://upload-widget.cloudinary.com/global/all.js"
             type="text/javascript"
             strategy="lazyOnload"
-          // onLoad={() => console.log("Loading")}
-          // onReady={() => console.log("Ready")}
           />
         )}
         <Head>

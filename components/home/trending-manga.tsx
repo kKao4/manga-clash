@@ -1,13 +1,15 @@
 import { MangaType } from "@/models/manga"
 import Image from "next/image"
+import { useRouter } from "next/router"
 
 export default function TrendingManga({ manga }: { manga: MangaType }) {
+  const router = useRouter()
   return (
-    <div className="w-[170px] lg:w-[175px] relative hidden md:block">
+    <div className="w-[170px] lg:w-[175px] relative hidden md:block cursor-pointer group" onClick={() => router.push(`/manga/${manga.href}`)}>
       <Image src={manga.image.url} alt="" fill={true} />
-      <div className="absolute w-full h-full slick-shadow bg-black/40 flex justify-center items-center">
+      <div className="absolute w-full h-full slick-shadow group-hover:bg-black/20 transition-colors duration-300 ease-out bg-black/40 flex justify-center items-center">
         <div className="px-1.5 -mt-8 space-y-0.5">
-          <p className="uppercase text-white font-medium tracking-tighter leading-5">manga <strong className="font-bold">trending</strong> this week</p>
+          <p className="uppercase text-white font-medium tracking-tighter leading-5 mb-1">manga <strong className="font-bold">trending</strong> this week</p>
           <p className="text-white font-bold uppercase tracking-tight leading-5">{manga.name}</p>
         </div>
       </div>

@@ -47,7 +47,7 @@ export default function ImageAndDetailManga({
   }, [mangaState, setDescription])
   return (
     <form
-      className="flex flex-col items-center py-6 xl:flex-row gap-x-8 gap-y-4 xl:py-8 xl:items-stretch"
+      className="flex flex-col items-center py-4 md:py-6 xl:flex-row gap-x-8 gap-y-4 xl:py-8 xl:items-stretch"
       onSubmit={async (e) => {
         e.preventDefault()
         setIsUpdating(true)
@@ -87,7 +87,7 @@ export default function ImageAndDetailManga({
       }}>
       {/* image manga */}
       <div className="flex flex-col items-center justify-center p-4 bg-white basis-1/4 w-fit">
-        <div className="w-[193px] h-[274px] relative overflow-hidden">
+        <div className="w-[180px] h-[255px] md:w-[193px] md:h-[274px] relative overflow-hidden">
           {adminMode ? (
             <DynamicAdminImage
               file={file}
@@ -100,12 +100,11 @@ export default function ImageAndDetailManga({
             />
           ) : (
             <Image
-              className="block w-full h-full mx-auto object-cover"
+              className="object-fill"
               src={mangaState.image.url}
               alt=""
               fill={true}
               priority={true}
-              quality={50}
             />
           )}
         </div>

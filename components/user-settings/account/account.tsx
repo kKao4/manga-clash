@@ -43,9 +43,9 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
         <div className="flex flex-row pb-6 border-b gap-x-5">
           <div className="basis-1/3 w-[191px] h-[191px] overflow-hidden flex place-items-center relative">
             {!user?.profilePicture.url ? (
-              <Image className="object-cover" src={blankProfile} alt="" fill={true} quality={0} />
+              <Image className="object-fill" src={blankProfile} alt="" fill={true} quality={0} />
             ) : (
-              <Image className="object-cover" src={user.profilePicture.url} alt="" fill={true} quality={50} />
+              <Image className="object-fill" src={user.profilePicture.url} alt="" fill={true} quality={50} />
             )}
             <div className={`${isLoadingProfilePicture ? "block" : "hidden"} absolute w-[191px] h-[191px] bg-black/50 flex justify-center items-center`}>
               <ClipLoader color="#ffffff" size={40} />

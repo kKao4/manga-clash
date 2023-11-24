@@ -19,7 +19,7 @@ export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: 
       }}
     >
       <div className="w-[69px] h-[100px] relative overflow-hidden">
-        <Image src={`${manga.image.url}`} alt="" fill={true} className="object-cover" quality={0} />
+        <Image src={`${manga.image.url}`} alt="" fill={true} className="object-fill" quality={0} />
       </div>
       <div className="flex flex-col gap-y-1">
         <p className="font-bold transition-colors group-hover:text-second-green line-clamp-2">{manga.name}</p>

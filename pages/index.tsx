@@ -104,6 +104,6 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
   )
 }
 
-// TODO: remake quick menu in reading page and add slick (trending this day mangas) in home page and fix search box flickering when reload page add add page count read in bottom in single page read and disable quick menu reading page for single page read and add refresh token
+// TODO: remake quick menu in reading page and add slick (trending this day mangas) in home page and fix search box flickering when reload page add add page count read in bottom in single page read and disable quick menu reading page for single page read and add refresh token and add search page link to responsive menu
 
 export default Page;

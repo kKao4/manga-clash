@@ -97,7 +97,7 @@ export const shortName = "manga-clash-disqus-com"
 
 export type MangasLength = { length: number };
 
-export const mangasPerPage = 2;
+export const mangasPerPage = 4;
 
 export const tagsArray = [
   {
