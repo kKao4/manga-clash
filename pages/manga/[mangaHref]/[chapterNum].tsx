@@ -185,7 +185,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     if (scrollProgressBarRef.current) {
       scrollProgressBarRef.current.style.transform = `translateX(-${100 - percentScroll}%)`
     }
-      console.log("🚀 ~ file: [chapterNum].tsx:189 ~ useEffect ~ 100 - percentScroll:", 100 - percentScroll)
+    // console.log("🚀 ~ file: [chapterNum].tsx:189 ~ useEffect ~ 100 - percentScroll:", 100 - percentScroll)
   }, [percentScroll])
   const nextPage = useCallback(() => {
     if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
@@ -213,6 +213,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       <UserMenu user={userState} />
       <NavBar
         ref={scrollProgressBarRef}
+        isScrollInToView={imagesEntry?.isIntersecting ?? false}
         showNavChapter={showNavChapter}
         chapter={chapterRes.data}
         chapters={chaptersRes.data}

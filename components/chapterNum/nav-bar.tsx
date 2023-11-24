@@ -5,21 +5,21 @@ import { ForwardedRef, forwardRef } from "react"
 
 const NavBar = forwardRef(
   function NavBar({
-    showNavChapter, prevChapter, chapter, nextChapter, chapters
+    showNavChapter, prevChapter, chapter, nextChapter, chapters, isScrollInToView
   }: {
-    showNavChapter: boolean, chapter: ChapterResponse["data"], chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string
+    showNavChapter: boolean, chapter: ChapterResponse["data"], chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, isScrollInToView: boolean
   }, ref: ForwardedRef<HTMLDivElement>) {
     const router = useRouter()
     return (
       <div className="fixed bottom-0 z-20 w-full">
         {/* scroll reading progress bar */}
-        <div className="w-full h-5 md:h-6 bg-black/70 flex justify-center items-center px-4">
+        <div className={`w-full ${isScrollInToView ? "opacity-100" : "opacity-0"} h-5 md:h-6 bg-black/70 flex justify-center items-center px-4 transition-opacity duration-200 ease-out`}>
           <div className="w-[1124px] overflow-hidden rounded-full bg-black">
             <div ref={ref} className="w-full bg-main-green h-1.5 -translate-x-full transition-transform duration-[40ms] ease-out" />
           </div>
         </div>
         {/* quick menu */}
-        <div className={`${showNavChapter ? "h-11 opacity-100" : "h-0 opacity-0"} transition-all duration-200 bg-neutral-700`}>
+        <div className={`${showNavChapter ? "h-10 md:h-11 opacity-100" : "h-0 opacity-0"} transition-all duration-200 bg-neutral-700`}>
           <div className="flex flex-row w-full h-full border-t border-gray-200">
             <div className="basis-1/4">
               <Link href={`/manga/${chapter?.href}/chapter-${prevChapter}`} className="flex items-center justify-center w-full h-full">

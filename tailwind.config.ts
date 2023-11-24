@@ -48,6 +48,9 @@ const config: Config = {
         "arrow-right": "url('../assets/arrow-right.png'), default",
         "arrow-left": "url('../assets/arrow-left.png'), default",
       },
+      spacing: {
+        "18": "4.5rem",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

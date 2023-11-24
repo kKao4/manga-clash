@@ -9,16 +9,22 @@ export const usePercentScrollYOfElement = (ref: RefObject<any>) => {
     const viewportHeight =
       window.innerHeight || document.documentElement.clientHeight;
     if (ref.current) {
-      setPercentScrollY(
-        Math.min(
-          Math.max(
-            ((currentScrollY - ref.current.offsetTop) * 100) /
-              (ref.current.scrollHeight - viewportHeight),
-            0
-          ),
-          100
-        )
-      );
+      if (ref.current.scrollHeight > viewportHeight) {
+        setPercentScrollY(
+          Math.min(
+            Math.max(
+              ((currentScrollY - ref.current.offsetTop) * 100) /
+                (ref.current.scrollHeight - viewportHeight),
+              0
+            ),
+            100
+          )
+        );
+      } else {
+        setPercentScrollY(
+          ref.current.getBoundingClientRect().bottom <= viewportHeight ? 100 : 0
+        );
+      }
     }
   });
   return percentScrollY;

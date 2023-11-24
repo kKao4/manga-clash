@@ -20,6 +20,7 @@ const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"))
 const DynamicFooter = dynamic(() => import("@/components/global/footer"))
+const DynamicButtonScrollToTop = dynamic(() => import("@/components/buttonScrollToTop/buttonScrollToTop"))
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -67,6 +68,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <DynamicSignIn />
             <DynamicResetPassword />
             <MenuTop />
+            <DynamicButtonScrollToTop />
             {getLayout(<Component {...pageProps} />)}
             <Analytics />
           </div>
