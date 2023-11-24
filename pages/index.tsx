@@ -13,7 +13,6 @@ import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularManga
 import { getUser } from "@/lib/getServerSideProps/getUser"
 import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas"
 import dbConnect from "@/lib/dbConnect"
-import Image from "next/image"
 import Slick from "@/components/global/slick/slick"
 import { getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import TrendingManga from "@/components/home/trending-manga"
@@ -103,6 +102,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
     </>
   )
 }
+
 
 // TODO: add page count read in bottom in single page read, add search page link to responsive menu
 

@@ -47,7 +47,7 @@ export default function ImageAndDetailManga({
   }, [mangaState, setDescription])
   return (
     <form
-      className="flex flex-col items-center py-4 md:py-6 xl:flex-row gap-x-8 gap-y-4 xl:py-8 xl:items-stretch"
+      className="flex flex-col items-center py-4 md:py-6 xl:flex-row gap-x-8 gap-y-4 xl:py-6 xl:items-stretch"
       onSubmit={async (e) => {
         e.preventDefault()
         setIsUpdating(true)

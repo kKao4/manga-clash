@@ -20,6 +20,10 @@ import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
 import { useEventListener } from 'usehooks-ts'
+import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
+import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
+import { useIntersectionObserver } from 'usehooks-ts'
+
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -68,9 +72,23 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const [readingStyle, setReadingStyle] = useState<"full" | "single">()
   const [index, setIndex] = useState<number>(0)
   const imagesBoxRef = useRef<HTMLDivElement>(null)
+  const imagesRef = useRef<HTMLDivElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const mouse = useMouse(imagesBoxRef, { fps: 60 });
   const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
+  const percentScroll = usePercentScrollYOfElement(imagesRef)
+  const directionScroll = useDetectDirectionScrollY()
+  const imagesEntry = useIntersectionObserver(imagesRef, {
+    threshold: 0,
+    root: null,
+    rootMargin: "-180px",
+    freezeOnceVisible: false
+  })
+  if (imagesEntry) {
+    console.log("🚀 ~ file: [chapterNum].tsx:87 ~ entry:", imagesEntry.isIntersecting)
+  }
+  // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ directionScroll:", directionScroll)
+  // console.log("🚀 ~ file: [chapterNum].tsx:78 ~ percentScroll:", percentScroll)
   // Set User
   useEffect(() => {
     if (userRes.data) {
@@ -83,6 +101,25 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       setBookmark(userState.bookmarks.includes(chapterRes.data._id as any))
     }
   }, [chapterRes, userState])
+  // reset index when router change
+  useEffect(() => {
+    setIndex(0)
+  }, [router.query])
+  // set localStorage for reading style 
+  useEffect(() => {
+    // console.log("🚀 ~ file: [chapterNum].tsx:143 ~ useEffect ~ localStorage:", localStorage.getItem("readingStyle"))
+    if (localStorage.getItem("readingStyle")) {
+      setReadingStyle(localStorage.getItem("readingStyle") as any)
+    } else {
+      setReadingStyle("full")
+    }
+  }, [])
+  // scroll to top when change chapter
+  useEffect(() => {
+    if (divRef.current && router.query && readingStyle === "single") {
+      divRef.current.scrollIntoView()
+    }
+  }, [router.query, readingStyle])
   // Set/Update localStorage For This Manga
   useEffect(() => {
     const array = localStorage.getItem(`${chapterRes.data?.href}`)
@@ -111,26 +148,10 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       setNextChapter(chaptersRes.data!.chapters[index - 1].num)
     }
   }, [chapterRes, chaptersRes])
-  // detect direction scroll
+  // toggle nav chapter
   useEffect(() => {
-    let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-    function detectDirection() {
-      const scrollTopPosition =
-        window.scrollY || document.documentElement.scrollTop;
-      if (scrollTopPosition < lastScrollTop) {
-        setShowNavChapter(true)
-      } else if (scrollTopPosition > lastScrollTop) {
-        setShowNavChapter(false)
-      }
-      lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
-    }
-    window.addEventListener("scroll", detectDirection);
-    return () => window.removeEventListener("scroll", detectDirection)
-  }, [])
-  // reset index when router change
-  useEffect(() => {
-    setIndex(0)
-  }, [router.query])
+    setShowNavChapter(() => directionScroll === "up" ? true : false)
+  }, [directionScroll])
   // set arrow
   useEffect(() => {
     if (readingStyle === "single" && imagesBoxRef.current && mouse.x && mouse.y) {
@@ -145,35 +166,6 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       setDirectionArrow(undefined)
     }
   }, [mouse, imagesBoxRef, readingStyle])
-  // scroll to top when change chapter
-  useEffect(() => {
-    if (divRef.current && router.query) {
-      divRef.current.scrollIntoView()
-    }
-  }, [router.query])
-  // set localStorage for reading style 
-  useEffect(() => {
-    // console.log("🚀 ~ file: [chapterNum].tsx:143 ~ useEffect ~ localStorage:", localStorage.getItem("readingStyle"))
-    if (localStorage.getItem("readingStyle")) {
-      setReadingStyle(localStorage.getItem("readingStyle") as any)
-    } else {
-      setReadingStyle("full")
-    }
-  }, [])
-  const nextPage = useCallback(() => {
-    if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
-      router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
-    } else {
-      setIndex(prevState => prevState + 1)
-    }
-  }, [chapterRes, index, nextChapter, router])
-  const prevPage = useCallback(() => {
-    if (index === 0) {
-      router.push(`/manga/${chapterRes.data?.href}/chapter-${prevChapter}`)
-    } else {
-      setIndex(prevState => prevState - 1)
-    }
-  }, [chapterRes, index, prevChapter, router])
   // add keyboard next/prev page
   useEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") {
@@ -188,6 +180,20 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       }
     }
   })
+  const nextPage = useCallback(() => {
+    if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
+      router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
+    } else {
+      setIndex(prevState => prevState + 1)
+    }
+  }, [chapterRes, index, nextChapter, router])
+  const prevPage = useCallback(() => {
+    if (index === 0) {
+      router.push(`/manga/${chapterRes.data?.href}/chapter-${prevChapter}`)
+    } else {
+      setIndex(prevState => prevState - 1)
+    }
+  }, [chapterRes, index, prevChapter, router])
   // title for page
   const title = useMemo(() => {
     return `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
@@ -278,7 +284,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               }}
             >
               {readingStyle === "full" ? (
-                <div className="max-w-[960px] my-3 lg:my-6 xl:my-8 flex flex-col relative -mx-2 md:mx-auto">
+                <div ref={imagesRef} className="max-w-[960px] my-3 lg:my-6 xl:my-8 flex flex-col relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
