@@ -13,7 +13,7 @@ import { selectUserState, setUser } from "@/features/UserSlice"
 import { selectAdminMode, toggleDarkMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
-import NavChapter from "@/components/chapterNum/nav-chapter"
+import NavBar from "@/components/chapterNum/nav-bar"
 import useMouse from '@react-hook/mouse-position'
 import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
@@ -23,7 +23,6 @@ import { useEventListener } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
 import { useIntersectionObserver } from 'usehooks-ts'
-
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -212,7 +211,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         <title>{title}</title>
       </Head>
       <UserMenu user={userState} />
-      <NavChapter
+      <NavBar
         ref={scrollProgressBarRef}
         showNavChapter={showNavChapter}
         chapter={chapterRes.data}
