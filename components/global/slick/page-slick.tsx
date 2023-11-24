@@ -2,6 +2,7 @@ import { MangaResponse } from "@/type"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import Parser from "html-react-parser"
 
 export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
   const router = useRouter()
@@ -56,7 +57,7 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
               </div>
             ) : <p className="text-neutral-200 text-[13px] mb-2.5">Đang cập nhật</p>}
             <p className="text-[11px] text-neutral-200 uppercase font-bold mb-1.5">Tóm Tắt</p>
-            <p className="text-[13px] text-neutral-200 line-clamp-2 pr-2 sm:pr-6 mb-1">{manga?.description ? manga?.description : "Đang cập nhật"}</p>
+            <p className="text-[13px] text-neutral-200 line-clamp-2 pr-2 sm:pr-6 mb-1">{manga?.description ? Parser(manga?.description) : "Đang cập nhật"}</p>
             <div>
               <p className="text-neutral-200 text-[13px] inline mr-1">Trạng thái:</p>
               <span className="inline text-neutral-200 text-[13px]">{manga?.completed ? "Hoàn thành" : "Đang tiến hành"}</span>
