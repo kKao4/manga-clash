@@ -15,7 +15,7 @@ const NavBar = forwardRef(
         {/* scroll reading progress bar */}
         <div className="w-full h-5 md:h-6 bg-black/70 flex justify-center items-center px-4">
           <div className="w-[1124px] overflow-hidden rounded-full bg-black">
-            <div ref={ref} className="w-full bg-main-green h-1 md:h-1.5 -translate-x-full transition-transform duration-[40ms] ease-out" />
+            <div ref={ref} className="w-full bg-main-green h-1.5 -translate-x-full transition-transform duration-[40ms] ease-out" />
           </div>
         </div>
         {/* quick menu */}
