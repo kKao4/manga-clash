@@ -74,6 +74,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const imagesBoxRef = useRef<HTMLDivElement>(null)
   const imagesRef = useRef<HTMLDivElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
+  const scrollProgressBarRef = useRef<HTMLDivElement>(null)
   const mouse = useMouse(imagesBoxRef, { fps: 60 });
   const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
   const percentScroll = usePercentScrollYOfElement(imagesRef)
@@ -84,9 +85,9 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     rootMargin: "-180px",
     freezeOnceVisible: false
   })
-  if (imagesEntry) {
-    console.log("🚀 ~ file: [chapterNum].tsx:87 ~ entry:", imagesEntry.isIntersecting)
-  }
+  // if (imagesEntry) {
+  //   console.log("🚀 ~ file: [chapterNum].tsx:87 ~ entry:", imagesEntry.isIntersecting)
+  // }
   // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ directionScroll:", directionScroll)
   // console.log("🚀 ~ file: [chapterNum].tsx:78 ~ percentScroll:", percentScroll)
   // Set User
@@ -180,6 +181,13 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       }
     }
   })
+  // set scroll progress bar
+  useEffect(() => {
+    if (scrollProgressBarRef.current) {
+      scrollProgressBarRef.current.style.transform = `translateX(-${100 - percentScroll}%)`
+    }
+      console.log("🚀 ~ file: [chapterNum].tsx:189 ~ useEffect ~ 100 - percentScroll:", 100 - percentScroll)
+  }, [percentScroll])
   const nextPage = useCallback(() => {
     if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
       router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
@@ -205,6 +213,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
       </Head>
       <UserMenu user={userState} />
       <NavChapter
+        ref={scrollProgressBarRef}
         showNavChapter={showNavChapter}
         chapter={chapterRes.data}
         chapters={chaptersRes.data}
@@ -290,7 +299,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                   })}
                 </div>
               ) : (
-                <div className="max-w-[960px] h-fit my-3 lg:my-6 xl:my-8 relative -mx-2 md:mx-auto">
+                <div ref={imagesRef} className="max-w-[960px] h-fit my-3 lg:my-6 xl:my-8 relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`${i !== 0 ? "absolute" : ""} ${index === i ? "opacity-100 " : "opacity-0"} object-contain object-center md:object-top top-0`} src={c.url} alt="" width={960} height={1360} />
                   })}
