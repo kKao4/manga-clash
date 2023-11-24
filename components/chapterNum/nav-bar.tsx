@@ -19,7 +19,7 @@ const NavBar = forwardRef(
           </div>
         </div>
         {/* quick menu */}
-        <div className={`${showNavChapter ? "h-9 opacity-100" : "h-0 opacity-0"} transition-all duration-200 bg-neutral-700`}>
+        <div className={`${showNavChapter ? "h-10 md:h-11 opacity-100" : "h-0 opacity-0"} transition-all duration-200 bg-neutral-700`}>
           <div className="flex flex-row w-full h-full border-t border-gray-200">
             <div className="basis-1/4">
               <Link href={`/manga/${chapter?.href}/chapter-${prevChapter}`} className="flex items-center justify-center w-full h-full">
@@ -35,7 +35,7 @@ const NavBar = forwardRef(
               <div className="relative w-full h-full overflow-hidden">
                 <select
                   value={chapter?.chapter.num}
-                  className="w-full h-full px-0 py-2 leading-5 text-base text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis text-sm md:px-4 md:text-lg bg-neutral-700 focus:outline-none" id="select-chapter"
+                  className="w-full h-full px-0 py-2 text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis text-sm md:px-4 -mt-px md:text-lg bg-neutral-700 focus:outline-none" id="select-chapter"
                   onChange={(e) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
                   style={{ appearance: "none", textAlignLast: "center" }}
                 >
