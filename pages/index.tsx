@@ -104,6 +104,6 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
 }
 
 
-// TODO: add page count read in bottom in single page read, add search page link to responsive menu and fix navigation to break line and refactoring hooks (local storage)
+// TODO: add search page link to responsive menu
 
 export default Page;

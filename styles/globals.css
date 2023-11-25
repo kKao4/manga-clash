@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --main-green: #409a88;
+}
+
 @layer components {
   .active-page {
     @apply text-main-green px-3.5 py-1.5 cursor-pointer select-none font-bold;
     background-color: rgb(234, 234, 234) !important;
-    color: #409a88 !important;
+    color: var(--main-green) !important;
   }
   .disqus a {
     @apply text-[rgb(204,204,204)];
@@ -29,8 +33,5 @@
   margin: 0 0.5px !important;
 }
 li.slick-active > div {
-  background-color: #409a88 !important;
+  background-color: var(--main-green) !important;
 }
-/* html {
-  overflow-x: hidden;
-} */

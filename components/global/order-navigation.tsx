@@ -19,13 +19,13 @@ export default function OrderNavigation({
   const router = useRouter()
   return (
     <Title content={`${mangasLength} KẾT QUẢ ${search ? `CHO "${router.query.name ?? ""}"` : ""}`} order={true}>
-      <div className="flex flex-row flex-wrap items-center">
-        <p className="mb-0.5 mr-4 text-right">Sắp xếp</p>
-        <OrderButton content="Mới Cập Nhật" search={search} handleOnClick={() => handleOnClick("latest")} />
+      <div className="flex flex-row flex-wrap items-center mr-auto">
+        <p className="mb-0.5 mr-4 ml-8 text-right md:block hidden">Sắp xếp</p>
+        <OrderButton content="Mới cập nhật" search={search} handleOnClick={() => handleOnClick("latest")} />
         <OrderButton content="A-Z" search={search} handleOnClick={() => handleOnClick("a-z")} />
-        <OrderButton content="Đánh Giá" search={search} handleOnClick={() => handleOnClick("rating")} />
-        <OrderButton content="Lượt Xem" search={search} handleOnClick={() => handleOnClick("views")} />
-        <OrderButton content="Mới Nhất" search={search} handleOnClick={() => handleOnClick("new")} />
+        <OrderButton content="Đánh giá" search={search} handleOnClick={() => handleOnClick("rating")} />
+        <OrderButton content="Lượt xem" search={search} handleOnClick={() => handleOnClick("views")} />
+        <OrderButton content="Mới" search={search} handleOnClick={() => handleOnClick("new")} />
       </div>
     </Title>
   )

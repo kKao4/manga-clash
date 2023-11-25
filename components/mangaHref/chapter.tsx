@@ -1,6 +1,6 @@
 import { parseISO, format } from "date-fns"
 import { MangaType } from "@/models/manga";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { selectAdminMode } from "@/features/GlobalSlice";
 
@@ -9,18 +9,19 @@ export default function Chapter({
 }: {
   chapter: MangaType["chapters"][number], mangaHref: string, readChapters: string[] | undefined, handleOnChange: () => void, checked: boolean
 }) {
+  const router = useRouter()
   const adminMode = useSelector(selectAdminMode)
   return (
     <label
       htmlFor={chapter.num}
-      className={`relative rounded flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 place-content-start sm:place-content-center`}
+      className={`relative rounded flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 place-content-start sm:place-content-center group`}
+      onClick={() => router.push(`/manga/${mangaHref}/chapter-${chapter.num}`)}
     >
-      <Link
-        href={`/manga/${mangaHref}/chapter-${chapter.num}`}
-        className={`${readChapters && readChapters.includes(chapter.num.toString()) ? "text-neutral-400" : "text-black"} max-w-full overflow-hidden font-bold transition-colors line-clamp-2 text-center select-none hover:text-second-green`}
+      <div
+        className={`${readChapters && readChapters.includes(chapter.num.toString()) ? "text-neutral-400" : "text-black"} max-w-full overflow-hidden font-bold transition-colors line-clamp-2 text-center select-none group-hover:text-second-green`}
       >
         Chapter {chapter.num} {chapter.description && `- ${chapter.description}`}
-      </Link>
+      </div>
       {adminMode && (
         <input
           type="checkbox"

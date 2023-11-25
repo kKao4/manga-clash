@@ -25,15 +25,15 @@ export default function OrderButton({
     } else {
       searchQuery = `&tags=${searchState.tags}`;
     }
-    if (content === "Lượt Xem") {
+    if (content === "Lượt xem") {
       setQuery(`page=1&sort=views&${searchQuery}`)
-    } else if (content === "Mới Cập Nhật") {
+    } else if (content === "Mới cập nhật") {
       setQuery(`page=1&sort=latest&${searchQuery}`)
     } else if (content === "A-Z") {
       setQuery(`page=1&sort=a-z&${searchQuery}`)
-    } else if (content === "Đánh Giá") {
+    } else if (content === "Đánh giá") {
       setQuery(`page=1&sort=rating&${searchQuery}`)
-    } else if (content === "Mới Nhất") {
+    } else if (content === "Mới") {
       setQuery(`page=1&sort=new&${searchQuery}`)
     }
   }, [search, searchState, content])
@@ -42,13 +42,13 @@ export default function OrderButton({
       <Link
         href={`/${search ? "search" : "manga"}/?${query}`}
         scroll={false}
-        className={`${(content === "Lượt Xem" && sort === "views") ||
-          (content === "Mới Cập Nhật" && sort === "latest") ||
+        className={`${(content === "Lượt xem" && sort === "views") ||
+          (content === "Mới cập nhật" && sort === "latest") ||
           (content === "A-Z" && sort === "a-z") ||
-          (content === "Đánh Giá" && sort === "rating") ||
-          (content === "Mới Nhất" && sort === "new")
+          (content === "Đánh giá" && sort === "rating") ||
+          (content === "Mới" && sort === "new")
           ? "text-second-green border-b-second-green" : "text-gray-text"
-          } px-2.5 py-3 capitalize hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
+          } px-2 sm:px-2.5 py-2.5 sm:py-3  hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
         onClick={handleOnClick}
       >
         {content}

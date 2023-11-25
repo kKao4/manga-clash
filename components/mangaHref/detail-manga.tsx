@@ -26,19 +26,25 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
   const [yourRating, setYourRating] = useState<StarType>(1)
   const [isLoadingUserRating, setIsLoadingUserRating] = useState<boolean>(false)
   const [isLoadingBookmark, setIsLoadingBookmark] = useState<boolean>(false)
+  const [visibility, setVisibility] = useState<string>("invisible")
   // Animation when finishing refetch user rating api
+  // useEffect(() => {
+  //   if (!isLoadingUserRating) {
+  //     const timeOut = setTimeout(() => {
+  //       if (myRef.current) {
+  //         myRef.current.style.zIndex = "-10"
+  //       }
+  //     }, 400)
+  //     return () => clearTimeout(timeOut)
+  //   } else {
+  //     if (myRef.current) {
+  //       myRef.current.style.zIndex = "10"
+  //     }
+  //   }
+  // }, [isLoadingUserRating])
   useEffect(() => {
-    if (!isLoadingUserRating) {
-      const timeOut = setTimeout(() => {
-        if (myRef.current) {
-          myRef.current.style.zIndex = "-10"
-        }
-      }, 400)
-      return () => clearTimeout(timeOut)
-    } else {
-      if (myRef.current) {
-        myRef.current.style.zIndex = "10"
-      }
+    if (isLoadingUserRating) {
+      setVisibility("visible")
     }
   }, [isLoadingUserRating])
   useEffect(() => {
@@ -93,7 +99,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
   return (
     <>
       {/* manga's rating */}
-      <div className="relative flex flex-row flex-wrap items-center mb-4 group/stars max-w-fit">
+      <div className="relative flex flex-row flex-wrap items-center mb-4 group/stars max-w-fit h-8">
         <div className="flex flex-row items-center group-hover/stars:opacity-0">
           {/* star != 0 thi tra ve */}
           {manga.rating.star ? (
@@ -143,7 +149,15 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           <Star num={4} rating={yourRating} handleHover={handleHoverStar} handleOnClick={handleRating} />
           <Star num={5} rating={yourRating} handleHover={handleHoverStar} handleOnClick={handleRating} />
         </div>
-        <div ref={myRef} className={`absolute top-2 left-10 ${isLoadingUserRating ? "opacity-100" : "opacity-0"} transition-all duration-400`}>
+        <div
+          ref={myRef}
+          className={`absolute ${visibility} top-2 left-10 ${isLoadingUserRating ? "opacity-100" : "opacity-0"} transition-all duration-400`}
+          onTransitionEnd={() => {
+            if (!isLoadingUserRating) {
+              setVisibility("invisible")
+            }
+          }}
+        >
           <PulseLoader size={12} color="#409a88" margin={3} />
         </div>
       </div>
