@@ -11,10 +11,10 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
   const router = useRouter()
   const dispatch = useDispatch()
   return (
-    <button className="relative flex flex-row items-center text-gray-200 gap-x-2 group">
+    <button className="relative flex flex-row items-center text-gray-200 dark:text-neutral-300 gap-x-2 group">
       <p className="font-normal">Xin chào, {user?.role === "admin" ? "admin" : ""} <span className="font-semibold text-main-green">{user?.username}</span></p>
       {/* profile picture */}
-      <div className="w-8 h-8 overflow-hidden border rounded-full relative">
+      <div className="relative w-8 h-8 overflow-hidden border rounded-full dark:border-neutral-700">
         {user?.profilePicture.url ? (
           <Image src={user.profilePicture.url} alt="profile picture" fill={true} className="object-fill" quality={0} />
         ) : (
@@ -23,24 +23,24 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
       </div>
       <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-20 -z-10 opacity-0 hover:opacity-100 transition-opacity">
         {/* dropdown */}
-        <div className="flex flex-col mt-2.5 bg-gray-150 border-b-[3px] py-2 border-b-second-green">
+        <div className="flex flex-col mt-2.5 bg-gray-150 dark:bg-neutral-700 border-b-[3px] py-2 border-b-second-green">
           <Link
             href="/user-settings?pageBookmark=1&nameBookmark="
-            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none"
             onClick={() => dispatch(setMenu("bookmarks"))}
           >
             Tủ Truyện
           </Link>
           <Link
             href="/user-settings"
-            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none"
             onClick={() => dispatch(setMenu("account"))}
           >
             Cài Đặt
           </Link>
           <Link
             href="/user-settings?pageHistory=1&nameHistory="
-            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+            className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none"
             onClick={() => dispatch(setMenu("history"))}
           >
             Lịch sử
@@ -48,7 +48,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           {user?.role === "admin" && (
             <Link
               href="/user-settings"
-              className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+              className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none"
               onClick={() => dispatch(setMenu("addManga"))}
             >
               Tạo truyện
@@ -57,7 +57,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           {user?.role === "admin" && (
             <Link
               href="/user-settings?time=oneWeek&pageChart=1&nameChart="
-              className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none"
+              className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none"
               onClick={() => {
                 dispatch(setMenu("chart"))
               }}
@@ -65,7 +65,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
               Thống kê
             </Link>
           )}
-          <div className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green select-none" onClick={async () => {
+          <div className="w-full px-6 py-1.5 text-sm font-bold cursor-pointer text-start hover:text-second-green    dark:hover:text-third-green select-none" onClick={async () => {
             const result = await fetch(`/api/user/log_out`)
             const res = await result.json()
             console.log("🚀 ~ file: user-menu.tsx:15:", res)

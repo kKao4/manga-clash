@@ -89,7 +89,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
             <TrendingManga manga={chartRes.trendingManga!} />
           </div>
           <h2 className="mb-2 text-lg font-bold uppercase">ĐỌC TRUYỆN MỚI CẬP NHẬT</h2>
-          <hr />
+          <hr className="dark:border-neutral-700" />
           {mangasRes.data ? (
             <MangaBoxes mangas={mangasRes.data} mangasLength={mangasRes.length} />
           ) : (
@@ -102,8 +102,5 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
     </>
   )
 }
-
-
-// TODO: add search page link to responsive menu
 
 export default Page;

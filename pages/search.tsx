@@ -133,7 +133,7 @@ const Page = ({ mangasRes, userRes }: InferGetServerSidePropsType<typeof getServ
           }}>
             {/* input search box */}
             <input
-              className="w-full px-4 py-3 text-lg md:px-6 rounded-l-md focus:outline-none"
+              className="w-full px-4 py-3 text-lg md:px-6 rounded-l-md focus:outline-none dark:bg-neutral-700"
               type="text"
               value={searchState.name}
               onChange={(e) => dispatch(setSearchName(e.target.value))}

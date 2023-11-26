@@ -136,7 +136,7 @@ export default function AdminAddChapterModal({
 
   return (
     <div
-      className={`${isOpenAddChapter ? "scale-100 -translate-y-full opacity-100" : "opacity-0 scale-0 -translate-y-1/2 -translate-x-1/2"} grid grid-cols-4 gap-x-2 px-3 absolute transition-all duration-200 w-full sm:w-[300px] h-[110px] rounded-md shadow border-2 border-second-green bg-white z-10 content-evenly top-2`}
+      className={`${isOpenAddChapter ? "scale-100 -translate-y-full opacity-100" : "opacity-0 scale-0 -translate-y-1/2 -translate-x-1/2"} grid grid-cols-4 gap-x-2 px-3 absolute transition-all duration-200 w-full sm:w-[300px] h-[110px] rounded-md shadow border-2 border-second-green bg-white dark:bg-neutral-750 z-10 content-evenly top-2`}
     >
       <div className="col-span-1 space-y-1">
         <input
@@ -144,7 +144,7 @@ export default function AdminAddChapterModal({
           min={0}
           max={9999}
           value={num}
-          className={`${validChapterMessage ? "border-b-red-500 text-red-500" : "border-b-gray-200 "} w-full text-center py-1 border-b focus:outline-none`}
+          className={`${validChapterMessage ? "border-b-red-500 text-red-500" : "border-b-gray-200"} w-full text-center py-1 border-b dark:bg-neutral-750 focus:outline-none`}
           onChange={(e) => {
             if (!isAddingChapter) {
               setNum(e.target.value)
@@ -154,7 +154,7 @@ export default function AdminAddChapterModal({
       </div>
       <input
         type="text"
-        className="col-span-3 py-1 border-b border-gray-200 focus:outline-none h-fit"
+        className="col-span-3 py-1 border-b border-gray-200 dark:bg-neutral-750  focus:outline-none h-fit"
         placeholder="Chú thích (nếu có)"
         value={chapterDescription}
         onChange={(e) => {

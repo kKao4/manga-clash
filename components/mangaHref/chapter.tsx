@@ -12,28 +12,31 @@ export default function Chapter({
   const router = useRouter()
   const adminMode = useSelector(selectAdminMode)
   return (
-    <label
-      htmlFor={chapter.num}
-      className={`relative rounded flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 place-content-start sm:place-content-center group`}
-      onClick={() => router.push(`/manga/${mangaHref}/chapter-${chapter.num}`)}
-    >
+    <div className="relative">
       <div
-        className={`${readChapters && readChapters.includes(chapter.num.toString()) ? "text-neutral-400" : "text-black"} max-w-full overflow-hidden font-bold transition-colors line-clamp-2 text-center select-none group-hover:text-second-green`}
+        className={`flex flex-row flex-wrap items-baseline col-span-3 px-2 py-5 border-b cursor-pointer sm:col-span-1 gap-x-2 gap-y-1 border-neutral-200 dark:border-neutral-700 place-content-start sm:place-content-center group`}
+        onClick={() => router.push(`/manga/${mangaHref}/chapter-${chapter.num}`)}
       >
-        Chapter {chapter.num} {chapter.description && `- ${chapter.description}`}
+        <div
+          className={`${readChapters && readChapters.includes(chapter.num.toString()) ? "text-neutral-400 dark:text-neutral-500" : "text-black dark:text-neutral-100"} max-w-full overflow-hidden font-bold transition-colors line-clamp-2 text-center select-none group-hover:text-second-green dark:group-hover:text-third-green`}
+        >
+          Chapter {chapter.num} {chapter.description && `- ${chapter.description}`}
+        </div>
+
+        <div className="text-[13px] italic self-center shrink-0 min-w-fit">
+          <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
+        </div>
       </div>
       {adminMode && (
-        <input
-          type="checkbox"
-          id={chapter.num}
-          className=" w-3.5 h-3.5 absolute top-1 right-1"
-          checked={checked}
-          onChange={handleOnChange}
-        />
+        <div className="absolute top-0 right-0 w-10 h-full flex justify-end items-start" onClick={handleOnChange}>
+          <input
+            type="checkbox"
+            id={chapter.num}
+            className="w-3.5 h-3.5 m-1.5 sm:m-1"
+            checked={checked}
+          />
+        </div>
       )}
-      <div className="text-[13px] italic self-center shrink-0 min-w-fit">
-        <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
-      </div>
-    </label>
+    </div>
   )
 }

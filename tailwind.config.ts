@@ -23,11 +23,15 @@ const config: Config = {
       colors: {
         "main-green": "#409a88",
         "second-green": "#348e7c",
+        "third-green": "#39ac95",
         "main-yellow": "rgb(238,238,34)",
+        "dark-main-yellow": "rgb(255,199,0)",
+        "dark-main-black": "rgba(32,32,32,1)",
         "gray-100": "rgb(235,235,235)",
         "gray-150": "rgb(243,243,243)",
         "gray-200": "#666",
         "gray-text": "#888888",
+        "neutral-750": "rgb(42,42,42)",
       },
       transitionDuration: {
         "350": "350ms",
@@ -49,6 +53,7 @@ const config: Config = {
         "arrow-left": "url('../assets/arrow-left.png'), default",
       },
       spacing: {
+        "13": "3.25rem",
         "18": "4.5rem",
       },
     },

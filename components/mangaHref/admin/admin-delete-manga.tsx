@@ -11,10 +11,10 @@ export default function AdminDeleteMangaModal({
   const router = useRouter()
   const [isDeletingManga, setIsDeletingManga] = useState<boolean>(false)
   return (
-    <div className="relative">
+    <div className="relative inline">
       {/* delete manga modal */}
       <div
-        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full opacity-100" : "scale-0 -translate-y-1/2 opacity-0"} absolute transition-all duration-200 -top-1 grid grid-cols-1 content-evenly border-2 border-red-500 w-[200px] -translate-x-1/2 bg-white z-10 rounded-md h-[100px] left-1/2`}
+        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full opacity-100" : "scale-0 -translate-y-1/2 opacity-0"} absolute transition-all duration-200 -top-1 grid grid-cols-1 content-evenly border-2 border-red-500 w-[200px] -translate-x-1/2 bg-white dark:bg-neutral-750 z-10 rounded-md h-[100px] left-1/2`}
       >
         <p className="font-semibold text-center">Bạn có chắc muốn xóa truyện này?</p>
         <form
@@ -35,7 +35,7 @@ export default function AdminDeleteMangaModal({
         >
           <button
             type="button"
-            className="px-2 py-1 font-semibold rounded bg-neutral-200 hover:bg-neutral-300"
+            className="px-2 py-1 font-semibold rounded bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-300"
             onClick={() => setIsOpenDeleteModal(false)}
           >
             Không

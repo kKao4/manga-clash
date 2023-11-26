@@ -7,7 +7,7 @@ export default function UserMenu({ user }: { user: UserResponse["data"] }) {
   const dispatch = useDispatch()
   const adminMode = useSelector(selectAdminMode)
   return (
-    <div className="w-full bg-white border-b">
+    <div className="w-full border-b dark:border-neutral-700">
       <div className="xl:max-w-[1160px] lg:max-w-[900px] mx-auto px-4 flex flex-row items-center">
         {user?.role === "admin" && (
           <button
@@ -23,13 +23,13 @@ export default function UserMenu({ user }: { user: UserResponse["data"] }) {
           {!user?.username ? (
             <>
               <button
-                className="px-3 py-1 text-sm font-bold text-gray-200 transition-colors border-2 border-gray-200 rounded-full hover:border-black hover:text-white hover:bg-black"
+                className="px-3 py-1 text-sm font-bold text-gray-200 transition-colors border-2 border-gray-200 rounded-full dark:text-neutral-300 dark:text hover:border-black dark:hover:bg-neutral-700 dark:hover:text-neutral-200 dark:hover:border-neutral-700 dark:border-neutral-600 hover:text-white hover:bg-black"
                 onClick={() => dispatch(toggleSignIn(true))}
               >
                 Đăng nhập
               </button>
               <button
-                className="px-3 py-1 text-sm font-bold text-gray-200 transition-colors border-2 border-gray-200 rounded-full hover:border-black hover:text-white hover:bg-black"
+                className="px-3 py-1 text-sm font-bold text-gray-200 transition-colors border-2 border-gray-200 rounded-full dark:text-neutral-300 hover:border-black hover:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-200 dark:border-neutral-600 dark:hover:border-neutral-700 hover:bg-black"
                 onClick={() => dispatch(toggleSignUp(true))}
               >
                 Đăng ký

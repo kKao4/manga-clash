@@ -57,13 +57,14 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     return () => router.events.off("routeChangeStart", done)
   }, [router])
   return (
+    // TODO: store darkMode in localStorage
     <Provider store={store}>
       <main className={`${openSans.className} w-full`}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <DarkMode>
-          <div className="min-h-[84vh]">
+          <div className="min-h-[84vh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
             <DynamicSignUp />
             <DynamicSignIn />
             <DynamicResetPassword />

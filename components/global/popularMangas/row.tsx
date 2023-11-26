@@ -5,7 +5,7 @@ export default function Row({ manga }: { manga: MangaType }) {
   return (
     <>
       <MangaBoxPopular manga={manga} />
-      <hr />
+      <hr className="dark:border-neutral-700" />
     </>
   )
 }

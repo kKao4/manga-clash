@@ -27,7 +27,7 @@ export default function Summary({ mangaState, description, setDescription }: { m
         >
           {Parser(mangaState.description as string)}
           {showMoreSummaryRef.current && (
-            <div className="absolute w-full h-8 bottom-0 bg-gradient-to-t from-white to-[rgba(255,255,255,0)]"></div>
+            <div className="absolute w-full h-8 bottom-0 bg-gradient-to-t from-white to-[rgba(255,255,255,0)] dark:from-dark-main-black dark:to-dark-main-black/0"></div>
           )}
         </div>
         {showMoreSummaryRef.current && (

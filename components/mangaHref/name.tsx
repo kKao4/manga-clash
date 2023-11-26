@@ -24,8 +24,8 @@ export default function Name({ mangaState }: { mangaState: typeof initialMangaSt
     }
   }, [isOpenDeleteModal, countdown])
   return (
-    <div className="flex flex-row items-center gap-x-1">
-      <p className="text-xl md:text-2xl font-bold text-second-green">{mangaState.name}</p>
+    <div className="space-x-1">
+      <p className="text-xl md:text-2xl font-bold text-second-green dark:text-main-green inline">{mangaState.name}</p>
       {adminMode && (
         <DynamicAdminDeleteManga
           isOpenDeleteModal={isOpenDeleteModal}

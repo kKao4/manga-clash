@@ -25,7 +25,7 @@ export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"
                   <button
                     className="font-semibold capitalize text-main-green">
                     {tag}
-                    <span className="text-black">,</span>
+                    <span className="text-black dark:text-neutral-200">,</span>
                   </button>{" "}
                 </Link>
               )

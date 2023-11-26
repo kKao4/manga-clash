@@ -3,6 +3,7 @@ import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import SearchDropdown from "./search-dropdown"
 import { useEffect, useRef, useState } from "react"
 import { BarLoader } from "react-spinners"
+import { useRouter } from "next/router"
 
 export default function SearchBox({
   showSearchBox,
@@ -11,6 +12,7 @@ export default function SearchBox({
   showSearchBox: boolean,
   setShowSearchBox: any
 }) {
+  const router = useRouter()
   const searchState = useSelector(selectSearchState)
   const dispatch = useDispatch()
   const [isLoadingMangas, setIsLoadingMangas] = useState<boolean>(false)
@@ -33,10 +35,12 @@ export default function SearchBox({
       >
         <form className="relative flex flex-row justify-center max-w-fit mx-auto" onSubmit={(e) => {
           e.preventDefault()
+          router.push(`/search?name=${searchState.name}`)
+          setShowSearchBox(false)
         }}>
           <input
             name="search-box"
-            className="px-4 text-sm py-3 md:py-3.5 w-[680px] focus:outline-none border bg-gray-100 border-neutral-300" placeholder="Tên truyện cần tìm..."
+            className="px-4 text-sm py-3 md:py-3.5 w-[680px] focus:outline-none border bg-gray-100 border-neutral-300 dark:bg-neutral-700 dark:border-neutral-700" placeholder="Tên truyện cần tìm..."
             type="text"
             value={searchState.name}
             onChange={(e) => dispatch(setSearchName(e.target.value))}

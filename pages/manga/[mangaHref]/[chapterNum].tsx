@@ -293,13 +293,13 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               }}
             >
               {readingStyle === "full" ? (
-                <div ref={imagesRef} className="max-w-[960px] my-3 lg:my-6 xl:my-8 flex flex-col relative -mx-2 md:mx-auto">
+                <div ref={imagesRef} className="max-w-[900px] my-3 lg:my-6 xl:my-8 flex flex-col relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`block mx-auto object-contain`} src={c.url} alt="" width={960} height={1360} quality={100} priority={i < 2} />
                   })}
                 </div>
               ) : (
-                <div ref={imagesRef} className="max-w-[960px] h-fit my-3 lg:my-6 xl:my-8 relative -mx-2 md:mx-auto">
+                <div ref={imagesRef} className="max-w-[900px] h-fit my-3 lg:my-6 xl:my-8 relative -mx-2 md:mx-auto">
                   {chapterRes.data?.chapter.imagesPath.map((c, i) => {
                     return <Image key={c.publicId} className={`${i !== 0 ? "absolute" : ""} ${index === i ? "opacity-100 " : "opacity-0"} object-contain object-center md:object-top top-0`} src={c.url} alt="" width={960} height={1360} />
                   })}

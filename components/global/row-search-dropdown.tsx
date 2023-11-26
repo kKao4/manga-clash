@@ -11,18 +11,18 @@ export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: 
   const dispatch = useDispatch()
   return (
     <div
-      className="flex flex-row items-start px-2 py-2 transition-colors border-b border-gray-100 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100"
+      className="flex flex-row items-start px-2 py-2 transition-colors border-b border-gray-100 dark:border-neutral-600 cursor-pointer md:px-3 gap-x-3 md:gap-x-4 group hover:bg-neutral-100 dark:hover:bg-neutral-600"
       onClick={() => {
         setShowSearchBox(false)
         dispatch(setSearchName(""))
         router.push(`/manga/${manga.href}`)
       }}
     >
-      <div className="w-[69px] h-[100px] relative overflow-hidden">
+      <div className="w-[69px] h-[100px] relative overflow-hidden flex-none">
         <Image src={`${manga.image.url}`} alt="" fill={true} className="object-fill" quality={0} />
       </div>
       <div className="flex flex-col gap-y-1">
-        <p className="font-bold transition-colors group-hover:text-second-green line-clamp-2">{manga.name}</p>
+        <p className="font-bold transition-colors group-hover:text-second-green dark:group-hover:text-third-green line-clamp-2">{manga.name}</p>
         <p className="hidden text-sm md:inline-block"><span className="font-semibold">Tên khác:</span> {manga.otherName ? `${manga.otherName}` : "Đang cập nhật"}</p>
         <div className="flex flex-row flex-wrap text-xs md:text-sm gap-x-1 sm:gap-x-2">
           <p><span className="hidden font-semibold md:inline-block">Trạng thái:</span> {manga.completed ? "Hoàn thành" : "Đang tiến hành"}</p>

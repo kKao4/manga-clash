@@ -23,7 +23,7 @@ export default function ResponsiveMenu({
       >
       </div>
       {/* responsive menu */}
-      <div ref={myRef} className={`w-[240px] sm:w-[300px] h-screen bg-main-green px-8 py-6 transition-transform duration-350 fixed z-20 top-0 left-0 md:px-12 md:py-10 ${showModalMenu ? "translate-x-0" : "-translate-x-[300px]"}`}>
+      <div ref={myRef} className={`max-w-[274px] h-screen bg-main-green px-8 py-6 transition-transform duration-350 fixed z-20 top-0 left-0 md:px-12 md:py-10 ${showModalMenu ? "translate-x-0" : "-translate-x-[300px]"}`}>
         <div className="flex flex-col">
           <Link href="/" className="w-full h-14 flex justify-center items-center overflow-hidden mb-4" onClick={handleOnClickLink}>
             <Image className="mt-8" src={logo} alt="" />

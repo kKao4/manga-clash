@@ -47,8 +47,8 @@ export default function OrderButton({
           (content === "A-Z" && sort === "a-z") ||
           (content === "Đánh giá" && sort === "rating") ||
           (content === "Mới" && sort === "new")
-          ? "text-second-green border-b-second-green" : "text-gray-text"
-          } px-2 sm:px-2.5 py-2.5 sm:py-3  hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
+          ? "text-second-green border-b-second-green dark:text-third-green" : "text-gray-text dark:text-neutral-400"
+          } px-2.5 py-2.5 pb-2 sm:py-3 dark:hover:text-third-green hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
         onClick={handleOnClick}
       >
         {content}

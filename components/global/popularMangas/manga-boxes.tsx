@@ -7,7 +7,7 @@ import Row from "./row"
 export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | undefined }) {
   const dispatch = useDispatch()
   return (
-    <div className="basis-4/12">
+    <div className="basis-4/12 ">
       <div className="px-5 w-fit py-1.5 bg-second-green font-bold tracking-wider text-sm text-white">Truyện Xem Nhiều</div>
       <div className="w-0 h-0 inline-block ml-4 border-[10px] border-x-transparent border-b-transparent border-t-second-green"></div>
       <div className="flex flex-col w-full gap-y-3 md:gap-y-5">

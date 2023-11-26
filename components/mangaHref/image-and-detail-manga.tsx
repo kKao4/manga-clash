@@ -86,7 +86,7 @@ export default function ImageAndDetailManga({
         }
       }}>
       {/* image manga */}
-      <div className="flex flex-col items-center justify-center p-4 bg-white basis-1/4 w-fit">
+      <div className="flex flex-col items-center justify-center p-4 bg-white dark:bg-neutral-750 basis-1/4 w-fit">
         <div className="w-[180px] h-[255px] md:w-[193px] md:h-[274px] relative overflow-hidden">
           {adminMode ? (
             <DynamicAdminImage
@@ -110,7 +110,7 @@ export default function ImageAndDetailManga({
         </div>
       </div>
       {/* detail manga */}
-      <div className="w-full bg-[rgba(255,255,255,0.5)] p-4 md:p-6 relative">
+      <div className="w-full bg-[rgba(255,255,255,0.5)] dark:bg-neutral-750 p-4 md:p-6 relative">
         {isUpdating && (
           <div className="absolute top-0 left-0 w-full overflow-hidden">
             <BarLoader width={900} color="#409a88" />

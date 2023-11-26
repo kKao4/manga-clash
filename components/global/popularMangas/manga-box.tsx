@@ -8,16 +8,16 @@ export default function MangaBoxPopular({ manga }: { manga: MangaType }) {
     <div className="flex flex-row col-span-1 gap-x-5">
       {/* image */}
       <Link href={`/manga/${manga.href}`} className="relative w-16 h-[86px] overflow-hidden cursor-pointer group/image shrink-0">
-        <div className="absolute top-0 left-0 z-10 w-full h-full transition-colors overflow-hidden duration-200 ease-linear bg-transparent group-hover/image:bg-black/20"></div>
+        <div className="absolute top-0 left-0 z-10 w-full h-full overflow-hidden transition-colors duration-200 ease-linear bg-transparent group-hover/image:bg-black/20 dark:group-hover/image:bg-black/40"></div>
         {manga.image ? (
-          <Image className="transition-transform duration-550 group-hover/image:scale-107 object-fill" src={manga.image.url} alt="" fill={true} quality={0} />
+          <Image className="object-fill transition-transform duration-550 group-hover/image:scale-107" src={manga.image.url} alt="" fill={true} quality={0} />
         ) : (
           <div className="w-full h-full bg-gray-150 animate-pulse"></div>
         )}
       </Link>
       <div className="flex flex-col w-full gap-y-2">
         {/* name */}
-        <Link href={`/manga/${manga.href}`} className="font-bold cursor-pointer text-2sm line-clamp-2 hover:text-second-green transition-colors">{manga.name}</Link>
+        <Link href={`/manga/${manga.href}`} className="font-bold transition-colors cursor-pointer text-2sm line-clamp-2 hover:text-second-green dark:hover:text-third-green">{manga.name}</Link>
         {/* 2 chapters */}
         {manga.chapters[0] && (
           <RowChapter manga={manga} i={0} />

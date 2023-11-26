@@ -23,10 +23,10 @@ import { GetManga, getManga } from "@/lib/getServerSideProps/getManga";
 import { GetUserRating, getUserRating } from "@/lib/getServerSideProps/getUserRating";
 import Script from "next/script";
 import { selectAdminMode } from "@/features/GlobalSlice";
+import Comments from "@/components/mangaHref/comments"
+import Summary from "@/components/mangaHref/summary"
+import Chapters from "@/components/mangaHref/chapters"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
-const DynamicSummary = dynamic(() => import("@/components/mangaHref/summary"))
-const DynamicChapters = dynamic(() => import("@/components/mangaHref/chapters"))
-const DynamicComments = dynamic(() => import("@/components/mangaHref/comments"))
 
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
   await dbConnect()
@@ -155,13 +155,13 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
           <BodyBox>
             <div className="basis-9/12">
               {/* summary */}
-              <DynamicSummary
+              <Summary
                 mangaState={mangaState}
                 description={description}
                 setDescription={setDescription}
               />
               {/* chapters */}
-              <DynamicChapters
+              <Chapters
                 mangaState={mangaState as any}
                 chaptersOrder={chaptersOrder}
                 chapters={chapters as any}
@@ -169,7 +169,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
                 setChapters={setChapters}
               />
               {/* comments */}
-              <DynamicComments mangaState={mangaState} ref={commentsRef} />
+              <Comments mangaState={mangaState} ref={commentsRef} />
             </div>
             {/* popular mangas */}
             <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
