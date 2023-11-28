@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import dynamic from "next/dynamic"
-import Title from "../global/title"
+import Title from "../global/Title/Title"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Parser from "html-react-parser"

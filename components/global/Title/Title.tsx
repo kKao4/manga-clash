@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import GreenStar from "./green-star";
+import GreenStar from "./GreenStar";
 
 export default function Title({
   content, children, order
@@ -8,7 +8,7 @@ export default function Title({
 }) {
   return (
     <div className={`${order ? "flex-col sm:flex-row" : "flex-row"} relative flex items-center mt-4`}>
-      <div className="flex flex-row items-center flex-none sm:w-auto grow">
+      <div className="flex flex-row items-center flex-none sm:w-auto grow mr-auto">
         <GreenStar />
         <p className={`ml-1 text-lg font-bold dark:text-white`}>{content}</p>
       </div>
@@ -17,4 +17,4 @@ export default function Title({
     </div>
   )
 }
-// TODO: add dark theme to widget cloudinary fix delete chapter
+// TODO: add dark theme to widget cloudinary and refactoring

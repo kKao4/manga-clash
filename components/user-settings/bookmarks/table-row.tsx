@@ -6,7 +6,7 @@ import { MangaType } from "@/models/manga";
 import { useRouter } from "next/router";
 import { selectBookmarkState, setMangasBookmark } from "@/features/user-settings/BookmarkSlice";
 import { useState } from "react";
-import RowChapter from "./row-chapter";
+import RowChapter from "@/components/global/mangaBox/RowChapter";
 
 export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }) {
   const dispatch = useDispatch()
@@ -15,30 +15,27 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
   const [isRemovingBookmark, setIsRemovingBookmark] = useState<boolean>(false)
   return (
     <>
-      <tr className={`relative border-b border-neutral-300 ${isRemovingBookmark && "opacity-60"}`}>
+      <tr className={`relative border-b border-neutral-300 dark:border-neutral-700 ${isRemovingBookmark && "opacity-60"}`}>
         {/* image and name */}
         <td className={`flex flex-row p-4 pr-0 text-sm gap-x-4`}>
           <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144} quality={0} />
           <Link
             href={`/manga/${manga.href}`}
-            className="font-bold transition-colors cursor-pointer hover:text-second-green"
+            className="font-bold transition-colors cursor-pointer hover:text-second-green dark:hover:text-third-green"
           >
             {manga.name}
           </Link>
         </td>
         {/* 2 latest chapters */}
-        <td className="hidden py-3 space-y-2.5 text-sm sm:table-cell">
-          {manga.chapters[0] && (
-            <RowChapter manga={manga} i={0} />
-          )}
-          {manga.chapters[1] && (
-            <RowChapter manga={manga} i={1} />
-          )}
+        <td className="hidden space-y-2.5 sm:table-cell">
+          {manga.chapters.map((chapter, i) => {
+            return <RowChapter key={manga.name + "-chapter"} manga={manga} i={i} paddingChapter="px-2.5 py-1.25" fontSize="text-sm" className="flex-col gap-y-1.25" />
+          })}
         </td>
         {/* delete button */}
         <td className="hidden sm:table-cell">
           <button
-            className="flex flex-row px-3 py-1.5 mx-auto text-sm text-white bg-red-500 rounded"
+            className="flex flex-row px-3 py-1.5 mx-auto text-sm text-white bg-red-500 rounded hover:bg-red-700 transition-colors"
             onClick={async () => {
               setIsRemovingBookmark(true)
               const result1 = await fetch(`/api/user/actions/bookmark/${manga.href}`);

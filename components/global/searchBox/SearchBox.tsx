@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
-import SearchDropdown from "./search-dropdown"
+import SearchDropdown from "./SearchDropdown.tsx"
 import { useEffect, useRef, useState } from "react"
 import { BarLoader } from "react-spinners"
 import { useRouter } from "next/router"

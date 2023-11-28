@@ -8,4 +8,4 @@ export default function Row({ manga, index }: { manga: MangaType, index: number 
       {index % 2 !== 0 && <hr className="hidden col-span-2 md:block dark:border-neutral-700" />}
     </>
   )
-}
+} 

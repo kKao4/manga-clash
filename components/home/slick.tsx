@@ -1,16 +1,8 @@
 import { MangasResponse } from "@/type";
-import Image from "next/image";
-import { useEffect, useMemo, useRef } from "react"
-import Slider, { Settings } from "react-slick";
+import Slider from "react-slick";
 import PageSlick from "./page-slick";
 
 export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const nextContext = () => {
-    if (sliderRef.current) {
-      sliderRef.current.style.transform = "translateX(-100%)"
-    }
-  }
   return (
     <>
       <Slider
@@ -50,7 +42,7 @@ export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
         }
       >
         {mangas?.map(manga => {
-          return <PageSlick key={manga._id} manga={manga} />
+          return <PageSlick key={manga.name + "-slick"} manga={manga} />
         })}
       </Slider>
     </>

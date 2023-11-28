@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { selectChartState, setPageChart, setSearchNameChart, setTimeChart } from "@/features/user-settings/ChartSlice";
-import Paginate from "../../global/paginate";
+import Paginate from "../../global/paginate/Paginate";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -71,7 +71,7 @@ export default function Chart() {
           <tbody>
             {chartState.mangas.map((manga) => {
               return (
-                <tr key={manga.href} className="border-b border-neutral-300">
+                <tr key={manga.name + "-chart"} className="border-b border-neutral-300">
                   <td className="text-center align-top p-2.5">
                     <p>{manga.views.rank}</p>
                   </td>

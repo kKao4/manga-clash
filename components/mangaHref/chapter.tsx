@@ -23,8 +23,8 @@ export default function Chapter({
           Chapter {chapter.num} {chapter.description && `- ${chapter.description}`}
         </div>
 
-        <div className="text-[13px] italic self-center shrink-0 min-w-fit">
-          <p className="text-[13px] italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
+        <div className="text-2sm italic self-center shrink-0 min-w-fit">
+          <p className="text-2sm italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
         </div>
       </div>
       {adminMode && (

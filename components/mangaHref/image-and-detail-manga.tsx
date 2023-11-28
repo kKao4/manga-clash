@@ -9,7 +9,7 @@ import Image from "next/image"
 import { BarLoader } from "react-spinners"
 import DetailManga from "./detail-manga"
 import dynamic from "next/dynamic"
-import DotLoaderComponent from "../global/dot-loader"
+import DotLoaderComponent from "../global/DotLoader"
 const DynamicAdminImage = dynamic(() => import("./admin/admin-image"), {
   ssr: false,
   loading: () => <DotLoaderComponent size={40} heightIsFull={true} />

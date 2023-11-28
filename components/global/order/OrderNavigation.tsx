@@ -1,8 +1,7 @@
-import OrderButton from "./order-button"
-import Title from "./title"
-import { useDispatch, useSelector } from "react-redux"
+import OrderButton from "./OrderButton"
+import Title from "../Title/Title"
+import { useDispatch } from "react-redux"
 import { Order, setSort } from "@/features/GlobalSlice"
-import { selectSearchState } from "@/features/search/SearchSlice"
 import { useRouter } from "next/router"
 
 export default function OrderNavigation({

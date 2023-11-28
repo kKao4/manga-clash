@@ -1,7 +1,7 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice";
 import { DiscussionEmbed } from "disqus-react";
 import { useRouter } from "next/router";
-import Title from "../global/title";
+import Title from "../global/Title/Title";
 import { ForwardedRef, forwardRef } from "react";
 
 const Comments = forwardRef(function Comments({ mangaState }: { mangaState: typeof initialMangaState[number] }, ref: ForwardedRef<HTMLDivElement>) {

@@ -6,14 +6,15 @@ import { useState, useEffect, useRef } from "react"
 import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
+import CloseButton from "./close-button"
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
   const dispatch = useDispatch()
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [emailValid, setEmailValid] = useState<boolean>(false)
-  const [passwordValid, setPasswordValid] = useState<boolean>(false)
+  const [emailValid, setEmailValid] = useState<boolean>(true)
+  const [passwordValid, setPasswordValid] = useState<boolean>(true)
   const [wrongInformation, setWrongInformation] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [zIndex, setZIndex] = useState<string>("-z-10")
@@ -33,7 +34,7 @@ export default function SignIn() {
     setPasswordValid(() => value.match(passwordReg) ? true : false)
   }
   useEffect(() => {
-    if (email && password) {
+    if (email || password) {
       setWrongInformation(false)
     }
   }, [email, password])
@@ -49,7 +50,7 @@ export default function SignIn() {
       >
         <form
           ref={formRef}
-          className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+          className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()
             setIsLoading(true)
@@ -75,9 +76,7 @@ export default function SignIn() {
             }
           }}
         >
-          <div className="absolute right-3 top-1.5 p-2 group cursor-pointer" onClick={() => dispatch(toggleSignIn(false))}>
-            <svg className="h-6 fill-gray-200 group-hover:fill-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
-          </div>
+          <CloseButton handleOnClick={() => dispatch(toggleSignIn(false))} />
           <p className="text-xl font-bold text-center uppercase">Đăng Nhập</p>
           <Input
             content="Email"
@@ -118,12 +117,14 @@ export default function SignIn() {
             type="button"
             className="text-start hover:text-second-green" onClick={() => {
               dispatch(toggleSignIn(false))
-              dispatch(toggleResetPassword(true))
+              setTimeout(() => {
+                dispatch(toggleResetPassword(true))
+              }, 200)
             }}
           >
             Quên mật khẩu?
           </button>
-        </form >
+        </form>
       </div >
     </>
   )

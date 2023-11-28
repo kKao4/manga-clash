@@ -22,10 +22,10 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
             {/* manga's name */}
             <div className="flex flex-col -mb-1">
               <Link href={`/manga/${manga?.href}`} className="pr-6 text-lg font-medium text-white uppercase transition-colors duration-300 ease-out cursor-pointer sm:text-xl line-clamp-1 sm:pr-12 hover:text-main-green">{manga?.name}</Link>
-              <p className="text-[13px] text-[rgb(255,193,7)] uppercase">Manga</p>
+              <p className="text-2sm text-[rgb(255,193,7)] uppercase">Manga</p>
             </div>
           </div>
-          {/* tags */}
+          {/* TODO: refactoring tags */}
           <div className="px-2.5">
             {manga!.tags.length ? (
               <div className="line-clamp-1 pr-8 sm:pr-24 mb-2.5 text-white">
@@ -34,7 +34,7 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
                     return (
                       <Link
                         key={tag}
-                        href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`} className="capitalize text-neutral-200 text-[13px] hover:text-main-green transition-colors"
+                        href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`} className="capitalize text-neutral-200 text-2sm hover:text-main-green transition-colors"
                       >
                         {tag}
                       </Link>
@@ -46,7 +46,7 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
                         href={`/manga?page=1&sort=latest&tags=${tag.toLowerCase()}`}
                       >
                         <button
-                          className="text-neutral-200 text-[13px] capitalize hover:text-main-green transition-colors">
+                          className="text-neutral-200 text-2sm capitalize hover:text-main-green transition-colors">
                           {tag}
                           <span className="text-neutral-200">,</span>
                         </button>{" "}
@@ -55,16 +55,16 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
                   }
                 })}
               </div>
-            ) : <p className="text-neutral-200 text-[13px] mb-2.5">Đang cập nhật</p>}
+            ) : <p className="text-neutral-200 text-2sm mb-2.5">Đang cập nhật</p>}
             <p className="text-[11px] text-neutral-200 uppercase font-bold mb-1.5">Tóm Tắt</p>
-            <p className="text-[13px] text-neutral-200 line-clamp-2 pr-2 sm:pr-6 mb-1">{manga?.description ? Parser(manga?.description) : "Đang cập nhật"}</p>
+            <p className="text-2sm text-neutral-200 line-clamp-2 pr-2 sm:pr-6 mb-1">{manga?.description ? Parser(manga?.description) : "Đang cập nhật"}</p>
             <div>
-              <p className="text-neutral-200 text-[13px] inline mr-1">Trạng thái:</p>
-              <span className="inline text-neutral-200 text-[13px]">{manga?.completed ? "Hoàn thành" : "Đang tiến hành"}</span>
+              <p className="text-neutral-200 text-2sm inline mr-1">Trạng thái:</p>
+              <span className="inline text-neutral-200 text-2sm">{manga?.completed ? "Hoàn thành" : "Đang tiến hành"}</span>
             </div>
             <div>
-              <p className="text-neutral-200 text-[13px] mr-1 inline">Tác giả:</p>
-              <span className="text-neutral-200 text-[13px] inline">{manga?.author ? manga?.author : "Đang cập nhật"}</span>
+              <p className="text-neutral-200 text-2sm mr-1 inline">Tác giả:</p>
+              <span className="text-neutral-200 text-2sm inline">{manga?.author ? manga?.author : "Đang cập nhật"}</span>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import Input from "./input";
 import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
+import CloseButton from "./close-button";
 
 export default function SignUp() {
   const dispatch = useDispatch()
@@ -15,15 +16,17 @@ export default function SignUp() {
   const [username, setUsername] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [usernameValid, setUsernameValid] = useState<boolean>(false)
-  const [passwordValid, setPasswordValid] = useState<boolean>(false)
-  const [emailValid, setEmailValid] = useState<boolean>(false)
+  const [usernameValid, setUsernameValid] = useState<boolean>(true)
+  const [passwordValid, setPasswordValid] = useState<boolean>(true)
+  const [emailValid, setEmailValid] = useState<boolean>(true)
   const [emailExits, setEmailExits] = useState<boolean>(false)
   const [signedUp, setSignedUp] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [zIndex, setZIndex] = useState<string>("-z-10")
   const formRef = useRef<HTMLFormElement>(null)
+  const divRef = useRef<HTMLDivElement>(null)
   useOnClickOutside(formRef, () => dispatch(toggleSignUp(false)))
+  useOnClickOutside(divRef, () => dispatch(toggleSignUp(false)))
   useEffect(() => {
     if (showSignUp) {
       setZIndex("z-50")
@@ -59,7 +62,7 @@ export default function SignUp() {
         {!signedUp ? (
           <form
             ref={formRef}
-            className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+            className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
             onSubmit={async (e) => {
               e.preventDefault()
               setIsLoading(true)
@@ -85,12 +88,10 @@ export default function SignUp() {
               }
             }}
           >
-            <div className="absolute right-3 top-1.5 p-2 group cursor-pointer" onClick={() => {
+            <CloseButton handleOnClick={() => {
               dispatch(toggleSignUp(false))
               setSignedUp(false)
-            }}>
-              <svg className="h-6 fill-gray-200 group-hover:fill-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
-            </div>
+            }} />
             <p className="text-xl font-bold text-center uppercase">Đăng Ký</p>
             <Input
               content="Tên người dùng"
@@ -133,14 +134,18 @@ export default function SignUp() {
             <div className="">
               <button type="button" className="hover:text-second-green" onClick={() => {
                 dispatch(toggleSignUp(false))
-                dispatch(toggleSignIn(true))
+                setTimeout(() => {
+                  dispatch(toggleSignIn(true))
+                }, 200)
               }}>Đăng nhập</button>
               <button
                 type="button"
                 className="float-right hover:text-second-green"
                 onClick={() => {
                   dispatch(toggleSignUp(false))
-                  dispatch(toggleResetPassword(true))
+                  setTimeout(() => {
+                    dispatch(toggleResetPassword(true))
+                  }, 200)
                 }}
               >
                 Quên mật khẩu?
@@ -149,13 +154,17 @@ export default function SignUp() {
           </form>
         ) : (
           <div
-            className="bg-search w-[650px] px-32 pt-7 pb-12 space-y-4"
+            ref={divRef}
+            className="bg-search dark:bg-none dark:bg-neutral-750 w-[650px] px-32 pt-7 pb-12 space-y-4 relative"
           >
+            <CloseButton handleOnClick={() => dispatch(toggleSignUp(false))} />
             <p className="text-2xl font-bold text-center">Đã đăng ký thành công!</p>
-            <p className="text-center">Vùi lòng <span className="font-bold cursor-pointer text-main-green hover:text-second-green" onClick={() => {
-              setSignedUp(false)
+            <p className="text-center">Vùi lòng <span className="font-bold cursor-pointer text-main-green hover:text-third-green transition-colors" onClick={() => {
               dispatch(toggleSignUp(false))
-              dispatch(toggleSignIn(true))
+              setTimeout(() => {
+                dispatch(toggleSignIn(true))
+                setSignedUp(false)
+              }, 200)
             }}>Nhấn vào đây</span> để đăng nhập</p>
           </div>
         )}

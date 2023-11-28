@@ -122,7 +122,6 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
         <span className={`hidden ml-2 text-2xl font-bold lg:group-hover/stars:block ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>Đánh Giá Truyện</span>
         {userRatingState?.star ? (
           <span
-            key={manga!.href}
             className={`font-semibold text-sm md:text-base ml-1.5 ${isLoadingUserRating ? "opacity-40" : "opacity-100"}`}>
             (Đánh giá của bạn: {userRatingState.star.toFixed(1)})
           </span>
@@ -179,7 +178,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           </div>
           {/* genres information */}
           <div className="flex flex-col sm:flex-row">
-            <p className="text-sm font-bold basis-1/5">Thể Loại</p>
+            <p className="text-sm font-bold basis-1/5">Thể loại</p>
             {manga.tags.length ? (
               <p className="text-sm basis-4/5">
                 <TagsDetailManga manga={manga} />

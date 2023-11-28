@@ -3,9 +3,9 @@ import { MangasResponse, UserResponse } from "@/type";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import MangaBoxes from "@/components/mangas/manga-boxes";
 import Head from "next/head";
-import OrderNavigation from "@/components/global/order-navigation";
-import BodyBox from "@/components/global/body-box";
-import UserMenu from "@/components/global/user-menu";
+import OrderNavigation from "@/components/global/order/OrderNavigation";
+import BodyBox from "@/components/global/BodyBox";
+import UserMenu from "@/components/global/userMenu/UserMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router"
@@ -55,7 +55,6 @@ const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsT
   const dispatch = useDispatch()
   const router = useRouter()
   const userState = useSelector(selectUserState)
-  const searchState = useSelector(selectSearchState)
   // set user
   useEffect(() => {
     if (userRes.data) {

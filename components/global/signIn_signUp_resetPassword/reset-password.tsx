@@ -10,7 +10,7 @@ export default function ResetPassword() {
   const showResetPassword = useSelector(selectResetPassword)
   const dispatch = useDispatch()
   const [email, setEmail] = useState<string>("")
-  const [emailValid, setEmailValid] = useState<boolean>(false)
+  const [emailValid, setEmailValid] = useState<boolean>(true)
   const [emailSent, setEmailSent] = useState<boolean>(false)
   const [emailNotFound, setEmailNotFound] = useState<boolean>(false)
   const [zIndex, setZIndex] = useState<string>("-z-10")
@@ -47,7 +47,7 @@ export default function ResetPassword() {
       >
         <form
           ref={formRef}
-          className="bg-search w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+          className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)

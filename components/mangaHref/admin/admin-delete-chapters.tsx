@@ -19,7 +19,7 @@ export default function AdminDeleteChapters({
       </button>
       {/* delete chapters modal */}
       <form
-        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full translate-x-0 opacity-100" : "opacity-0 scale-0 -translate-y-1/2 translate-x-1/2"} absolute transition-all shadow grid grid-cols-1 right-0 content-evenly -top-1 duration-200 z-10 border-2 w-[220px] h-[84px] bg-white rounded-md border-red-500`}
+        className={`${isOpenDeleteModal ? "scale-100 -translate-y-full translate-x-0 opacity-100" : "opacity-0 scale-0 -translate-y-1/2 translate-x-1/2"} absolute transition-all shadow grid grid-cols-1 right-0 content-evenly -top-1 duration-200 z-10 border-2 w-[220px] h-[84px] bg-white dark:bg-neutral-750 rounded-md border-red-500`}
         onSubmit={async (e) => {
           e.preventDefault()
           setIsDeletingChapters(true)
@@ -51,14 +51,14 @@ export default function AdminDeleteChapters({
         <div className="mx-auto space-x-2 max-w-fit">
           <button
             type="button"
-            className="px-2 py-1 font-semibold rounded bg-neutral-200 hover:bg-neutral-300"
+            className="px-2 py-1 font-semibold rounded bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-300"
             onClick={() => setIsOpenDeleteModal(false)}
           >
             Hủy
           </button>
           <button
             type="submit"
-            className={`${isDeletingChapters ? "" : "hover:bg-black"} px-2 py-1 font-semibold text-white rounded bg-red-500`}
+            className={`${isDeletingChapters ? "" : "hover:bg-red-600"} px-2 py-1 font-semibold text-white rounded bg-red-500`}
             disabled={isDeletingChapters}
           >
             {isDeletingChapters ? (

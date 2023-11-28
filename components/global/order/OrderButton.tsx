@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import { selectSort } from "@/features/GlobalSlice"
 import { selectSearchState } from "@/features/search/SearchSlice"
 import { useEffect, useState } from "react"
-import { OrderRipples } from "./button-ripple"
+import { OrderRipples } from "../ButtonRipple"
 import { searchQueryFn } from "@/type"
 
 export default function OrderButton({

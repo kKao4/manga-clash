@@ -163,7 +163,7 @@ export default function AdminAddChapterModal({
           }
         }}
       />
-      <p className="col-span-full text-[13px] text-red-500">{validChapterMessage}</p>
+      <p className="col-span-full text-2sm text-red-500">{validChapterMessage}</p>
       <div className="col-span-full">
         <div
           className={`${!validChapterMessage ? "bg-second-green" : "bg-red-500"

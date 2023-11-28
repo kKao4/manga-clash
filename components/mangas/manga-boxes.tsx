@@ -1,5 +1,5 @@
 import { MangaType } from "@/models/manga"
-import Paginate from "../global/paginate"
+import Paginate from "../global/paginate/Paginate"
 import Row from "./row"
 
 export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType[] | undefined, mangasLength: number | undefined }) {
@@ -9,7 +9,7 @@ export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType
         {mangas ? (
           <>
             {mangas.map((manga, i) => {
-              return <Row key={manga.href} manga={manga} index={i} />
+              return <Row key={manga.name + "-manga"} manga={manga} index={i} />
             })}
           </>
         ) : (
@@ -17,6 +17,7 @@ export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType
         )}
       </div>
       <div className="flex justify-center">
+        {/* paginate */}
         {mangasLength ? (
           <Paginate mangasLength={mangasLength} page="manga" />
         ) : ""}

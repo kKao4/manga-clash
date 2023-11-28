@@ -2,8 +2,8 @@ import { ChartResponse, MangasResponse, UserResponse } from "@/type"
 import MangaBoxes from "@/components/mangas/manga-boxes"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
-import BodyBox from "@/components/global/body-box"
-import UserMenu from "@/components/global/user-menu"
+import BodyBox from "@/components/global/BodyBox"
+import UserMenu from "@/components/global/userMenu/UserMenu"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { setPageMangas } from "@/features/manga/MangasSlice"
@@ -13,7 +13,7 @@ import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularManga
 import { getUser } from "@/lib/getServerSideProps/getUser"
 import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas"
 import dbConnect from "@/lib/dbConnect"
-import Slick from "@/components/global/slick/slick"
+import Slick from "@/components/home/slick"
 import { getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import TrendingManga from "@/components/home/trending-manga"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
@@ -79,11 +79,12 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
     <>
       <UserMenu user={userState} />
       <Head>
-        <title>Mangaclash - Đọc Truyện online</title>
+        <title>Manga-kKao4 - Đọc Truyện online</title>
       </Head>
       <BodyBox className="pt-0">
         {/* left row */}
         <div className="basis-9/12">
+          {/* slick and trending manga */}
           <div className="flex flex-row max-w-fit -mx-4 md:mx-auto mb-4">
             <Slick mangas={chartRes.data} />
             <TrendingManga manga={chartRes.trendingManga!} />

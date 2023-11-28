@@ -24,10 +24,11 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [oldPassword, setOldPassword] = useState<string>("")
+  // const [fileValid, setFileValid] = useState<boolean>(true)
   const [passwordRepeat, setPasswordRepeat] = useState<string>("")
-  const [usernameValid, setUsernameValid] = useState<boolean>(false)
-  const [emailValid, setEmailValid] = useState<boolean>(false)
-  const [passwordValid, setPasswordValid] = useState<boolean>(false)
+  const [usernameValid, setUsernameValid] = useState<boolean>(true)
+  const [emailValid, setEmailValid] = useState<boolean>(true)
+  const [passwordValid, setPasswordValid] = useState<boolean>(true)
   const [passwordRepeatValid, setPasswordRepeatValid] = useState<boolean>(true)
   const [wrongPassword, setWrongPassword] = useState<boolean>(false)
   const [changedPassword, setChangedPassword] = useState<boolean>(false)
@@ -40,7 +41,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
     <>
       <div className="flex flex-col">
         {/* profile picture */}
-        <div className="flex flex-row pb-6 border-b gap-x-5">
+        <div className="flex flex-row pb-6 border-b dark:border-neutral-700 gap-x-5">
           <div className="basis-1/3 w-[191px] h-[191px] overflow-hidden flex place-items-center relative">
             {!user?.profilePicture.url ? (
               <Image className="object-fill" src={blankProfile} alt="" fill={true} quality={0} />
@@ -72,7 +73,6 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                 if (fileRef.current) {
                   fileRef.current.value = ""
                 }
-                // router.replace(router.asPath, "", { scroll: false })
               } else if (res.error) {
                 alert(res.error)
                 router.push("/")
@@ -89,14 +89,14 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                       setFile(e.target.files[0])
                     }
                   }}
+                  required
                 />
-                <span className="text-sm text-gray-200 select-none group-hover:text-second-green">Chọn file</span>
+                <span className="text-sm text-gray-200 dark:text-neutral-400 select-none group-hover:text-second-green transition-colors">Chọn file</span>
               </label>
-              <span className={`ml-2 text-sm ${file ? "text-gray-200" : "text-red-500"}`}>{!file ? "Không có file nào được chọn" : file.name}</span>
+              <span className={`ml-2 text-sm text-gray-200 dark:text-neutral-400`}>{!file ? "Không có file nào được chọn" : file.name}</span>
               <button
                 type="submit"
-                className={`${file ? " bg-second-green hover:bg-black" : "bg-red-500"} block px-4 py-1.5 mt-4 text-sm font-bold text-white transition-colors rounded-full`}
-                disabled={!file}
+                className={`bg-second-green hover:bg-black block px-4 py-1.5 mt-4 text-sm font-bold text-white transition-colors rounded-full`}
               >
                 Thay Đổi
               </button>
@@ -141,11 +141,12 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
             <input
               type="text"
               value={username}
-              className={`${usernameValid ? "border-gray-200" : "border-red-500"} px-4 py-2 rounded w-full sm:w-auto grow sm:mr-4 focus:outline-none border`}
+              className={`${usernameValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded w-full sm:w-auto grow sm:mr-4 focus:outline-none border`}
               onChange={(e) => {
                 setUsername(e.target.value)
                 setUsernameValid(() => e.target.value.match(usernameReg) ? true : false)
               }}
+              required
             />
           </Input>
           <div className={`${usernameValid ? "hidden" : "block"} text-sm text-red-500 -mt-8`}>Độ dài tối thiểu là 4 ký tự và không bao gồm ký tự đặc biệt</div>
@@ -185,12 +186,13 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           <Input label="Địa Chỉ Email Mới">
             <input
               type="text"
-              className={`${emailValid ? "border-gray-200" : "border-red-500"} px-4 py-2 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto border`}
+              className={`${emailValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto border`}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value)
                 setEmailValid(() => e.target.value.match(emailReg) ? true : false)
               }}
+              required
             />
           </Input>
           <div className={`${emailValid ? "hidden" : "block"} text-sm text-red-500 -mt-8`}>Email không hợp lệ</div>
@@ -228,32 +230,35 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           <Input label="Mật Khẩu Hiện Tại">
             <input
               type="password"
-              className={`${!wrongPassword ? "border-gray-200" : "border-red-500"} px-4 py-2 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${!wrongPassword ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
+              required
             />
           </Input>
           <Input label="Mật Khẩu Mới">
             <input
               type="password"
-              className={`${passwordValid ? "border-gray-200" : "border-red-500"} px-4 py-2 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${passwordValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value)
                 setPasswordValid(() => e.target.value.match(passwordReg) ? true : false)
                 setPasswordRepeatValid(() => e.target.value === passwordRepeat ? true : false)
               }}
+              required
             />
           </Input>
           <Input label="Xác Nhận Lại Mật Khẩu">
             <input
               type="password"
-              className={`${passwordRepeatValid ? "border-gray-200" : "border-red-500"} px-4 py-2 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${passwordRepeatValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={passwordRepeat}
               onChange={(e) => {
                 setPasswordRepeat(e.target.value)
                 setPasswordRepeatValid(() => e.target.value === password ? true : false)
               }}
+              required
             />
           </Input>
           <div className="">

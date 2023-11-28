@@ -16,7 +16,7 @@ export default function Input({
         type={type}
         id={uniqueId}
         name={name}
-        className={`${!valid ? "border-red-500 border" : ""} px-4 py-3 w-full focus:outline-none rounded ${content === "Password" ? "tracking-[2px]" : "tracking-wide"}`}
+        className={`${!valid ? "border-red-500 border" : ""} px-4 py-3 w-full focus:outline-none dark:bg-neutral-700 rounded ${content === "Password" ? "tracking-[2px]" : "tracking-wide"}`}
         value={value}
         onChange={(e) => handleOnChange(e.target.value)}
         required

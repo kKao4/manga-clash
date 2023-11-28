@@ -4,7 +4,7 @@ export default function Row({
   header: string, children: React.ReactNode, handleOnSubmit: (e: React.FormEvent<HTMLFormElement>) => void, valid: boolean, isLoading: boolean
 }) {
   return (
-    <form className="py-2 pb-4 border-b" onSubmit={(e) => handleOnSubmit(e)}>
+    <form className="py-2 pb-4 border-b dark:border-neutral-700" onSubmit={(e) => handleOnSubmit(e)}>
       <p className="font-bold">{header}</p>
       <div className="py-4 space-y-5">
         {children}

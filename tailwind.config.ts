@@ -13,12 +13,7 @@ const config: Config = {
         sans: ["var(--font-main)"],
       },
       fontSize: {
-        "2sm": [
-          "0.8125rem",
-          {
-            lineHeight: "1.125rem",
-          },
-        ],
+        "2sm": ["0.8125rem", "1.125rem"],
       },
       colors: {
         "main-green": "#409a88",
@@ -53,6 +48,8 @@ const config: Config = {
         "arrow-left": "url('../assets/arrow-left.png'), default",
       },
       spacing: {
+        "1.25": "0.3125rem",
+        "3.25": "0.8125rem",
         "13": "3.25rem",
         "18": "4.5rem",
       },

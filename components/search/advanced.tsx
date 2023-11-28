@@ -1,13 +1,13 @@
 import { tagsArray } from "@/type";
-import Input from "./input";
-import Checkbox from "./checkbox";
-import { MyRipples } from "../global/button-ripple";
+import Input from "./Input";
+import Checkbox from "./Checkbox";
+import { MyRipples } from "../global/ButtonRipple";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, SetStateAction, Dispatch } from "react"
 import { selectSort } from "@/features/GlobalSlice";
 import { selectSearchState, setSearchAuthor, setSearchCompleted, resetSearch } from "@/features/search/SearchSlice";
 import { useRouter } from "next/router";
-import Radio from "./radio";
+import Radio from "./Radio";
 
 
 export default function Advanced({ setSearched }: { setSearched: Dispatch<SetStateAction<boolean>> }) {
@@ -39,7 +39,6 @@ export default function Advanced({ setSearched }: { setSearched: Dispatch<SetSta
           })}
         </div>
         <Input content="Tác giả" value={searchState.author} handleOnChange={(value) => dispatch(setSearchAuthor(value))} />
-        {/* <Input content="Năm phát hành" value={searchState.year} handleOnChange={(value) => dispatch(setSearchYear(value))} /> */}
         <div className="flex flex-row items-center w-full py-3 sm:w-5/6 lg:w-2/3">
           <p className="font-bold basis-1/3">Trạng thái</p>
           <div className="flex flex-row flex-wrap w-full gap-x-4 sm:gap-x-12">

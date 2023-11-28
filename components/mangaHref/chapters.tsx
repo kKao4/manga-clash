@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import Title from "../global/title"
+import Title from "../global/Title/Title"
 import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { MangaType } from "@/models/manga"

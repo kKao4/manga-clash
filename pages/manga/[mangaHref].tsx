@@ -1,10 +1,10 @@
 import { MangaResponse, MangasResponse, UserRatingResponse, UserResponse } from "@/type";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import Navigation from "@/components/global/navigation";
-import MenuFootBox from "@/components/global/menu-foot-box";
-import BodyBox from "@/components/global/body-box";
+import Navigation from "@/components/global/navigation/navigation";
+import MenuFootBox from "@/components/global/MenuFootBox";
+import BodyBox from "@/components/global/BodyBox";
 import { useMemo, useRef, useState } from "react"
-import UserMenu from "@/components/global/user-menu";
+import UserMenu from "@/components/global/userMenu/UserMenu";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";

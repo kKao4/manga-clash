@@ -4,7 +4,7 @@ import { MangasResponse } from "@/type"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useDebounce } from 'usehooks-ts'
-import RowSearchDropdown from "./row-search-dropdown"
+import RowSearchDropdown from "./RowSearchDropdown"
 
 export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }: { setIsLoadingMangas: any, setShowSearchBox: any }) {
   const searchState = useSelector(selectSearchState)
@@ -41,7 +41,7 @@ export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }:
       {searchedMangas && searchedMangas.length ? (
         <>
           {searchedMangas.map((manga) => {
-            return <RowSearchDropdown key={manga.href} manga={manga} setShowSearchBox={setShowSearchBox} />
+            return <RowSearchDropdown key={manga.name + "-search"} manga={manga} setShowSearchBox={setShowSearchBox} />
           })}
         </>
       ) : searchedMangas && !searchedMangas.length ? (

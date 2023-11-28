@@ -1,5 +1,5 @@
 import TableRow from "./table-row"
-import Paginate from "@/components/global/paginate"
+import Paginate from "@/components/global/paginate/Paginate"
 import { MangasResponse } from "@/type"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
@@ -34,14 +34,14 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
         <label>Tìm kiếm:</label>
         <input
           type="text"
-          className="focus:outline-none px-2 py-1 border border-gray-300 rounded-md max-w-[180px]"
+          className="focus:outline-none px-2 py-1 border border-gray-300 dark:border-transparent dark:bg-neutral-700 rounded-md max-w-[180px]"
           value={bookmarkState.name}
           onChange={(e) => dispatch(setSearchNameBookmark(e.target.value))}
         />
       </form>
       <table className="min-w-full mb-4 table-fixed">
         <thead>
-          <tr className="bg-[#ebebeb]">
+          <tr className="bg-[#ebebeb] dark:bg-[rgb(74,74,74)]">
             <th className="w-7/12 px-4 py-2 font-bold text-left">Tên Truyện</th>
             <th className="hidden font-bold text-center sm:table-cell">Chapter</th>
             <th className="hidden font-bold text-center sm:table-cell">Xóa</th>
@@ -51,7 +51,7 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
           {mangas && mangas.length ? (
             <>
               {mangas.map(manga => {
-                return <TableRow key={manga.href} manga={manga} mangasLength={mangasLength} />
+                return <TableRow key={manga.name + "-bookmarks"} manga={manga} mangasLength={mangasLength} />
               })}
             </>
           ) : (!router.query.nameBookmark) ? (

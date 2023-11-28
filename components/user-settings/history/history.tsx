@@ -1,4 +1,4 @@
-import Paginate from "@/components/global/paginate"
+import Paginate from "@/components/global/paginate/Paginate"
 import { selectHistoryState, setPageHistory, setSearchNameHistory } from "@/features/user-settings/HistorySlice"
 import { useRouter } from "next/router"
 import { useSelector, useDispatch } from "react-redux"
@@ -53,7 +53,7 @@ export default function History() {
           {historyState.mangas && historyState.length ? (
             <>
               {historyState.mangas.map(manga => {
-                return <TableRow key={manga.manga.href} manga={manga.manga} createdAt={manga.createdAt} chapter={manga.chapter} />
+                return <TableRow key={manga.manga.name + "-history"} manga={manga.manga} createdAt={manga.createdAt} chapter={manga.chapter} />
               })}
             </>
           ) : (!router.query.nameHistory) ? (

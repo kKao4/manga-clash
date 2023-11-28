@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/nprogress.css"
 import type { AppProps } from "next/app"
-import MenuTop from "@/components/global/menu-top"
+import Menu from "@/components/global/menu/Menu"
 import { Open_Sans } from "next/font/google"
 import store from "@/store"
 import { Provider } from "react-redux";
@@ -12,15 +12,15 @@ import type { NextPage } from 'next'
 import NProgress from "nprogress"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
-import DarkMode from "@/components/global/dark-mode"
+import DarkMode from "@/components/global/darkMode/DarkMode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
 import Head from "next/head"
-const DynamicSignUp = dynamic(() => import("@/components/global/sign-up"))
-const DynamicSignIn = dynamic(() => import("@/components/global/sign-in"))
-const DynamicResetPassword = dynamic(() => import("@/components/global/reset-password"))
-const DynamicFooter = dynamic(() => import("@/components/global/footer"))
-const DynamicButtonScrollToTop = dynamic(() => import("@/components/buttonScrollToTop/buttonScrollToTop"))
+const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
+const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
+const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
+const DynamicFooter = dynamic(() => import("@/components/global/footer/footer"))
+const DynamicButtonScrollToTop = dynamic(() => import("@/components/global/buttonScrollToTop/buttonScrollToTop"))
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -68,7 +68,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <DynamicSignUp />
             <DynamicSignIn />
             <DynamicResetPassword />
-            <MenuTop />
+            <Menu />
             <DynamicButtonScrollToTop />
             {getLayout(<Component {...pageProps} />)}
             <Analytics />
