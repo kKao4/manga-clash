@@ -1,7 +1,9 @@
+import { selectDarkMode } from "@/features/GlobalSlice"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { MangaType } from "@/models/manga"
 import { SignatureResponse } from "@/type"
 import { useEffect, useRef, useState } from "react"
+import { useSelector } from "react-redux"
 import { PacmanLoader } from "react-spinners"
 
 export default function AdminAddChapterModal({
@@ -9,6 +11,7 @@ export default function AdminAddChapterModal({
 }: {
   isOpenAddChapter: boolean, mangaState: typeof initialMangaState[number], chapters: MangaType["chapters"], chaptersOrder: "earliest" | "latest", setChapters: any
 }) {
+  const darkMode = useSelector(selectDarkMode)
   const [num, setNum] = useState<string>("")
   const [chapterDescription, setChapterDescription] = useState<string>("")
   const [validChapterMessage, setValidChapterMessage] = useState<string>("")
@@ -64,6 +67,7 @@ export default function AdminAddChapterModal({
           apiKey: signatureRes.apiKey,
           uploadSignatureTimestamp: signatureRes.timestamp,
           uploadSignature: signatureRes.signature,
+          theme: darkMode ? "purple" : "default"
         },
         (error: any, result: any) => {
           // console.log(
@@ -97,6 +101,7 @@ export default function AdminAddChapterModal({
     signatureRes,
     arrayImages,
     setIsAddingChapter,
+    darkMode
   ]);
   // post create chapter
   useEffect(() => {

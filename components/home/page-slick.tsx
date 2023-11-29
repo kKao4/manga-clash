@@ -25,7 +25,6 @@ export default function PageSlick({ manga }: { manga: MangaResponse["data"] }) {
               <p className="text-2sm text-[rgb(255,193,7)] uppercase">Manga</p>
             </div>
           </div>
-          {/* TODO: refactoring tags */}
           <div className="px-2.5">
             {manga!.tags.length ? (
               <div className="line-clamp-1 pr-8 sm:pr-24 mb-2.5 text-white">

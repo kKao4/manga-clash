@@ -51,14 +51,14 @@ export default function AdminDeleteChapters({
         <div className="mx-auto space-x-2 max-w-fit">
           <button
             type="button"
-            className="px-2 py-1 font-semibold rounded bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-300"
+            className="px-2 py-1 font-semibold rounded bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-300 transition-colors"
             onClick={() => setIsOpenDeleteModal(false)}
           >
             Hủy
           </button>
           <button
             type="submit"
-            className={`${isDeletingChapters ? "" : "hover:bg-red-600"} px-2 py-1 font-semibold text-white rounded bg-red-500`}
+            className={`${isDeletingChapters ? "" : "hover:bg-red-600"} px-2 py-1 font-semibold text-white rounded bg-red-500 transition-colors`}
             disabled={isDeletingChapters}
           >
             {isDeletingChapters ? (

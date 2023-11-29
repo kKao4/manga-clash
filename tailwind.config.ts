@@ -21,7 +21,7 @@ const config: Config = {
         "third-green": "#39ac95",
         "main-yellow": "rgb(238,238,34)",
         "dark-main-yellow": "rgb(255,199,0)",
-        "dark-main-black": "rgba(32,32,32,1)",
+        "dark-main-black": "rgb(32,32,32)",
         "gray-100": "rgb(235,235,235)",
         "gray-150": "rgb(243,243,243)",
         "gray-200": "#666",

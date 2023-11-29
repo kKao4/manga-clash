@@ -10,7 +10,7 @@ import UserMenu from "@/components/global/userMenu/UserMenu"
 import { useSelector, useDispatch } from "react-redux"
 import Title from "@/components/global/Title/Title"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { selectAdminMode, toggleDarkMode } from "@/features/GlobalSlice"
+import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
 import NavBar from "@/components/chapterNum/nav-bar"
@@ -62,9 +62,10 @@ export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterRespons
 const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const dispatch = useDispatch()
-  const [bookmark, setBookmark] = useState<boolean>(false)
   const userState = useSelector(selectUserState)
   const adminMode = useSelector(selectAdminMode)
+  const darkMode = useSelector(selectDarkMode)
+  const [bookmark, setBookmark] = useState<boolean>(false)
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
   const [showNavChapter, setShowNavChapter] = useState<boolean>(false)
@@ -220,7 +221,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         prevChapter={prevChapter}
         nextChapter={nextChapter}
       />
-      <div className="dark:bg-neutral-800">
+      <div className="dark:bg-dark-main-black">
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
@@ -322,7 +323,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
             <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} />
             </div>
-            <DynamicComments chapter={chapterRes} />
+            <DynamicComments key={darkMode as any} chapter={chapterRes} />
           </div>
         </BodyBox>
       </div>

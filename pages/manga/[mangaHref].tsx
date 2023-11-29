@@ -22,7 +22,7 @@ import { getUser } from "@/lib/getServerSideProps/getUser";
 import { GetManga, getManga } from "@/lib/getServerSideProps/getManga";
 import { GetUserRating, getUserRating } from "@/lib/getServerSideProps/getUserRating";
 import Script from "next/script";
-import { selectAdminMode } from "@/features/GlobalSlice";
+import { selectAdminMode, selectDarkMode } from "@/features/GlobalSlice";
 import Comments from "@/components/mangaHref/comments"
 import Summary from "@/components/mangaHref/summary"
 import Chapters from "@/components/mangaHref/chapters"
@@ -77,6 +77,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   const [description, setDescription] = useState<string>("")
   const commentsRef = useRef<HTMLDivElement>(null)
   const adminMode = useSelector(selectAdminMode)
+  const darkMode = useSelector(selectDarkMode)
   // Add Manga
   useEffect(() => {
     dispatch(addOrUpdateManga(mangaRes.data!))
@@ -169,7 +170,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
                 setChapters={setChapters}
               />
               {/* comments */}
-              <Comments mangaState={mangaState} ref={commentsRef} />
+              <Comments key={darkMode as any} mangaState={mangaState} ref={commentsRef} />
             </div>
             {/* popular mangas */}
             <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
