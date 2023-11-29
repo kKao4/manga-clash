@@ -6,7 +6,7 @@ export default function Row({
   return (
     <form className="py-2 pb-4 border-b dark:border-neutral-700" onSubmit={(e) => handleOnSubmit(e)}>
       <p className="font-bold">{header}</p>
-      <div className="py-4 space-y-5">
+      <div className="py-4 space-y-2 sm:space-y-5">
         {children}
       </div>
       <div>

@@ -17,4 +17,4 @@ export default function Title({
     </div>
   )
 }
-// TODO: add dark theme to widget cloudinary and refactoring
+// TODO: add dark theme to widget cloudinary and refactoring and fix theme change for disqus

@@ -36,15 +36,15 @@ export default function History() {
         <label>Tìm kiếm:</label>
         <input
           type="text"
-          className="focus:outline-none px-2 py-1 border border-gray-300 rounded-md max-w-[180px]"
+          className="focus:outline-none px-2 py-1 border border-gray-300 dark:border-transparent dark:bg-neutral-700 rounded-md max-w-[180px]"
           value={historyState.name}
           onChange={(e) => dispatch(setSearchNameHistory(e.target.value))}
         />
       </form>
       <table className="min-w-full mb-4 table-fixed">
         <thead>
-          <tr className="bg-[#ebebeb]">
-            <th className="w-6/12 px-4 py-2 font-bold text-left">Tên Truyện</th>
+          <tr className="bg-[#ebebeb] dark:bg-neutral-650">
+            <th className="w-7/12 px-4 py-2 font-bold text-left">Tên Truyện</th>
             <th className="hidden font-bold text-center sm:table-cell">Chapter</th>
             <th className="hidden font-bold text-center sm:table-cell">Thời gian</th>
           </tr>

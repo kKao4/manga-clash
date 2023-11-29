@@ -261,7 +261,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
               required
             />
           </Input>
-          <div className="">
+          <div className={!wrongPassword && passwordValid && passwordRepeatValid && !changedPassword ? "hidden" : "block"}>
             <div className={`${!wrongPassword ? "hidden" : "block"} text-sm text-red-500`}>Mật khẩu hiện tại không đúng</div>
             <div className={`${passwordValid ? "hidden" : "block"} text-sm text-red-500`}>Độ dài tối thiểu là 8 ký tự</div>
             <div className={`${passwordRepeatValid ? "hidden" : "block"} text-sm text-red-500`}>Mật khẩu nhập lại không khớp</div>

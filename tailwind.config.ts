@@ -27,6 +27,7 @@ const config: Config = {
         "gray-200": "#666",
         "gray-text": "#888888",
         "neutral-750": "rgb(42,42,42)",
+        "neutral-650": "rgb(74,74,74)",
       },
       transitionDuration: {
         "350": "350ms",

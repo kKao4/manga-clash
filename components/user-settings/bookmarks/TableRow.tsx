@@ -15,7 +15,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
   const [isRemovingBookmark, setIsRemovingBookmark] = useState<boolean>(false)
   return (
     <>
-      <tr className={`relative border-b border-neutral-300 dark:border-neutral-700 ${isRemovingBookmark && "opacity-60"}`}>
+      <tr className={`relative border-b dark:border-neutral-700 ${isRemovingBookmark && "opacity-60"}`}>
         {/* image and name */}
         <td className={`flex flex-row p-4 pr-0 text-sm gap-x-4`}>
           <Image className="w-[69px] h-[100px]" src={manga.image.url} alt="" width={80} height={144} quality={0} />

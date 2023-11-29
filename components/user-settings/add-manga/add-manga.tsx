@@ -2,6 +2,7 @@ import Image from "next/image"
 import { useRef, useState } from "react"
 import { MangaResponse, tagsArray } from "@/type"
 import { PropagateLoader } from "react-spinners"
+import TextArea from "@/components/mangaHref/text-area"
 
 export default function AddManga() {
   const [mangaImage, setMangaImage] = useState<File>()
@@ -46,7 +47,7 @@ export default function AddManga() {
           }
         }}>
           <p className="font-bold">Ảnh bìa truyện</p>
-          <div className="w-[140px] h-[190px] overflow-hidden flex place-items-center relative">
+          <div className="w-[140px] h-[190px] overflow-hidden flex place-items-center relative bg-neutral-200 dark:bg-neutral-400">
             <label className="absolute flex items-center justify-center w-full h-full transition-opacity duration-200 opacity-0 cursor-pointer bg-black/40 hover:opacity-100 peer">
               <input
                 className="hidden"
@@ -64,7 +65,7 @@ export default function AddManga() {
             {mangaImage ? (
               <Image className="w-full h-full" src={URL.createObjectURL(mangaImage)} alt="" width={320} height={460} quality={25} />
             ) : (
-              <div className="flex items-center justify-center w-full h-full bg-neutral-200 peer-hover:hidden">
+              <div className="flex items-center justify-center w-full h-full peer-hover:hidden">
                 <svg className="h-10 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" /></svg>
               </div>
             )}
@@ -76,7 +77,7 @@ export default function AddManga() {
               id="name"
               name="name"
               value={name}
-              className="w-full px-3 py-1.5 border border-neutral-400 rounded focus:outline-none"
+              className="w-full px-3 py-1.5 border border-neutral-400 dark:border-transparent dark:bg-neutral-700 rounded focus:outline-none"
               onChange={(e) => setName(e.target.value)}
               required
             />
@@ -88,7 +89,7 @@ export default function AddManga() {
               id="other-name"
               name="otherName"
               value={otherName}
-              className="w-full px-3 py-1.5 border border-neutral-400 rounded focus:outline-none"
+              className="w-full px-3 py-1.5 border border-neutral-400 dark:border-transparent dark:bg-neutral-700 rounded focus:outline-none"
               onChange={(e) => setOtherName(e.target.value)}
             />
           </div>
@@ -99,7 +100,7 @@ export default function AddManga() {
               id="author"
               name="author"
               value={author}
-              className="w-full px-3 py-1.5 border border-neutral-400 rounded focus:outline-none"
+              className="w-full px-3 py-1.5 border border-neutral-400 dark:border-transparent dark:bg-neutral-700 rounded focus:outline-none"
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
@@ -133,44 +134,12 @@ export default function AddManga() {
           </div>
           <div className="space-y-2">
             <label className="font-bold">Tóm tắt</label>
-            <div>
-              <div className="pt-1.5 pb-1 px-2 space-x-1 border border-b-transparent border-neutral-400 rounded-t">
-                <button
-                  type="button"
-                  className="min-w-[28px] py-0.5 font-bold rounded-md hover:bg-neutral-200"
-                  title="bold"
-                  onClick={() => setDescription(prevDescription => prevDescription + "<b></b>")}
-                >
-                  B
-                </button>
-                <button
-                  type="button"
-                  className="min-w-[28px] py-0.5 font-serif italic font-bold rounded-md hover:bg-neutral-200"
-                  title="italic"
-                  onClick={() => setDescription(prevDescription => prevDescription + "<i></i>")}
-                >
-                  I
-                </button>
-                <button
-                  type="button"
-                  className="min-w-[28px] py-0.5 font-bold underline rounded-md hover:bg-neutral-200"
-                  title="underline"
-                  onClick={() => setDescription(prevDescription => prevDescription + "<u></u>")}
-                >
-                  U
-                </button>
-              </div>
-              <textarea
-                name="description"
-                className={`w-full px-3 border border-neutral-400 border-t-transparent rounded-b focus:outline-none min-h-[240px] mt-0`}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
+            <TextArea description={description} setDescription={setDescription} />
           </div>
           <button
             type="submit"
             className={`w-full relative px-4 py-5 mx-auto font-bold text-white transition-colors rounded-full bg-second-green ${isLoading ? "" : "hover:bg-black"}`}
+            disabled={isLoading}
           >
             {isLoading ? (
               <div className="absolute top-1/3 left-1/2">

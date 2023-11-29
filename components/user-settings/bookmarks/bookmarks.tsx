@@ -1,4 +1,4 @@
-import TableRow from "./table-row"
+import TableRow from "./TableRow"
 import Paginate from "@/components/global/paginate/Paginate"
 import { MangasResponse } from "@/type"
 import { useRouter } from "next/router"
@@ -41,7 +41,7 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
       </form>
       <table className="min-w-full mb-4 table-fixed">
         <thead>
-          <tr className="bg-[#ebebeb] dark:bg-[rgb(74,74,74)]">
+          <tr className="bg-[#ebebeb] dark:bg-neutral-650">
             <th className="w-7/12 px-4 py-2 font-bold text-left">Tên Truyện</th>
             <th className="hidden font-bold text-center sm:table-cell">Chapter</th>
             <th className="hidden font-bold text-center sm:table-cell">Xóa</th>

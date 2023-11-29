@@ -15,7 +15,7 @@ export default function AdminDetailManga({
         <p className="text-sm font-bold basis-1/6">Tên truyện</p>
         <input
           type="text"
-          className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:bg-neutral-700`}
+          className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:border-transparent dark:bg-neutral-700`}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -24,7 +24,7 @@ export default function AdminDetailManga({
         <p className="text-sm font-bold basis-1/6">Tên khác</p>
         <input
           type="text"
-          className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:bg-neutral-700`}
+          className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:border-transparent dark:bg-neutral-700`}
           value={otherName}
           onChange={(e) => setOtherName(e.target.value)}
         />
@@ -34,14 +34,14 @@ export default function AdminDetailManga({
           <p className="text-sm font-bold basis-1/4">Tác Giả</p>
           <input
             type="text"
-            className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:bg-neutral-700 ml-1.5`}
+            className={`px-2 py-1.5 rounded w-full focus:outline-none border border-gray-400 dark:border-transparent dark:bg-neutral-700 ml-1.5`}
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
         </div>
         <div className="flex flex-row items-center basis-1/2 sm:basis-1/3 gap-x-2">
           <select
-            className="w-full border border-gray-400 focus:outline-none rounded px-2 py-1.5 dark:bg-neutral-700" value={completed ? "true" : "false"}
+            className="w-full border border-gray-400 dark:border-transparent focus:outline-none rounded px-2 py-1.5 dark:bg-neutral-700" value={completed ? "true" : "false"}
             onChange={(e) => {
               setCompleted(() => e.target.value === "false" ? false : true)
             }}

@@ -13,6 +13,9 @@
   .disqus a {
     @apply text-[rgb(204,204,204)];
   }
+  .btn-chapter {
+    @apply font-bold text-gray-200 transition-colors bg-gray-100 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-main-green dark:hover:text-white rounded-lg hover:bg-main-green hover:text-white shrink-0;
+  }
 }
 * {
   -webkit-tap-highlight-color: transparent;
@@ -29,4 +32,8 @@
 }
 li.slick-active > div {
   background-color: var(--main-green) !important;
+}
+
+div[data-="true"]:hover svg[data-hidden="true"] {
+  display: none;
 }
