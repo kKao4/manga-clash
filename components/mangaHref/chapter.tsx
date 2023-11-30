@@ -24,7 +24,9 @@ export default function Chapter({
         </div>
 
         <div className="text-2sm italic self-center shrink-0 min-w-fit">
-          <p className="text-2sm italic">{format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}</p>
+          <p className="text-2sm italic">
+            {format(parseISO(chapter.updatedAt as unknown as string), "dd/MM/yyyy")}
+          </p>
         </div>
       </div>
       {adminMode && (
