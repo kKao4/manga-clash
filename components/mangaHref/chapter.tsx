@@ -28,12 +28,13 @@ export default function Chapter({
         </div>
       </div>
       {adminMode && (
-        <div className="absolute top-0 right-0 w-10 h-full flex justify-end items-start" onClick={handleOnChange}>
+        <div className="absolute top-0 right-0 w-10 h-full flex justify-end items-start">
           <input
             type="checkbox"
             id={chapter.num}
             className="w-3.5 h-3.5 m-1.5 sm:m-1"
             checked={checked}
+            onChange={handleOnChange}
           />
         </div>
       )}

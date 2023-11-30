@@ -1,7 +1,7 @@
 import { ChapterResponse, ChaptersResponse } from "@/type";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react"
-import Select from "./select";
+import Select from "./Select";
 
 export default function Menu({
   chapters, prevChapter, nextChapter, readingStyle, setReadingStyle, index, setIndex, chapter

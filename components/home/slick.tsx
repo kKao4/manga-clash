@@ -1,6 +1,6 @@
 import { MangasResponse } from "@/type";
 import Slider from "react-slick";
-import PageSlick from "./page-slick";
+import PageSlick from "./PageSlick";
 
 export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
   return (

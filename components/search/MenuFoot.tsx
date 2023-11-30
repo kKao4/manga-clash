@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import MenuFootBox from "../global/MenuFootBox"
+import MenuFootBox from "../global/box/MenuFootBox"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import { useRouter } from "next/router"
 import { MyRipples } from "../global/ButtonRipple"

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router"
-import BodyBox from "@/components/global/BodyBox"
+import BodyBox from "@/components/global/box/BodyBox"
 import Navigation from "@/components/global/navigation/navigation"
 import Image from "next/image"
-import Menu from "@/components/chapterNum/menu"
+import Menu from "@/components/chapterNum/Menu"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
@@ -10,23 +10,23 @@ import UserMenu from "@/components/global/userMenu/UserMenu"
 import { useSelector, useDispatch } from "react-redux"
 import Title from "@/components/global/Title/Title"
 import { selectUserState, setUser } from "@/features/UserSlice"
-import { selectAdminMode, selectDarkMode, toggleDarkMode } from "@/features/GlobalSlice"
+import { selectAdminMode } from "@/features/GlobalSlice"
 import Head from "next/head"
 import dynamic from "next/dynamic"
-import NavBar from "@/components/chapterNum/nav-bar"
+import NavBar from "@/components/chapterNum/NavBar"
 import useMouse from '@react-hook/mouse-position'
 import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
-import { useEventListener } from 'usehooks-ts'
+import { useEventListener, useDarkMode } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
 import { useIntersectionObserver } from 'usehooks-ts'
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
-const DynamicComments = dynamic(() => import("@/components/chapterNum/comments"))
+const DynamicComments = dynamic(() => import("@/components/chapterNum/Comments"))
 
 export const getServerSideProps: GetServerSideProps<{ chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
@@ -64,7 +64,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const dispatch = useDispatch()
   const userState = useSelector(selectUserState)
   const adminMode = useSelector(selectAdminMode)
-  const darkMode = useSelector(selectDarkMode)
+  const { toggle } = useDarkMode()
   const [bookmark, setBookmark] = useState<boolean>(false)
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
@@ -221,11 +221,11 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         prevChapter={prevChapter}
         nextChapter={nextChapter}
       />
-      <div className="dark:bg-dark-main-black">
+      <div className="bg-neutral-800">
         <BodyBox>
           <div className="basis-full">
             {/* title  */}
-            <p className="text-xl md:text-2xl font-bold dark:text-white">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
+            <p className="text-xl md:text-2xl font-bold text-neutral-100">{chapterRes.data?.name} - Chapter {chapterRes.data?.chapter.num}</p>
             {/* navigation */}
             <div className="w-full grow">
               <Navigation manga={chapterRes.data} />
@@ -251,7 +251,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                 </button>
                 <button
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
-                  onClick={() => dispatch(toggleDarkMode())}
+                  onClick={() => toggle()}
                   title="Dark/Light theme"
                 >
                   <svg className="block h-4 mx-auto transition-colors fill-second-green group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" /></svg>
@@ -321,9 +321,9 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
             )}
             {/* comments */}
             <div className="mt-6 sm:mt-12">
-              <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} />
+              <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} forceDarkMode={true} />
             </div>
-            <DynamicComments key={darkMode as any} chapter={chapterRes} />
+            <DynamicComments chapter={chapterRes} />
           </div>
         </BodyBox>
       </div>

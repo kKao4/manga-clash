@@ -1,21 +1,22 @@
 import React, { useState } from "react"
 import MenuButton from "./MenuButton";
-import { useDispatch, useSelector } from "react-redux";
-import { Order, selectDarkMode, setSort, toggleDarkMode } from "@/features/GlobalSlice";
+import { useDispatch } from "react-redux";
+import { Order, setSort } from "@/features/GlobalSlice";
 import Image from "next/image";
 import AliceChan from "@/assets/Kisaragi_Alice_full.jpg"
 import Link from "next/link";
 import { setSearchName } from "@/features/search/SearchSlice";
 import dynamic from "next/dynamic";
+import { useDarkMode } from 'usehooks-ts'
 const DynamicSearchBox = dynamic(() => import("../searchBox/SearchBox"))
 const DynamicResponsiveMenu = dynamic(() => import("./ResponsiveMenu"))
 
 export default function Menu() {
   const dispatch = useDispatch()
+  const { isDarkMode, toggle } = useDarkMode()
   const [showModalMenu, setShowModalMenu] = useState<boolean>(false)
   const [showSearchBox, setShowSearchBox] = useState<boolean>(false)
   const [zIndex, setZIndex] = useState<string>("-z-20")
-  const darkMode = useSelector(selectDarkMode)
   const changeOrder = (value: Order) => {
     dispatch(setSort(value))
   }
@@ -75,8 +76,9 @@ export default function Menu() {
               >
                 <svg className="absolute h-4 group-hover:fill-white fill-main-green top-2 left-2 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
               </div>
-              <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center group hover:bg-black transition-colors" onClick={() => dispatch(toggleDarkMode())}>
-                {darkMode ? (
+              {/* dark/light theme btn */}
+              <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center group hover:bg-black transition-colors" onClick={() => toggle()}>
+                {isDarkMode ? (
                   <svg className="h-5 fill-main-green group-hover:fill-white transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" /></svg>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-sun-fill h-[1.325rem] fill-main-green group-hover:fill-white transition-colors" viewBox="0 0 16 16">

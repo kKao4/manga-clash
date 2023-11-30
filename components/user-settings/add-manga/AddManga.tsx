@@ -2,7 +2,7 @@ import Image from "next/image"
 import { useRef, useState } from "react"
 import { MangaResponse, tagsArray } from "@/type"
 import { PropagateLoader } from "react-spinners"
-import TextArea from "@/components/mangaHref/text-area"
+import TextArea from "@/components/mangaHref/TextArea"
 
 export default function AddManga() {
   const [mangaImage, setMangaImage] = useState<File>()

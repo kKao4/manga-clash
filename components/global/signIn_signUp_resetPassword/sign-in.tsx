@@ -7,6 +7,7 @@ import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button"
+import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal"
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
@@ -38,6 +39,7 @@ export default function SignIn() {
       setWrongInformation(false)
     }
   }, [email, password])
+  useKeyPressEscapeModal(() => dispatch(toggleSignIn(false)))
   return (
     <>
       <div
@@ -50,7 +52,7 @@ export default function SignIn() {
       >
         <form
           ref={formRef}
-          className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+          className="bg-search dark:bg-none rounded dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()
             setIsLoading(true)
@@ -115,7 +117,7 @@ export default function SignIn() {
           </div>
           <button
             type="button"
-            className="text-start hover:text-second-green" onClick={() => {
+            className="text-start hover:text-second-green dark:hover:text-third-green" onClick={() => {
               dispatch(toggleSignIn(false))
               setTimeout(() => {
                 dispatch(toggleResetPassword(true))

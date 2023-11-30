@@ -1,5 +1,5 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice";
-import TextArea from "../text-area";
+import TextArea from "../TextArea";
 
 export default function AdminSummary({
   mangaState, description, setDescription

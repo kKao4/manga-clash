@@ -3,8 +3,8 @@ import Title from "../global/Title/Title"
 import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { MangaType } from "@/models/manga"
-import Chapter from "./chapter"
-import ShowMore from "./show-more"
+import Chapter from "./Chapter"
+import ShowMore from "./ShowMoreButton"
 import dynamic from "next/dynamic"
 const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
   ssr: false,

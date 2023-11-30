@@ -1,6 +1,6 @@
 import { MangaType } from "@/models/manga"
 import Paginate from "../global/paginate/Paginate"
-import Row from "./row"
+import Row from "./Row"
 
 export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType[] | undefined, mangasLength: number | undefined }) {
   return (

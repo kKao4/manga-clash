@@ -1,8 +1,8 @@
 import { ChartResponse, MangasResponse, UserResponse } from "@/type"
-import MangaBoxes from "@/components/mangas/manga-boxes"
+import MangaBoxes from "@/components/mangas/MangaBoxes"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
-import BodyBox from "@/components/global/BodyBox"
+import BodyBox from "@/components/global/box/BodyBox"
 import UserMenu from "@/components/global/userMenu/UserMenu"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
@@ -13,9 +13,9 @@ import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularManga
 import { getUser } from "@/lib/getServerSideProps/getUser"
 import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllMangas"
 import dbConnect from "@/lib/dbConnect"
-import Slick from "@/components/home/slick"
+import Slick from "@/components/home/Slick"
 import { getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
-import TrendingManga from "@/components/home/trending-manga"
+import TrendingManga from "@/components/home/TrendingManga"
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ query, req }) => {

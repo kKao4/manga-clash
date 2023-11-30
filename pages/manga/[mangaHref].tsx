@@ -1,8 +1,8 @@
 import { MangaResponse, MangasResponse, UserRatingResponse, UserResponse } from "@/type";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Navigation from "@/components/global/navigation/navigation";
-import MenuFootBox from "@/components/global/MenuFootBox";
-import BodyBox from "@/components/global/BodyBox";
+import MenuFootBox from "@/components/global/box/MenuFootBox";
+import BodyBox from "@/components/global/box/BodyBox";
 import { useMemo, useRef, useState } from "react"
 import UserMenu from "@/components/global/userMenu/UserMenu";
 import Head from "next/head";
@@ -13,7 +13,7 @@ import { setUser, selectUserState } from "@/features/UserSlice";
 import { selectMangaState, addOrUpdateManga } from "@/features/mangaHref/MangaSlice";
 import { setUserRating } from "@/features/mangaHref/UserRatingSlice";
 import ImageAndDetailManga from "@/components/mangaHref/image-and-detail-manga";
-import Name from "@/components/mangaHref/name";
+import Name from "@/components/mangaHref/Name";
 import { RootState } from "@/store";
 import dynamic from "next/dynamic";
 import dbConnect from "@/lib/dbConnect";
@@ -22,10 +22,11 @@ import { getUser } from "@/lib/getServerSideProps/getUser";
 import { GetManga, getManga } from "@/lib/getServerSideProps/getManga";
 import { GetUserRating, getUserRating } from "@/lib/getServerSideProps/getUserRating";
 import Script from "next/script";
-import { selectAdminMode, selectDarkMode } from "@/features/GlobalSlice";
-import Comments from "@/components/mangaHref/comments"
-import Summary from "@/components/mangaHref/summary"
-import Chapters from "@/components/mangaHref/chapters"
+import { selectAdminMode } from "@/features/GlobalSlice";
+import Comments from "@/components/mangaHref/Comments"
+import Summary from "@/components/mangaHref/Summary"
+import Chapters from "@/components/mangaHref/Chapters"
+import { useDarkMode } from "usehooks-ts";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
 
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
@@ -77,7 +78,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   const [description, setDescription] = useState<string>("")
   const commentsRef = useRef<HTMLDivElement>(null)
   const adminMode = useSelector(selectAdminMode)
-  const darkMode = useSelector(selectDarkMode)
+  const { isDarkMode } = useDarkMode()
   // Add Manga
   useEffect(() => {
     dispatch(addOrUpdateManga(mangaRes.data!))
@@ -170,7 +171,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
                 setChapters={setChapters}
               />
               {/* comments */}
-              <Comments key={darkMode as any} mangaState={mangaState} ref={commentsRef} />
+              <Comments key={isDarkMode as any} mangaState={mangaState} ref={commentsRef} />
             </div>
             {/* popular mangas */}
             <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />

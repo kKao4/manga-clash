@@ -4,7 +4,7 @@ import Title from "../global/Title/Title"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Parser from "html-react-parser"
-import ShowMore from "./show-more"
+import ShowMore from "./ShowMoreButton"
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 const DynamicAdminSummary = dynamic(() => import("./admin/admin-summary"), {
   ssr: false,

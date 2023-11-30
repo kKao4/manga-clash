@@ -1,5 +1,5 @@
 import { MangaType } from "@/models/manga"
-import MangaBox from "./manga-box"
+import MangaBox from "./MangaBox"
 
 export default function Row({ manga, index }: { manga: MangaType, index: number }) {
   return (

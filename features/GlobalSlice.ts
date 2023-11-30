@@ -7,14 +7,12 @@ export const initialGlobalState: {
   showSignIn: boolean;
   showResetPassword: boolean;
   adminMode: boolean;
-  darkMode: boolean;
 } = {
   sort: "latest",
   showSignUp: false,
   showSignIn: false,
   showResetPassword: false,
   adminMode: false,
-  darkMode: true,
 };
 
 export type Order = (typeof initialGlobalState)["sort"];
@@ -50,16 +48,6 @@ export const globalSlice = createSlice({
     toggleAdminMode: (state) => {
       state.adminMode = state.adminMode ? false : true;
     },
-    toggleDarkMode: (
-      state,
-      action: PayloadAction<(typeof initialGlobalState)["darkMode"] | undefined>
-    ) => {
-      if (action.payload) {
-        state.darkMode = action.payload;
-      } else {
-        state.darkMode = state.darkMode ? false : true;
-      }
-    },
   },
 });
 
@@ -69,14 +57,12 @@ export const {
   toggleSignIn,
   toggleResetPassword,
   toggleAdminMode,
-  toggleDarkMode,
 } = globalSlice.actions;
 
 export const selectSort = (state: RootState) => state.global.sort;
 export const selectSignUp = (state: RootState) => state.global.showSignUp;
 export const selectSignIn = (state: RootState) => state.global.showSignIn;
 export const selectAdminMode = (state: RootState) => state.global.adminMode;
-export const selectDarkMode = (state: RootState) => state.global.darkMode;
 export const selectResetPassword = (state: RootState) =>
   state.global.showResetPassword;
 

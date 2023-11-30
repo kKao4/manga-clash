@@ -1,10 +1,10 @@
-import MenuFoot from "@/components/mangas/menu-foot";
+import MenuFoot from "@/components/mangas/MenuFoot";
 import { MangasResponse, UserResponse } from "@/type";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import MangaBoxes from "@/components/mangas/manga-boxes";
+import MangaBoxes from "@/components/mangas/MangaBoxes";
 import Head from "next/head";
 import OrderNavigation from "@/components/global/order/OrderNavigation";
-import BodyBox from "@/components/global/BodyBox";
+import BodyBox from "@/components/global/box/BodyBox";
 import UserMenu from "@/components/global/userMenu/UserMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

@@ -5,6 +5,7 @@ import Input from "./input"
 import { emailReg } from "@/type"
 import CloseButton from "./close-button"
 import { useOnClickOutside } from 'usehooks-ts'
+import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal"
 
 export default function ResetPassword() {
   const showResetPassword = useSelector(selectResetPassword)
@@ -35,6 +36,7 @@ export default function ResetPassword() {
       setEmailNotFound(false)
     }
   }, [email])
+  useKeyPressEscapeModal(() => dispatch(toggleResetPassword(false)))
   return (
     <>
       <div
@@ -47,7 +49,7 @@ export default function ResetPassword() {
       >
         <form
           ref={formRef}
-          className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+          className="bg-search dark:bg-none rounded dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
           onSubmit={async (e) => {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)

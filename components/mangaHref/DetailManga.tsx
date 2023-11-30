@@ -1,10 +1,10 @@
 import { MangaResponse, StarType, UserRatingResponse, UserResponse } from "@/type"
-import TagsDetailManga from "./tags-detail-manga";
+import TagsDetailManga from "./TagsDetailManga";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSignIn } from "@/features/GlobalSlice";
-import Star from "./star";
+import Star from "./Star";
 import { CommentCount } from "disqus-react";
 import { shortName } from "@/type";
 import { MangaType } from "@/models/manga";

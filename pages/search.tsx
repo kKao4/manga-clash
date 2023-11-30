@@ -1,5 +1,5 @@
-import MenuFootBox from "@/components/global/MenuFootBox";
-import BodyBox from "@/components/global/BodyBox";
+import MenuFootBox from "@/components/global/box/MenuFootBox";
+import BodyBox from "@/components/global/box/BodyBox";
 import OrderNavigation from "@/components/global/order/OrderNavigation";
 import MangaBox from "@/components/search/MangaBox";
 import Paginate from "@/components/global/paginate/Paginate";

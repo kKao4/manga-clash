@@ -9,6 +9,7 @@ import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button";
+import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal";
 
 export default function SignUp() {
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ export default function SignUp() {
       setEmailExits(false)
     }
   }, [email])
+  useKeyPressEscapeModal(() => dispatch(toggleSignUp(false)))
   return (
     <>
       <div
@@ -62,7 +64,7 @@ export default function SignUp() {
         {!signedUp ? (
           <form
             ref={formRef}
-            className="bg-search dark:bg-none dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
+            className="bg-search dark:bg-none rounded dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
             onSubmit={async (e) => {
               e.preventDefault()
               setIsLoading(true)
@@ -132,7 +134,7 @@ export default function SignUp() {
               ) : <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Đăng ký</p>}
             </button>
             <div className="">
-              <button type="button" className="hover:text-second-green" onClick={() => {
+              <button type="button" className="hover:text-second-green dark:hover:text-third-green" onClick={() => {
                 dispatch(toggleSignUp(false))
                 setTimeout(() => {
                   dispatch(toggleSignIn(true))
@@ -140,7 +142,7 @@ export default function SignUp() {
               }}>Đăng nhập</button>
               <button
                 type="button"
-                className="float-right hover:text-second-green"
+                className="float-right hover:text-second-green dark:hover:text-third-green"
                 onClick={() => {
                   dispatch(toggleSignUp(false))
                   setTimeout(() => {

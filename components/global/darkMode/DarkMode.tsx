@@ -1,11 +1,13 @@
-import { useSelector } from "react-redux"
-import { selectDarkMode } from "@/features/GlobalSlice"
+import { useDarkMode, useIsClient } from 'usehooks-ts'
 
 export default function DarkMode({ children }: { children: React.ReactNode }) {
-  const darkMode = useSelector(selectDarkMode)
-  return (
-    <div className={`${darkMode ? "dark" : "light"}`}>
-      {children}
-    </div>
-  )
+  const { isDarkMode } = useDarkMode()
+  const isClient = useIsClient()
+  if (isClient) {
+    return (
+      <div className={`${isDarkMode ? "dark" : "light"}`}>
+        {children}
+      </div>
+    )
+  }
 }

@@ -1,4 +1,4 @@
-import BodyBox from "@/components/global/BodyBox"
+import BodyBox from "@/components/global/box/BodyBox"
 import { ChartResponse, HistoryResponse, MangasResponse, UserResponse } from "@/type"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import Head from "next/head"
@@ -19,19 +19,19 @@ import { GetAllMangasHistory, getAllMangasHistory } from "@/lib/getServerSidePro
 import { GetAllMangasChart, getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import dbConnect from "@/lib/dbConnect"
 import User from "@/models/user"
-const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/bookmarks"), {
+const DynamicBookmarks = dynamic(() => import("@/components/user-settings/bookmarks/Bookmarks"), {
   loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicHistory = dynamic(() => import("@/components/user-settings/history/history"), {
+const DynamicHistory = dynamic(() => import("@/components/user-settings/history/History"), {
   loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicAccount = dynamic(() => import("@/components/user-settings/account/account"), {
+const DynamicAccount = dynamic(() => import("@/components/user-settings/account/Account"), {
   loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/add-manga"), {
+const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-manga/AddManga"), {
   loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicChart = dynamic(() => import("@/components/user-settings/chart/chart"), {
+const DynamicChart = dynamic(() => import("@/components/user-settings/chart/Chart"), {
   loading: () => <DotLoaderComponent size={40} />
 })
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))

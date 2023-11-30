@@ -1,6 +1,6 @@
 import { MangaType } from "@/models/manga"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
-import TagsDetailManga from "../mangaHref/tags-detail-manga"
+import TagsDetailManga from "../mangaHref/TagsDetailManga"
 import Link from "next/link"
 import { vi } from "date-fns/locale"
 import RatingStar from "../global/mangaBox/RatingStar"

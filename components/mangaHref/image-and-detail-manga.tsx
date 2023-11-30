@@ -7,7 +7,7 @@ import { selectAdminMode, toggleAdminMode } from "@/features/GlobalSlice"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { BarLoader } from "react-spinners"
-import DetailManga from "./detail-manga"
+import DetailManga from "./DetailManga"
 import dynamic from "next/dynamic"
 import DotLoaderComponent from "../global/DotLoader"
 const DynamicAdminImage = dynamic(() => import("./admin/admin-image"), {
