@@ -57,7 +57,6 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     return () => router.events.off("routeChangeStart", done)
   }, [router])
   return (
-    // TODO: store darkMode in localStorage
     <Provider store={store}>
       <main className={`${openSans.className} w-full`}>
         <Head>

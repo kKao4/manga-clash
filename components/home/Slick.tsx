@@ -18,7 +18,6 @@ export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
         easing="ease-out"
         lazyLoad="progressive"
         pauseOnDotsHover={true}
-        pauseOnFocus={true}
         pauseOnHover={true}
         appendDots={(dots) => {
           return (

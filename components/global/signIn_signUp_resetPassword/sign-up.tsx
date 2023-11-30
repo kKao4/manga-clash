@@ -9,7 +9,7 @@ import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button";
-import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal";
+import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
 
 export default function SignUp() {
   const dispatch = useDispatch()
@@ -50,7 +50,7 @@ export default function SignUp() {
       setEmailExits(false)
     }
   }, [email])
-  useKeyPressEscapeModal(() => dispatch(toggleSignUp(false)))
+  useKeyPressEscape(() => dispatch(toggleSignUp(false)))
   return (
     <>
       <div

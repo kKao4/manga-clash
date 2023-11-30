@@ -7,7 +7,7 @@ import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button"
-import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal"
+import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
@@ -39,7 +39,7 @@ export default function SignIn() {
       setWrongInformation(false)
     }
   }, [email, password])
-  useKeyPressEscapeModal(() => dispatch(toggleSignIn(false)))
+  useKeyPressEscape(() => dispatch(toggleSignIn(false)))
   return (
     <>
       <div

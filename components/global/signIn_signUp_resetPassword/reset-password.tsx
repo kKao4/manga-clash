@@ -5,7 +5,7 @@ import Input from "./input"
 import { emailReg } from "@/type"
 import CloseButton from "./close-button"
 import { useOnClickOutside } from 'usehooks-ts'
-import { useKeyPressEscapeModal } from "@/hooks/useKeyPressEscapeModal"
+import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
 
 export default function ResetPassword() {
   const showResetPassword = useSelector(selectResetPassword)
@@ -36,7 +36,7 @@ export default function ResetPassword() {
       setEmailNotFound(false)
     }
   }, [email])
-  useKeyPressEscapeModal(() => dispatch(toggleResetPassword(false)))
+  useKeyPressEscape(() => dispatch(toggleResetPassword(false)))
   return (
     <>
       <div
