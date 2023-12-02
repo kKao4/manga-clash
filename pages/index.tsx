@@ -16,7 +16,7 @@ import dbConnect from "@/lib/dbConnect"
 import Slick from "@/components/home/Slick"
 import { getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import TrendingManga from "@/components/home/TrendingManga"
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ query, req }) => {
   await dbConnect()
@@ -85,7 +85,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
         {/* left row */}
         <div className="basis-9/12">
           {/* slick and trending manga */}
-          <div className="flex flex-row max-w-fit -mx-4 md:mx-auto mb-4">
+          <div className="flex flex-row mb-4 -mx-4 max-w-fit md:mx-auto">
             <Slick mangas={chartRes.data} />
             <TrendingManga manga={chartRes.trendingManga!} />
           </div>
@@ -98,7 +98,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
           )}
         </div>
         {/* right row */}
-        <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
+        <MangasBoxesPopular mangas={popularMangasRes.data} />
       </BodyBox >
     </>
   )

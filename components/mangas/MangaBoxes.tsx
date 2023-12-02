@@ -4,8 +4,8 @@ import Row from "./Row"
 
 export default function MangaBoxes({ mangas, mangasLength }: { mangas: MangaType[] | undefined, mangasLength: number | undefined }) {
   return (
-    <div className="w-full py-8">
-      <div className="grid grid-cols-2 gap-8 mb-4">
+    <div className="w-full py-6 md:py-8">
+      <div className="grid grid-cols-2 gap-4 mb-4 md:gap-8">
         {mangas ? (
           <>
             {mangas.map((manga, i) => {

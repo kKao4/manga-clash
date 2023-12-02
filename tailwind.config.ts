@@ -54,6 +54,18 @@ const config: Config = {
         "13": "3.25rem",
         "18": "4.5rem",
       },
+      keyframes: {
+        shiny: {
+          "0%": { left: "-28%" },
+          "100%": { left: "118%" },
+        },
+      },
+      animation: {
+        shiny: "shiny 1.4s ease-out 1s infinite",
+      },
+      transitionProperty: {
+        width: "width",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

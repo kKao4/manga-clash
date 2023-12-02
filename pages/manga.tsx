@@ -18,7 +18,7 @@ import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllManga
 import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas";
 import { getUser } from "@/lib/getServerSideProps/getUser";
 import dbConnect from "@/lib/dbConnect";
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
 
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
@@ -95,13 +95,13 @@ const Page = ({ mangasRes, popularMangasRes, userRes }: InferGetServerSidePropsT
       <BodyBox>
         {/* left row */}
         <div className="basis-9/12">
-          <h2 className="mb-4 text-lg font-bold capitalize">Tất Cả Các Bộ Truyện {router.query.tags ? `Thể Loại "${router.query.tags}"` : ""}</h2>
+          <h2 className="mb-2 text-lg font-bold capitalize md:mb-4">Tất Cả Các Bộ Truyện {router.query.tags ? `Thể Loại "${router.query.tags}"` : ""}</h2>
           <OrderNavigation mangasLength={mangasRes.length} search={false} />
           {/* mangas loop */}
           <MangaBoxes mangas={mangasRes.data} mangasLength={mangasRes.length} />
         </div>
         {/* right row */}
-        <DynamicMangasBoxesPopular mangas={popularMangasRes.data} />
+        <MangasBoxesPopular mangas={popularMangasRes.data} />
       </BodyBox>
     </>
   )
