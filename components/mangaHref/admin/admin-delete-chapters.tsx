@@ -1,6 +1,7 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { useState } from "react"
 import { PulseLoader } from "react-spinners"
+import { toast } from "react-toastify"
 
 export default function AdminDeleteChapters({
   setIsDeletingChapters, checkedChapters, setCheckedChapters, setChapters, isDeletingChapters, mangaState
@@ -42,6 +43,7 @@ export default function AdminDeleteChapters({
             console.log("🚀 ~ file: chapters.tsx:75 ~ onSubmit={ ~ mangaRes:", mangaRes)
             setChapters(mangaRes.data.chapters)
             setIsDeletingChapters(false)
+            toast.success(`Xóa ${checkedChapters.length} chap thành công`)
           } else if (res.error) {
             alert(res.error)
           }

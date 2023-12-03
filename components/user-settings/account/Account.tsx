@@ -8,6 +8,7 @@ import Input from "./Input"
 import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "@/features/UserSlice"
 import { ClipLoader, PuffLoader } from "react-spinners"
+import { toast } from "react-toastify"
 
 export async function fetchUser() {
   const result = await fetch(`/api/user/account`)
@@ -72,6 +73,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                 if (fileRef.current) {
                   fileRef.current.value = ""
                 }
+                toast.success("Thay đổi ảnh đại diện thành công")
               } else if (res.error) {
                 alert(res.error)
                 router.push("/")
@@ -122,7 +124,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
             const res = await fetchUser()
             dispatch((setUser(res.data)))
             setIsLoadingUsername(false)
-            // router.replace(router.asPath, "", { scroll: false })
+            toast.success("Thay đổi tên tài khoản thành công")
           } else if (res.error) {
             alert(res.error)
             router.push("/")
@@ -170,7 +172,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
             const res = await fetchUser()
             dispatch((setUser(res.data)))
             setIsLoadingEmail(false)
-            // router.replace(router.asPath, "", { scroll: false })
+            toast.success("Thay đổi địa chỉ email thành công")
           } else if (res.error) {
             alert(res.error)
             router.push("/")
@@ -215,12 +217,14 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           if (res.message === "Unverified") {
             setWrongPassword(true)
             setIsLoadingPassword(false)
+            toast.error("Mật khẩu hiện tại không đúng")
           } else if (res.message.startsWith("Updated")) {
             setChangedPassword(true)
             setOldPassword("")
             setPassword("")
             setPasswordRepeat("")
             setIsLoadingPassword(false)
+            toast.success("Thay đổi mật khẩu thành công")
           } else if (res.error) {
             alert(res.error)
             router.push("/")

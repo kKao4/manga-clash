@@ -3,6 +3,7 @@ import { MangaType } from "@/models/manga"
 import { SignatureResponse } from "@/type"
 import { useEffect, useRef, useState } from "react"
 import { PacmanLoader } from "react-spinners"
+import { toast } from "react-toastify"
 import { useDarkMode } from "usehooks-ts"
 
 export default function AdminAddChapterModal({
@@ -122,6 +123,7 @@ export default function AdminAddChapterModal({
         const res = await result.json();
         // console.log("🚀 ~ file: chapters.tsx:90 ~ onSubmit={ ~ res:", res)
         if (res.message) {
+          toast.success(`Thêm chap ${num} thành công`)
           setNum("")
           setChapterDescription("")
           const mangaResult = await fetch(`/api/manga/${mangaState.href}`)

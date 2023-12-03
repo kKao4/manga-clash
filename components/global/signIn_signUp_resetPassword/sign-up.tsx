@@ -10,6 +10,7 @@ import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button";
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function SignUp() {
   const dispatch = useDispatch()
@@ -76,6 +77,7 @@ export default function SignUp() {
               const result: NormalResponse = await res.json()
               console.log("🚀 ~ file: sign-up.tsx:38 ~ onSubmit={ ~ res:", result)
               if (result.message !== "Email Exits") {
+                toast.success("Đăng ký thành công")
                 setIsLoading(false)
                 setSignedUp(true)
                 setUsername("")

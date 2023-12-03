@@ -3,6 +3,7 @@ import { useRef, useState } from "react"
 import { MangaResponse, tagsArray } from "@/type"
 import { PropagateLoader } from "react-spinners"
 import TextArea from "@/components/mangaHref/TextArea"
+import { toast } from "react-toastify"
 
 export default function AddManga() {
   const [mangaImage, setMangaImage] = useState<File>()
@@ -35,6 +36,7 @@ export default function AddManga() {
             setDescription("")
             setAuthor("")
             setMangaImage(undefined)
+            toast.success("Tạo truyện thành công")
             // delete file for input
             if (fileRef.current) {
               fileRef.current.value = ""

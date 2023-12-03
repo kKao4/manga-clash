@@ -10,6 +10,7 @@ import { BarLoader } from "react-spinners"
 import DetailManga from "./DetailManga"
 import dynamic from "next/dynamic"
 import DotLoaderComponent from "../global/DotLoader"
+import { toast } from "react-toastify"
 const DynamicAdminImage = dynamic(() => import("./admin/admin-image"), {
   ssr: false,
   loading: () => <DotLoaderComponent size={40} heightIsFull={true} />
@@ -78,6 +79,7 @@ export default function ImageAndDetailManga({
             dispatch(addOrUpdateManga(mangaRes.data))
             setIsUpdating(false)
             dispatch(toggleAdminMode())
+            toast.success(`Cập nhật truyện thành công`)
           }
           router.replace(`/manga/${res.data.href}`, "", { scroll: false, shallow: true })
         } else if (res.error) {

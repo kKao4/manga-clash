@@ -1,12 +1,15 @@
+import { motion } from "framer-motion";
+
 export default function ToggleAdminModeButton({ adminMode, handleOnClick }: { adminMode: boolean, handleOnClick: any }) {
   return (
-    <button
-      className={`relative ${adminMode ? "bg-second-green" : "bg-gray-200"} w-[93px] sm:w-[82px] h-7 rounded-full text-xs gap-x-1 transition-all text-white text-start px-1.5 flex flex-row items-center`}
-      onClick={handleOnClick}
-    >
-      <div className={`absolute w-5 h-5 rounded-full bg-white transition-all duration-300 ${adminMode ? "left-[53px]" : "left-1"}`}></div>
-      <span className={`${adminMode ? "opacity-100" : "opacity-0"} absolute transition-opacity duration-200 font-bold left-2`}>Admin</span>
-      <span className={`${!adminMode ? "opacity-100" : "opacity-0"} absolute transition-opacity duration-200 font-bold right-3.5`}>User</span>
-    </button>
+    <div className={`w-[76px] h-7 ${adminMode ? "bg-second-green" : "bg-gray-200"} rounded-full flex flex-row  shrink-0 ${adminMode ? "justify-end" : "justify-start"} cursor-pointer transition-all duration-200 px-[3px] relative`} onClick={handleOnClick}>
+      <motion.div
+        layout
+        transition={{ type: "spring", duration: 0.5, bounce: 0.45 }}
+        className="w-[22px] h-[22px] rounded-full bg-white my-[3.5px]"
+      />
+      <span className={`${adminMode ? "opacity-100" : "opacity-0"} absolute text-xs top-1/2 -translate-y-1/2 text-white transition-opacity select-none duration-200 font-bold left-2`}>Admin</span>
+      <span className={`${!adminMode ? "opacity-100" : "opacity-0"} absolute text-xs top-1/2 -translate-y-1/2 text-white transition-opacity select-none duration-200 font-bold right-3.5`}>User</span>
+    </div>
   )
 }

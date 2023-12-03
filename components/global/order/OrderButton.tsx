@@ -2,9 +2,10 @@ import Link from "next/link"
 import { useSelector } from "react-redux"
 import { selectSort } from "@/features/GlobalSlice"
 import { selectSearchState } from "@/features/search/SearchSlice"
-import { useEffect, useState } from "react"
-import { OrderRipples } from "../ButtonRipple"
+import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 import { searchQueryFn } from "@/type"
+import { useHover } from 'usehooks-ts'
 
 export default function OrderButton({
   content,
@@ -18,6 +19,8 @@ export default function OrderButton({
   const sort = useSelector(selectSort)
   const searchState = useSelector(selectSearchState)
   const [query, setQuery] = useState<string>()
+  const hoverRef = useRef<any>(null)
+  const isHover = useHover(hoverRef)
   useEffect(() => {
     let searchQuery = "";
     if (search) {
@@ -38,21 +41,26 @@ export default function OrderButton({
     }
   }, [search, searchState, content])
   return (
-    <OrderRipples>
-      <Link
-        href={`/${search ? "search" : "manga"}/?${query}`}
-        scroll={false}
-        className={`${(content === "Lượt xem" && sort === "views") ||
-          (content === "Mới cập nhật" && sort === "latest") ||
-          (content === "A-Z" && sort === "a-z") ||
-          (content === "Đánh giá" && sort === "rating") ||
-          (content === "Mới" && sort === "new")
-          ? "text-second-green border-b-second-green dark:text-third-green" : "text-gray-text dark:text-neutral-400"
-          } px-2.5 py-2.5 pb-2 sm:py-3 dark:hover:text-third-green hover:text-second-green border-b-[3px] my-0 hover:border-b-second-green z-10 transition-colors border-transparent`}
-        onClick={handleOnClick}
-      >
-        {content}
-      </Link>
-    </OrderRipples>
+    <Link
+      ref={hoverRef}
+      href={`/${search ? "search" : "manga"}/?${query}`}
+      scroll={false}
+      className={`${(content === "Lượt xem" && sort === "views") ||
+        (content === "Mới cập nhật" && sort === "latest") ||
+        (content === "A-Z" && sort === "a-z") ||
+        (content === "Đánh giá" && sort === "rating") ||
+        (content === "Mới" && sort === "new")
+        ? "text-main-green dark:text-third-green" : "text-gray-text dark:text-neutral-400"
+        } px-2.5 py-2.5 pb-2 sm:py-3 dark:hover:text-third-green hover:text-main-green border-b-[3px] my-0 rounded z-10 transition-colors border-transparent relative group`}
+      onClick={handleOnClick}
+    >
+      {content}
+      {(content === "Lượt xem" && sort === "views") ||
+        (content === "Mới cập nhật" && sort === "latest") ||
+        (content === "A-Z" && sort === "a-z") ||
+        (content === "Đánh giá" && sort === "rating") ||
+        (content === "Mới" && sort === "new") ? <motion.div layoutId="underline" transition={{ duration: 0.18 }} className="h-0.5 bg-main-green absolute -bottom-0.5 left-0 z-10 w-full" /> : null}
+      {isHover && <motion.div transition={{ duration: 0.12 }} layoutId="hover-bg" className="absolute top-0 left-0 rounded w-full h-full bg-second-green/20 z-10" />}
+    </Link>
   )
 }

@@ -66,7 +66,6 @@ export default function Menu() {
                   animate={{ left: "118%" }}
                   transition={{ type: "tween", repeat: Infinity, repeatDelay: 4, duration: 1, delay: 2 }}
                 />
-                {/* <div className="absolute w-[18px] h-[200px] -rotate-45 bg-gradient-to-l from-white/70 to-white/0 animate-shiny" style={{ animationFillMode: "forwards" }} /> */}
               </Link>
             </motion.div>
             {/* menu */}

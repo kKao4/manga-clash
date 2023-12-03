@@ -2,6 +2,7 @@ import "@/styles/globals.css"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/nprogress.css"
+import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app"
 import Menu from "@/components/global/menu/Menu"
 import { Open_Sans } from "next/font/google"
@@ -10,12 +11,15 @@ import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import NProgress from "nprogress"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import DarkMode from "@/components/global/darkMode/DarkMode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
 import Head from "next/head"
+import { Variants, motion } from "framer-motion";
+import { ToastContainer, toast, Zoom, cssTransition } from 'react-toastify';
+import { useDarkMode } from "usehooks-ts";
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
@@ -43,7 +47,29 @@ NProgress.configure({
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
+  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false)
+  const { isDarkMode } = useDarkMode()
   const getLayout = Component.getLayout ?? ((page) => page)
+  const Slide = cssTransition({
+    enter: "slideInBottom",
+    exit: "scaleDown"
+  })
+  const detailVariants: Variants = {
+    close: {
+      width: 0,
+      height: "32px",
+    },
+    open: {
+      width: "400px",
+      height: "200px",
+      transition: {
+        duration: 0.3,
+        height: {
+          delay: 0.3
+        }
+      }
+    }
+  }
   // start animation progress bar
   useEffect(() => {
     const start = () => NProgress.start()
@@ -69,6 +95,24 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <DynamicResetPassword />
             <Menu />
             <DynamicButtonScrollToTop />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={4000}
+              limit={4}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss={true}
+              draggable={true}
+              pauseOnHover={true}
+              theme={isDarkMode ? "dark" : "light"}
+              transition={Slide}
+            />
+            {/* <div className="fixed left-18 top-32 z-20">
+              <button className="absolute z-30 w-12 h-12 bg-main-green rounded-full" onClick={() => setIsOpenDetail(prevState => !prevState)} />
+              <motion.div className="bg-white m-4" animate={isOpenDetail ? "open" : "close"} variants={detailVariants}></motion.div>
+            </div> */}
             {getLayout(<Component {...pageProps} />)}
             <Analytics />
           </div>

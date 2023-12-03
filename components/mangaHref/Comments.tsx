@@ -2,10 +2,13 @@ import { initialMangaState } from "@/features/mangaHref/MangaSlice";
 import { DiscussionEmbed } from "disqus-react";
 import { useRouter } from "next/router";
 import Title from "../global/Title/Title";
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, useEffect } from "react";
 
 const Comments = forwardRef(function Comments({ mangaState }: { mangaState: typeof initialMangaState[number] }, ref: ForwardedRef<HTMLDivElement>) {
   const router = useRouter()
+  useEffect(() => {
+
+  }, [])
   if (mangaState) {
     return (
       <div ref={ref} className="mb-4 scroll-mt-4">

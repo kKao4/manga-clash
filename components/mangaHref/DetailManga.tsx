@@ -15,6 +15,7 @@ import { PulseLoader } from "react-spinners";
 import { selectUserState } from "@/features/UserSlice";
 import numeral from "numeral"
 import { RootState } from "@/store";
+import { toast } from "react-toastify";
 
 export default function DetailManga({ manga, chapters, handleScroll }: { manga: MangaType, chapters: MangaType["chapters"] | undefined, handleScroll: () => void }) {
   const router = useRouter()
@@ -46,8 +47,10 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
     console.log("🚀 ~ file: detail-manga.tsx:23 ~ handleBookmark ~ res:", res)
     if (!res.message) {
       dispatch(toggleSignIn(true))
+      toast.error("Vui lòng đăng nhập để tiếp tục")
     } else {
       setBookmark(b => !b)
+      toast.success(`Theo dõi truyện thành công`)
     }
     setIsLoadingBookmark(false)
   }
@@ -75,6 +78,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
         dispatch(addOrUpdateManga(mangaRes.data))
         dispatch(setUserRating({ href: mangaRes.data.href, star: userRatingRes.data }))
       }
+      toast.success("Đánh giá truyện thành công")
     } else if (res.error) {
       alert(res.error)
       dispatch(toggleSignIn(true))

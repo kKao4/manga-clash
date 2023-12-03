@@ -2,6 +2,7 @@ import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { PulseLoader } from "react-spinners"
+import { toast } from "react-toastify"
 
 export default function AdminDeleteMangaModal({
   isOpenDeleteModal, setIsOpenDeleteModal, countdown, mangaState
@@ -27,6 +28,7 @@ export default function AdminDeleteMangaModal({
             console.log("🚀 ~ file: name.tsx:39 ~ onSubmit={ ~ res:", res)
             if (res.message) {
               router.replace("/")
+              toast.success(`Đã xóa truyện ${mangaState.name}`)
             } else if (res.error) {
               alert(res.error)
             }

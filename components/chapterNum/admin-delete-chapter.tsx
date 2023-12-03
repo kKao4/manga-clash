@@ -2,6 +2,7 @@ import { useState } from "react"
 import { PulseLoader } from "react-spinners"
 import { useRouter } from "next/router"
 import { ChapterResponse } from "@/type"
+import { toast } from "react-toastify"
 
 export default function AdminDeleteChapter({ chapter, prevChapter }: { chapter: ChapterResponse, prevChapter: string }) {
   const router = useRouter()
@@ -38,6 +39,8 @@ export default function AdminDeleteChapter({ chapter, prevChapter }: { chapter: 
               console.log("🚀 ~ file: [chapterNum].tsx:164 ~ onSubmit={ ~ res:", res)
               if (res.message) {
                 router.replace(`/manga/${chapter.data?.href}/chapter-${prevChapter}`)
+                toast.success(`Xóa chap ${chapter.data?.chapter.num} thành công`)
+
               } else if (res.error) {
                 alert(res.error)
               }

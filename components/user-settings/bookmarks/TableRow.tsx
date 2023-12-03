@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { selectBookmarkState, setMangasBookmark } from "@/features/user-settings/BookmarkSlice";
 import { useState } from "react";
 import RowChapter from "@/components/global/mangaBox/RowChapter";
+import { toast } from "react-toastify";
 
 export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }) {
   const dispatch = useDispatch()
@@ -42,8 +43,9 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
               const res1 = await result1.json()
               console.log("🚀 ~ file: info-box.tsx:63 ~ onClick={ ~ res:", res1)
               if (bookmarkState.page > Math.ceil((mangasLength - 1) / mangasPerPage)) {
-                router.replace(router.pathname + "?pageBookmark=" + (bookmarkState.page - 1) + `${router.query.nameBookmark ? `&nameBookmark=${router.query.nameBookmark}` : ""}`, "", { scroll: false, shallow: true })
-                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${bookmarkState.page - 1}&nameBookmark=${bookmarkState.name}`)
+                const newPage = bookmarkState.page > 1 ? bookmarkState.page - 1 : 1
+                router.replace(router.pathname + "?pageBookmark=" + (newPage) + `${router.query.nameBookmark ? `&nameBookmark=${router.query.nameBookmark}` : ""}`, "", { scroll: false, shallow: true })
+                const mangasBookmarkResult = await fetch(`/api/user/all_mangas_bookmarks?sort=latest&pageBookmark=${newPage}&nameBookmark=${bookmarkState.name}`)
                 const mangasBookmarkRes = await mangasBookmarkResult.json()
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               } else {
@@ -53,6 +55,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
                 console.log("🚀 ~ file: table-row.tsx:90 ~ mangasBookmarkRes:", mangasBookmarkRes)
                 dispatch(setMangasBookmark({ mangas: mangasBookmarkRes.data, length: mangasBookmarkRes.length }))
               }
+              toast.success("Bỏ theo dõi truyện thành công")
               setIsRemovingBookmark(false)
             }}
           >

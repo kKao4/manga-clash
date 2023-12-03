@@ -8,6 +8,7 @@ import { PulseLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import CloseButton from "./close-button"
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
+import { toast } from "react-toastify"
 
 export default function SignIn() {
   const showSignIn = useSelector(selectSignIn)
@@ -71,6 +72,7 @@ export default function SignIn() {
               setEmail("")
               setPassword("")
               dispatch(toggleSignIn(false))
+              toast.success("Đăng nhập thành công")
             } else if (result.error) {
               alert(result.error)
               setIsLoading(false)

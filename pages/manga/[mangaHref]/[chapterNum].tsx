@@ -23,6 +23,7 @@ import { useEventListener, useDarkMode } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
 import { useIntersectionObserver } from 'usehooks-ts'
+import { toast } from "react-toastify"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -240,6 +241,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                     const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`)
                     const res = await result.json();
                     setBookmark(b => !b)
+                    toast.success("Theo dõi truyện thành công")
                     console.log("🚀 ~ file: [chapterNum].tsx:49 ~ onClick={ ~ res:", res)
                   }}
                 >
