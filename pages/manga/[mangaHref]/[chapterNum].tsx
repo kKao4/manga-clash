@@ -233,7 +233,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
             </div>
             <div className="flex flex-row items-center">
               {/* bookmark/theme button */}
-              <div className="mb-3 mr-auto space-x-2 shrink-0">
+              <div className="mb-2 md:mb-3 mr-auto space-x-2 shrink-0">
                 <button
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
                   title="Bookmark this manga"

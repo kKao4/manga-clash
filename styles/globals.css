@@ -38,9 +38,14 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   display: none;
 }
 
+/* toastify */
 .Toastify__toast-container {
   width: 340px !important;
   margin-left: auto !important;
+}
+
+.Toastify__toast {
+  @apply text-black bg-white dark:text-neutral-100 dark:bg-neutral-700 !important;
 }
 
 .Toastify__progress-bar {

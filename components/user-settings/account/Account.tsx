@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "@/features/UserSlice"
 import { ClipLoader, PuffLoader } from "react-spinners"
 import { toast } from "react-toastify"
+import { motion } from "framer-motion"
 
 export async function fetchUser() {
   const result = await fetch(`/api/user/account`)
@@ -95,12 +96,13 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                 <span className="text-sm text-gray-200 dark:text-neutral-400 select-none group-hover:text-second-green transition-colors">Chọn file</span>
               </label>
               <span className={`ml-2 text-sm text-gray-200 dark:text-neutral-400`}>{!file ? "Không có file nào được chọn" : file.name}</span>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 type="submit"
                 className={`bg-second-green hover:bg-black block px-4 py-1.5 mt-4 text-sm font-bold text-white transition-colors rounded-full`}
               >
                 Thay Đổi
-              </button>
+              </motion.button>
             </form>
           </div>
         </div>

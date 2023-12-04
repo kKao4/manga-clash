@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { Order } from "@/features/GlobalSlice"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
+import { menuVariants } from "./Menu"
 
 export default function MenuButton({
   content,
@@ -18,9 +18,9 @@ export default function MenuButton({
   return (
     <motion.div
       className="px-4 py-3 text-sm font-bold text-white cursor-pointer group"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ type: "tween", duration: 0.4 }}
+      initial="hidden"
+      whileInView="show"
+      variants={menuVariants}
       viewport={{ once: true }}
       onClick={() => {
         handleOnClick(sort)

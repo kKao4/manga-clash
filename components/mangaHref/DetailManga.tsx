@@ -16,6 +16,7 @@ import { selectUserState } from "@/features/UserSlice";
 import numeral from "numeral"
 import { RootState } from "@/store";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 export default function DetailManga({ manga, chapters, handleScroll }: { manga: MangaType, chapters: MangaType["chapters"] | undefined, handleScroll: () => void }) {
   const router = useRouter()
@@ -50,7 +51,11 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       toast.error("Vui lòng đăng nhập để tiếp tục")
     } else {
       setBookmark(b => !b)
-      toast.success(`Theo dõi truyện thành công`)
+      if (!bookmark) {
+        toast.success(`Theo dõi truyện thành công`)
+      } else {
+        toast.success(`Bỏ theo dõi truyện thành công`)
+      }
     }
     setIsLoadingBookmark(false)
   }
@@ -149,7 +154,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           <PulseLoader size={12} color="#409a88" margin={3} />
         </div>
       </div>
-      <div className="flex flex-col xl:flex-wrap gap-y-4 xl:flex-row">
+      <div className="flex flex-col xl:flex-wrap gap-y-6 xl:flex-row">
         <div className="flex flex-col basis-2/3 gap-y-2.5 max-h-fit">
           {/* rating information */}
           <div className="flex flex-col sm:flex-row">
@@ -225,18 +230,26 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
           </div>
         </div>
         <div className="flex flex-row justify-center xl:justify-start gap-x-2.5">
-          <Link
-            href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[chapters.length - 1].num}` : "/"}
-            className="text-white bg-second-green font-bold px-3 py-2.5 rounded-md text-sm hover:bg-black transition-colors"
+          <motion.button
+            whileTap={{ scale: 0.95 }}
           >
-            Chapter Đầu
-          </Link>
-          <Link
-            href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[0].num}` : "/"}
-            className="text-white bg-second-green font-bold px-3 py-2.5 rounded-md text-sm hover:bg-black transition-colors"
+            <Link
+              href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[chapters.length - 1].num}` : "/"}
+              className="text-white bg-second-green font-bold px-3 py-[11px] rounded-md text-sm hover:bg-black transition-all active:scale-95"
+            >
+              Chapter Đầu
+            </Link>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
           >
-            Chapter Cuối
-          </Link>
+            <Link
+              href={chapters && chapters.length ? `/manga/${manga.href}/chapter-${chapters[0].num}` : "/"}
+              className="text-white bg-second-green font-bold px-3 py-[11px] rounded-md text-sm hover:bg-black transition-all active:scale-95"
+            >
+              Chapter Cuối
+            </Link>
+          </motion.button>
         </div>
       </div>
     </>

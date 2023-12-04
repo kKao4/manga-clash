@@ -2,6 +2,7 @@ import { ChapterResponse, ChaptersResponse } from "@/type";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react"
 import Select from "./Select";
+import { motion } from "framer-motion";
 
 export default function Menu({
   chapters, prevChapter, nextChapter, readingStyle, setReadingStyle, index, setIndex, chapter
@@ -85,7 +86,9 @@ export default function Menu({
                 </Select>
               </div>
             )}
-            <button
+
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               className={`${isFirstChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}
               disabled={isFirstChapter}
               onClick={() => {
@@ -94,8 +97,9 @@ export default function Menu({
             >
               <svg className={`${isFirstChapter ? "fill-neutral-300" : "fill-white"} h-3.5`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" /></svg>
               Chap trước
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               className={`${isLastChapter ? "bg-[#225d51] text-neutral-300" : "bg-second-green hover:bg-black text-white"} flex flex-row items-center font gap-x-1.5 transition-colors px-4 py-2 rounded-md`}
               disabled={isLastChapter}
               onClick={() => {
@@ -104,7 +108,7 @@ export default function Menu({
             >
               Chap sau
               <svg className={`${isLastChapter ? "fill-neutral-300" : "fill-white"} h-3.5`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" /></svg>
-            </button>
+            </motion.button>
           </div>
         </>
       )}

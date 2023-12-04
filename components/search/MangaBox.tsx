@@ -6,6 +6,7 @@ import { vi } from "date-fns/locale"
 import RatingStar from "../global/mangaBox/RatingStar"
 import ImageMangaBox from "../global/mangaBox/ImageMangaBox"
 import Name from "../global/mangaBox/Name"
+import { motion } from "framer-motion"
 
 export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
@@ -15,7 +16,7 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
         <ImageMangaBox manga={manga} width="w-[95px] md:w-[160px]" height="h-[136px] md:h-[230px]" />
         <div className="flex flex-col gap-y-1.5 flex-1">
           {/* name */}
-         <Name manga={manga} fontSize="text-lg" />
+          <Name manga={manga} fontSize="text-lg" />
           <div className="px-5 py-2.5 text-sm md:py-3 bg-neutral-100 dark:bg-neutral-750 md:text-base">
             <div className="flex flex-col gap-y-2 md:gap-y-3">
               <div className="flex flex-col md:flex-row">
@@ -39,12 +40,16 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
             {/* latest chapter */}
             <div className="flex flex-row items-center mb-1 basis-64 xl:basis-80 gap-x-5">
               {manga.chapters.length && (
-                <Link
-                  href={`/manga/${manga.href}/chapter-${manga.chapters[0].num}`}
-                  className="px-2.5 py-1 text-sm md:text-base font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white"
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
                 >
-                  Chapter {manga.chapters[0] ? `${manga.chapters[0].num}` : "0"}
-                </Link>
+                  <Link
+                    href={`/manga/${manga.href}/chapter-${manga.chapters[0].num}`}
+                    className="px-2.5 py-1 text-sm md:text-base font-bold text-gray-200 transition-colors bg-gray-100 rounded-lg hover:bg-main-green hover:text-white"
+                  >
+                    Chapter {manga.chapters[0] ? `${manga.chapters[0].num}` : "0"}
+                  </Link>
+                </motion.button>
               )}
               <p className="text-sm md:text-base">{manga.chapters[0] ? `${formatDistanceToNowStrict(parseISO(manga.chapters[0].updatedAt as unknown as string), { locale: vi })}` : "Đang cập nhật"}</p>
             </div>

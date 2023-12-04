@@ -11,7 +11,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
   const router = useRouter()
   const dispatch = useDispatch()
   return (
-    <button className="relative flex flex-row items-center text-gray-200 dark:text-neutral-300 gap-x-2 group">
+    <div className="relative flex flex-row items-center text-gray-200 dark:text-neutral-300 gap-x-2 cursor-pointer group">
       <p className="font-normal">Xin chào, {user?.role === "admin" ? "admin" : ""} <span className="font-semibold text-main-green">{user?.username}</span></p>
       {/* profile picture */}
       <div className="relative w-8 h-8 overflow-hidden border rounded-full dark:border-neutral-700">
@@ -21,7 +21,7 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           <Image src={blankProfile} alt="" fill={true} className="object-fill" quality={0} />
         )}
       </div>
-      <div className="absolute top-6 w-[150px] right-0 group-hover:opacity-100 group-hover:z-20 -z-10 opacity-0 hover:opacity-100 transition-opacity">
+      <div className="absolute top-6 w-[150px] right-0 opacity-0 group-hover:opacity-100 -z-10 group-hover:z-20 overflow-hidden ease-out duration-300 transition-all">
         {/* dropdown */}
         <div className="flex flex-col mt-2.5 bg-gray-150 dark:bg-neutral-700 border-b-[3px] py-2 border-b-second-green">
           <LinkDropdown content="Tủ Truyện" href="/user-settings?pageBookmark=1&nameBookmark=" handleOnClick={() => dispatch(setMenu("bookmarks"))} />
@@ -57,6 +57,6 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           />
         </div>
       </div>
-    </button>
+    </div>
   )
 }

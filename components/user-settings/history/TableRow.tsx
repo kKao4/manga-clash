@@ -1,11 +1,8 @@
-import { mangasPerPage } from "@/type";
 import Image from "next/image";
-import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { MangaType } from "@/models/manga";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { format, parseISO } from "date-fns";
+import { motion } from "framer-motion";
 
 export default function TableRow({ manga, createdAt, chapter }: { manga: MangaType, createdAt: string, chapter: string }) {
   return (
@@ -24,12 +21,16 @@ export default function TableRow({ manga, createdAt, chapter }: { manga: MangaTy
         {/* read chapters */}
         <td className="hidden py-3 space-y-2.5 text-sm sm:table-cell">
           <div className="flex flex-col items-center">
-            <Link
-              href={`/manga/${manga.href}/chapter-${chapter}`}
-              className="px-2.5 py-1.25 text-sm btn-chapter"
+            <motion.button
+              whileTap={{ scale: 0.95 }}
             >
-              Chapter {chapter}
-            </Link>
+              <Link
+                href={`/manga/${manga.href}/chapter-${chapter}`}
+                className="px-2.5 py-1.25 text-sm btn-chapter"
+              >
+                Chapter {chapter}
+              </Link>
+            </motion.button>
           </div>
         </td>
         {/* delete button */}

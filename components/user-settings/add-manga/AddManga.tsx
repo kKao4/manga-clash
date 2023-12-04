@@ -4,6 +4,7 @@ import { MangaResponse, tagsArray } from "@/type"
 import { PropagateLoader } from "react-spinners"
 import TextArea from "@/components/mangaHref/TextArea"
 import { toast } from "react-toastify"
+import { motion } from "framer-motion"
 
 export default function AddManga() {
   const [mangaImage, setMangaImage] = useState<File>()
@@ -138,7 +139,8 @@ export default function AddManga() {
             <label className="font-bold">Tóm tắt</label>
             <TextArea description={description} setDescription={setDescription} />
           </div>
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             type="submit"
             className={`w-full relative px-4 py-5 mx-auto font-bold text-white transition-colors rounded-full bg-second-green ${isLoading ? "" : "hover:bg-black"}`}
             disabled={isLoading}
@@ -148,7 +150,7 @@ export default function AddManga() {
                 <PropagateLoader color="#ffffff" size={12} />
               </div>
             ) : <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">Tạo truyện</p>}
-          </button>
+          </motion.button>
         </form>
       </div>
     </>

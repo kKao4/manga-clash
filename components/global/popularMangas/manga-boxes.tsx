@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useDispatch } from "react-redux"
 import { setSort } from "@/features/GlobalSlice"
 import Row from "./row"
+import { motion } from "framer-motion"
 
 export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | undefined }) {
   const dispatch = useDispatch()
@@ -21,13 +22,17 @@ export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | u
           <p>Không có bộ truyện nào</p>
         )}
       </div>
-      <Link
-        href="/manga?page=1&sort=views"
-        className="inline-block w-full py-1 mt-2 text-sm font-bold text-center text-white transition-colors md:mt-4 bg-second-green hover:bg-black"
-        onClick={() => dispatch(setSort("views"))}
+      <motion.div
+        whileTap={{ scale: 0.95 }}
       >
-        Xem thêm
-      </Link>
+        <Link
+          href="/manga?page=1&sort=views"
+          className="inline-block w-full py-1 mt-2 text-sm font-bold text-center text-white transition-colors md:mt-4 bg-second-green hover:bg-black"
+          onClick={() => dispatch(setSort("views"))}
+        >
+          Xem thêm
+        </Link>
+      </motion.div>
     </div>
   )
 }

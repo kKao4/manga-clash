@@ -9,16 +9,11 @@ const DynamicAdminToggleButton = dynamic(() => import("./ToggleAdminModeButton")
   ssr: false
 })
 
-// TODO: make dynamic and notification
 export default function UserMenu({ user }: { user: UserResponse["data"] }) {
   const dispatch = useDispatch()
   const adminMode = useSelector(selectAdminMode)
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ type: "tween", duration: 0.4 }}
-      viewport={{ once: true }}
+    <div
       className="w-full border-b dark:border-neutral-700"
     >
       <div className="xl:max-w-[1150px] lg:max-w-[900px] mx-auto px-4 flex flex-row items-center">
@@ -40,6 +35,6 @@ export default function UserMenu({ user }: { user: UserResponse["data"] }) {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

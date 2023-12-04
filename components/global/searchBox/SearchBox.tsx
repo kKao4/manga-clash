@@ -43,8 +43,8 @@ export default function SearchBox({
   }, [])
   const charVariants: Variants = useMemo(() => {
     return {
-      hidden: { opacity: 0, y: -6 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.06 } },
+      hidden: { opacity: 0, y: -4 },
+      show: { opacity: 1, y: 0, transition: { duration: 0.04 } },
     }
   }, [])
   const str = useMemo(() => {
