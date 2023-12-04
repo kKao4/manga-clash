@@ -38,15 +38,9 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   display: none;
 }
 
-.slideInBottom {
-  animation: slideInBottom 0.6s ease-out both;
-}
-.scaleDown {
-  animation: scaleDown 0.3s ease-out both;
-}
-
 .Toastify__toast-container {
   width: 340px !important;
+  margin-left: auto !important;
 }
 
 .Toastify__progress-bar {
@@ -63,34 +57,54 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.Toastify__toast-container--bottom-right {
+  position: absolute;
+  bottom: 4px !important;
+}
+
+/* TODO: change to motion and refactoring to animation add animation to bookmark delete */
+.slideInBottom {
+  animation: slideInBottom 0.3s ease-out both;
+}
+.scaleDown {
+  animation: scaleDown 0.3s ease-out both;
+}
+/* .scrollToTopBtn-enter {
+  transform: scale(0.6);
+  opacity: 0;
+}
+.scrollToTopBtn-enter-active {
+  transform: scale(1);
+  opacity: 1;
+  transition: opacity 300ms, transform 300ms;
+}
+.scrollToTopBtn-exit {
+  transform: scale(1);
+  opacity: 1;
+}
+.scrollToTopBtn-exit-active {
+  transform: scale(0.6);
+  opacity: 0;
+  transition: opacity 300ms, transform 300ms;
+} */
 
 @keyframes slideInBottom {
   0% {
-    transform: translateY(200%);
+    transform: translateY(180%);
     opacity: 0;
   }
-  50% {
-    transform: translatey(-4px);
-    opacity: 1;
-  }
-  80% {
-    transform: translatey(2px);
-  }
   100% {
-    transform: translatey(0);
+    transform: translateY(0);
+    opacity: 1;
   }
 }
-
 @keyframes scaleDown {
   0% {
-    scale: 1;
+    transform: scale(1);
     opacity: 1;
   }
-  99% {
-    scale: 0.6;
-    opacity: 0;
-  }
   100% {
-    scale: 0;
+    transform: scale(0.6);
+    opacity: 0;
   }
 }
