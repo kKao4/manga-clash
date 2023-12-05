@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "@/features/UserSlice"
 import { ClipLoader, PuffLoader } from "react-spinners"
 import { toast } from "react-toastify"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 export async function fetchUser() {
   const result = await fetch(`/api/user/account`)
@@ -43,15 +43,24 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
       <div className="flex flex-col">
         {/* profile picture */}
         <div className="flex flex-row pb-6 border-b dark:border-neutral-700 gap-x-5">
-          <div className="basis-1/3 w-[191px] h-[191px] overflow-hidden flex place-items-center relative">
-            {!user?.profilePicture.url ? (
-              <Image className="object-fill" src={blankProfile} alt="" fill={true} quality={0} />
-            ) : (
-              <Image className="object-fill" src={user.profilePicture.url} alt="" fill={true} quality={50} />
-            )}
-            <div className={`${isLoadingProfilePicture ? "block" : "hidden"} absolute w-[191px] h-[191px] bg-black/50 flex justify-center items-center`}>
-              <ClipLoader color="#ffffff" size={40} />
-            </div>
+          <div className="basis-1/3 w-[191px] h-[191px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={user?.profilePicture.url}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="relative flex h-full overflow-hidden place-items-center"
+              >
+                {!user?.profilePicture.url ? (
+                  <Image className="object-fill" src={blankProfile} alt="" fill={true} quality={0} />
+                ) : (
+                  <Image className="object-fill" src={user.profilePicture.url} alt="" fill={true} quality={100} priority={true} />
+                )}
+                <div className={`${isLoadingProfilePicture ? "block" : "hidden"} absolute w-[191px] h-[191px] bg-black/50 flex justify-center items-center`}>
+                  <ClipLoader color="#ffffff" size={40} />
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
           <div className="py-2 basis-2/3">
             <p className="mb-3">Chỉ chấp nhận file .jpg .png hoặc .gif</p>
@@ -93,13 +102,13 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
                   }}
                   required
                 />
-                <span className="text-sm text-gray-200 dark:text-neutral-400 select-none group-hover:text-second-green transition-colors">Chọn file</span>
+                <span className="text-sm text-gray-200 transition-colors select-none dark:text-neutral-400 group-hover:text-second-green">Chọn file</span>
               </label>
               <span className={`ml-2 text-sm text-gray-200 dark:text-neutral-400`}>{!file ? "Không có file nào được chọn" : file.name}</span>
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className={`bg-second-green hover:bg-black block px-4 py-1.5 mt-4 text-sm font-bold text-white transition-colors rounded-full`}
+                className={`bg-second-green hover:bg-black block px-3.5 py-1.5 mt-4 text-sm font-bold text-white transition-colors rounded-full`}
               >
                 Thay Đổi
               </motion.button>
@@ -125,18 +134,25 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           if (res.message) {
             const res = await fetchUser()
             dispatch((setUser(res.data)))
-            setIsLoadingUsername(false)
             toast.success("Thay đổi tên tài khoản thành công")
           } else if (res.error) {
             alert(res.error)
             router.push("/")
           }
+          setIsLoadingUsername(false)
         }}>
           <Input label="Tên Hiển Thị Hiện Tại">
-            <p className={`relative w-full text-sm font-bold sm:w-auto ${isLoadingUsername ? "opacity-40" : "opacity-100"}`}>
-              {user?.username}
-            </p>
-            <div className="ml-0.5">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={user?.username}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`relative w-full text-sm font-bold sm:w-auto ${isLoadingUsername && "opacity-60 dark:opacity-50"}`}
+              >
+                {user?.username}
+              </motion.p>
+            </AnimatePresence>
+            <div className="ml-1">
               {isLoadingUsername && <PuffLoader size={20} color="#409a88" />}
             </div>
           </Input>
@@ -144,7 +160,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
             <input
               type="text"
               value={username}
-              className={`${usernameValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded w-full sm:w-auto grow sm:mr-4 focus:outline-none border`}
+              className={`${usernameValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-3.5 py-2 dark:bg-neutral-700 rounded w-full sm:w-auto grow sm:mr-4 focus:outline-none border`}
               onChange={(e) => {
                 setUsername(e.target.value)
                 setUsernameValid(() => e.target.value.match(usernameReg) ? true : false)
@@ -173,23 +189,32 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           if (res.message) {
             const res = await fetchUser()
             dispatch((setUser(res.data)))
-            setIsLoadingEmail(false)
             toast.success("Thay đổi địa chỉ email thành công")
           } else if (res.error) {
             alert(res.error)
             router.push("/")
           }
+          setIsLoadingEmail(false)
         }}>
           <Input label="Địa Chỉ Email Hiện Tại">
-            <p className={`w-full text-sm font-bold sm:w-auto ${isLoadingEmail ? "opacity-40" : "opacity-100"}`}>{user?.email}</p>
-            <div className="ml-0.5">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={user?.email}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`w-full text-sm font-bold sm:w-auto ${isLoadingEmail && "opacity-60 dark:opacity-50"}`}
+              >
+                {user?.email}
+              </motion.p>
+            </AnimatePresence>
+            <div className="ml-1">
               {isLoadingEmail && <PuffLoader size={20} color="#409a88" />}
             </div>
           </Input>
           <Input label="Địa Chỉ Email Mới">
             <input
               type="text"
-              className={`${emailValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto border`}
+              className={`${emailValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-3.5 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto border`}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value)
@@ -235,7 +260,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           <Input label="Mật Khẩu Hiện Tại">
             <input
               type="password"
-              className={`${!wrongPassword ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${!wrongPassword ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-3.5 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               required
@@ -244,7 +269,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           <Input label="Mật Khẩu Mới">
             <input
               type="password"
-              className={`${passwordValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${passwordValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-3.5 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value)
@@ -257,7 +282,7 @@ export default function Account({ user }: { user: UserResponse["data"] }) {
           <Input label="Xác Nhận Lại Mật Khẩu">
             <input
               type="password"
-              className={`${passwordRepeatValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-4 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
+              className={`${passwordRepeatValid ? "border-gray-200 dark:border-transparent" : "border-red-500"} px-3.5 py-2 dark:bg-neutral-700 rounded grow sm:mr-4 focus:outline-none w-full sm:w-auto tracking-[2px] border`}
               value={passwordRepeat}
               onChange={(e) => {
                 setPasswordRepeat(e.target.value)
