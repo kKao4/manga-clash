@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import { selectBookmarkState, setPageBookmark, setSearchNameBookmark } from "@/features/user-settings/BookmarkSlice"
 import { useEffect } from "react"
+import { AnimatePresence } from "framer-motion"
 
 const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], mangasLength: number }) => {
   const router = useRouter()
@@ -24,6 +25,13 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
       dispatch(setSearchNameBookmark(""))
     }
   }, [router.query.nameBookmark, dispatch])
+  useEffect(() => {
+    if (mangas && mangas.length === 0) {
+      if (router.query.pageBookmark && Number(router.query.pageBookmark) > 1) {
+        router.replace(`/user-settings?pageBookmark=1&nameBookmark=${bookmarkState.name}`)
+      }
+    }
+  }, [mangas, router, bookmarkState.name])
   return (
     <>
       {/* table bookmarked manga */}
@@ -49,11 +57,11 @@ const Bookmarks = ({ mangas, mangasLength }: { mangas: MangasResponse["data"], m
         </thead>
         <tbody>
           {mangas && mangas.length ? (
-            <>
+            <AnimatePresence>
               {mangas.map(manga => {
                 return <TableRow key={manga.name + "-bookmarks"} manga={manga} mangasLength={mangasLength} />
               })}
-            </>
+            </AnimatePresence>
           ) : (!router.query.nameBookmark) ? (
             <tr>
               <td colSpan={3} className="py-4 font-medium text-center">Bạn chưa theo dõi truyện nào</td>

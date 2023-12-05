@@ -17,7 +17,8 @@ import DarkMode from "@/components/global/darkMode/DarkMode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
 import Head from "next/head"
-import { Variants, motion } from "framer-motion";
+import { useWindowSize } from 'usehooks-ts'
+import { Variants } from "framer-motion";
 import { ToastContainer, toast, Zoom, cssTransition } from 'react-toastify';
 import { useDarkMode } from "usehooks-ts";
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
@@ -49,9 +50,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false)
   const { isDarkMode } = useDarkMode()
+  const { width, height } = useWindowSize()
   const getLayout = Component.getLayout ?? ((page) => page)
   const Slide = cssTransition({
-    enter: "slideInBottom",
+    enter: width >= 768 ? "slideInBottom" : "scaleUp",
     exit: "scaleDown"
   })
   const detailVariants: Variants = {
@@ -96,15 +98,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <Menu />
             <DynamicButtonScrollToTop />
             <ToastContainer
-              position="bottom-right"
+              position={width >= 768 ? "bottom-right" : "top-center"}
               autoClose={4000}
               limit={4}
               hideProgressBar={false}
               newestOnTop={false}
-              closeOnClick={false}
+              closeOnClick
               rtl={false}
               pauseOnFocusLoss={true}
               draggable={true}
+              draggablePercent={40}
               pauseOnHover={true}
               theme={isDarkMode ? "dark" : "light"}
               transition={Slide}

@@ -54,7 +54,7 @@ export default function SignUp() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ type: "tween", duration: 0.3 }}
+          transition={{ duration: 0.3 }}
           className="z-50 px-4 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center"
         >
           {!signedUp ? (
@@ -121,22 +121,26 @@ export default function SignUp() {
                 valid={passwordValid}
                 validContent="Độ dài tối thiểu là 8 ký tự"
               />
-              <button
+              {/* Sign Up Btn */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 type="submit"
-                className={`${!usernameValid || !passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !usernameValid || !passwordValid || !emailValid ? "" : "hover:bg-black"} relative w-full font-bold rounded-full text-white py-[22px] mt-2 transition-colors`}
+                className={`${!usernameValid || !passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !usernameValid || !passwordValid || !emailValid ? "" : "hover:bg-black"} relative w-full font-bold rounded-full text-white h-[48px] mt-2 transition-colors`}
                 disabled={!usernameValid || !passwordValid || !emailValid || isLoading}
               >
                 {isLoading ? (
-                  <PropagateLoader color="#ffffff" size={10} />
-                ) : <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Đăng ký</p>}
-              </button>
-              <div className="">
+                  <PropagateLoader className="absolute left-1/2 -top-1 -translate-x-1/2" color="#ffffff" size={10} />
+                ) : <p>Đăng ký</p>}
+              </motion.button>
+              <div>
+                {/* Sign In Btn */}
                 <button type="button" className="hover:text-second-green dark:hover:text-third-green" onClick={() => {
                   dispatch(toggleSignUp(false))
                   setTimeout(() => {
                     dispatch(toggleSignIn(true))
                   }, 200)
                 }}>Đăng nhập</button>
+                {/* Lost Password Btn */}
                 <button
                   type="button"
                   className="float-right hover:text-second-green dark:hover:text-third-green"

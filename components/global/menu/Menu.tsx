@@ -85,13 +85,15 @@ export default function Menu() {
               whileInView="show"
               variants={menuVariants}
               viewport={{ once: true }}
+              whileTap={{ scale: 1 }}
+              whileHover={{ scale: 1.05 }}
             >
               <Link href="/" className="relative max-w-[180px] max-h-[32px] md:max-h-[44px] overflow-hidden flex justify-center items-center xl:mr-12 drop-shadow-md">
                 <Image src={AliceChan} alt="alice-chan" className="mt-8" priority={true} quality={100} />
                 <motion.div
                   className="absolute w-[18px] h-[200px] -rotate-45 bg-gradient-to-l from-white/60 to-white/0" initial={{ left: "-28%" }}
                   animate={{ left: "118%" }}
-                  transition={{ type: "tween", repeat: Infinity, repeatDelay: 4, duration: 1, delay: 2 }}
+                  transition={{ repeat: Infinity, repeatDelay: 4, duration: 1, delay: 2 }}
                 />
               </Link>
             </motion.div>
@@ -112,6 +114,7 @@ export default function Menu() {
                 whileInView="show"
                 variants={menuVariants}
                 viewport={{ once: true }}
+                whileTap={{ scale: 0.90 }}
               >
                 <div
                   className="relative w-8 h-8 transition-colors bg-white rounded-full cursor-pointer group hover:bg-black"
@@ -134,6 +137,7 @@ export default function Menu() {
                 whileInView="show"
                 variants={menuVariants}
                 viewport={{ once: true }}
+                whileTap={{ scale: 0.90 }}
               >
                 <button className="flex items-center justify-center w-8 h-8 transition-colors bg-white rounded-full group hover:bg-black overflow-hidden relative" onClick={() => toggle()}>
                   <motion.svg initial={isDarkMode ? "show" : "hiddenDown"} animate={isDarkMode ? "show" : "hiddenDown"} variants={svgVariants} className={`absolute h-5 transition-colors fill-main-green group-hover:fill-white`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" /></motion.svg>

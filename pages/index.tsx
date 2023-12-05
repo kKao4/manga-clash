@@ -81,7 +81,7 @@ const Page = ({ mangasRes, popularMangasRes, userRes, chartRes }: InferGetServer
       <Head>
         <title>Manga-kKao4 - Đọc Truyện online</title>
       </Head>
-      <BodyBox className="pt-0">
+      <BodyBox className="pt-4">
         {/* left row */}
         <div className="basis-9/12">
           {/* slick and trending manga */}

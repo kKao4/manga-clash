@@ -43,7 +43,7 @@ export default function SignIn() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ type: "tween", duration: 0.3 }}
+          transition={{ duration: 0.3 }}
           className="px-4 ease-out w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
         >
           <form
@@ -102,15 +102,16 @@ export default function SignIn() {
             <div className="flex flex-row items-center gap-x-1">
               <input type="checkbox" name="remember" id="remember" />
               <label className="select-none grow" htmlFor="remember">Lưu thông tin</label>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 type="submit"
-                className={`${!passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !passwordValid || !emailValid ? "" : "hover:bg-black"} font-bold rounded-full text-white px-8 py-2.5 transition-colors`}
+                className={`${!passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !passwordValid || !emailValid ? "" : "hover:bg-black"} font-bold rounded-full text-white w-[140px] h-[48px] transition-colors relative`}
                 disabled={!passwordValid || !emailValid || isLoading}
               >
                 {isLoading ? (
-                  <PulseLoader color="#ffffff" size={10} margin={4} />
-                ) : "Đăng nhập"}
-              </button>
+                  <PulseLoader className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3" color="#ffffff" size={10} margin={4} />
+                ) : <p>Đăng nhập</p>}
+              </motion.button>
             </div>
             <button
               type="button"

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Input from "./input"
 import { emailReg } from "@/type"
 import CloseButton from "./close-button"
+import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside } from 'usehooks-ts'
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
 import { motion, AnimatePresence } from "framer-motion"
@@ -15,6 +16,7 @@ export default function ResetPassword() {
   const [emailValid, setEmailValid] = useState<boolean>(true)
   const [emailSent, setEmailSent] = useState<boolean>(false)
   const [emailNotFound, setEmailNotFound] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   useOnClickOutside(formRef, () => dispatch(toggleResetPassword(false)))
   const emailChange = (value: string) => {
@@ -39,7 +41,7 @@ export default function ResetPassword() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ type: "tween", duration: 0.3 }}
+          transition={{ duration: 0.3 }}
           className="px-4 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
         >
           <form
@@ -47,6 +49,7 @@ export default function ResetPassword() {
             className="bg-search dark:bg-none rounded dark:bg-neutral-750 w-full sm:max-w-[500px] md:max-w-[650px] px-8 md:px-28 flex flex-col gap-y-5 pt-7 pb-12 relative"
             onSubmit={async (e) => {
               e.preventDefault()
+              setIsLoading(true)
               const formData = new FormData(e.currentTarget)
               const result = await fetch(`/api/user/reset_password`, {
                 method: "POST",
@@ -58,6 +61,7 @@ export default function ResetPassword() {
               } else if (res.error === "Invalid Email") {
                 setEmailNotFound(true)
               }
+              setIsLoading(false)
               console.log("🚀 ~ file: lost-password.tsx:33 ~ onSubmit={ ~ res:", res)
             }}
           >
@@ -77,13 +81,17 @@ export default function ResetPassword() {
                 >
                   <p className={`${emailNotFound ? "block" : "hidden"} text-red-500 text-sm`}>Email chưa được đăng ký</p>
                 </Input>
-                <button
+                {/* Submit Btn */}
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className={`${!emailValid ? "bg-red-500" : "bg-second-green hover:bg-black"} w-full font-bold rounded-full text-white py-2.5 mt-2 transition-colors`}
+                  className={`${!emailValid ? "bg-red-500" : "bg-second-green hover:bg-black"} relative w-full font-bold rounded-full text-white h-[48px] mt-2 transition-colors`}
                   disabled={!emailValid}
                 >
-                  Gửi email cho tôi
-                </button>
+                  {isLoading ? (
+                    <PropagateLoader className="absolute left-1/2 -top-1 -translate-x-1/2" color="#ffffff" size={10} />
+                  ) : "Gửi email cho tôi"}
+                </motion.button>
               </>
             ) : (
               <p className="text-xl font-bold text-center uppercase">Vùi lòng kiểm tra email để nhận được hướng dẫn lấy lại mật khẩu</p>

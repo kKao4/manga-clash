@@ -31,6 +31,13 @@ export default function Chart() {
       dispatch(setTimeChart("oneWeek"))
     }
   }, [router.query.time, dispatch])
+  useEffect(() => {
+    if (chartState.mangas && chartState.mangas.length === 0) {
+      if (router.query.pageChart && Number(router.query.pageChart) > 1) {
+        router.replace(`/user-settings?time=${chartState.time}&pageChart=1&nameChart=${chartState.name}`)
+      }
+    }
+  }, [router, chartState])
   return (
     <>
       <div className="flex flex-row mb-2">

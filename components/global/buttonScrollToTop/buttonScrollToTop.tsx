@@ -33,7 +33,6 @@ export default function ButtonScrollToTop() {
     <AnimatePresence>
       {directionScroll === "up" && (
         <motion.button
-          key="scrollToTopBtn"
           initial="hidden"
           animate="show"
           exit="hidden"

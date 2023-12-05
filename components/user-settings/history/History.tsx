@@ -23,6 +23,13 @@ export default function History() {
       dispatch(setSearchNameHistory(""))
     }
   }, [dispatch, router.query.nameHistory])
+  useEffect(() => {
+    if (historyState.mangas && historyState.mangas.length === 0) {
+      if (router.query.pageHistory && Number(router.query.pageHistory) > 1) {
+        router.replace(`/user-settings?pageHistory=1&nameHistory=${historyState.name}`)
+      }
+    }
+  }, [router, historyState])
   return (
     <>
       {/* table history mangas */}

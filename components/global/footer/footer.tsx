@@ -10,7 +10,7 @@ export default function Footer() {
   }, [router.query.chapterNum])
   return (
     <>
-      <div className={`py-6 md:py-12 border-t ${forceDarkMode ? "border-t-neutral-700 bg-neutral-800" : "dark:border-t-neutral-700 dark:bg-neutral-800"}`}>
+      <div className={`py-8 border-t ${forceDarkMode ? "border-t-neutral-700 bg-neutral-800" : "dark:border-t-neutral-700 dark:bg-neutral-800"}`}>
         <div className="mx-auto space-y-2 max-w-fit">
           <div className="flex flex-row gap-x-4">
             <Link href={"/"} className={`transition-colors font-medium ${forceDarkMode ? "text-neutral-300 hover:text-third-green" : "hover:text-second-green dark:text-neutral-300 dark:hover:text-third-green"}`}>Home</Link>

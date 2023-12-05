@@ -39,11 +39,6 @@ div[data-="true"]:hover svg[data-hidden="true"] {
 }
 
 /* toastify */
-.Toastify__toast-container {
-  width: 340px !important;
-  margin-left: auto !important;
-}
-
 .Toastify__toast {
   @apply text-black bg-white dark:text-neutral-100 dark:bg-neutral-700 !important;
 }
@@ -64,15 +59,20 @@ div[data-="true"]:hover svg[data-hidden="true"] {
 }
 .Toastify__toast-container--bottom-right {
   position: absolute;
+  width: 340px !important;
+  margin-left: auto !important;
   bottom: 4px !important;
 }
 
-/* TODO: change to motion and refactoring to animation add animation to bookmark delete */
+/* TODO: add small mangas when hover manga image and add nav button in reading page and add information tab for interview and add animation when update user's account info */
 .slideInBottom {
   animation: slideInBottom 0.3s ease-out both;
 }
 .scaleDown {
   animation: scaleDown 0.3s ease-out both;
+}
+.scaleUp {
+  animation: scaleUp 0.3s ease-out both;
 }
 /* .scrollToTopBtn-enter {
   transform: scale(0.6);
@@ -111,5 +111,23 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   100% {
     transform: scale(0.6);
     opacity: 0;
+  }
+}
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .Toastify__toast-container--top-center {
+    width: 94% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
 }
