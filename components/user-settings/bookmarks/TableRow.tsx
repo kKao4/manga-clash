@@ -19,7 +19,7 @@ export default function TableRow({ manga, mangasLength }: { manga: MangaType, ma
     <motion.tr
       exit={isRemovingBookmark ? { opacity: 0, scale: 0.8 } : undefined}
       transition={{ duration: 0.3 }}
-      className={`relative border-b dark:border-neutral-700`}
+      className={`relative border-b dark:border-neutral-700 ${isRemovingBookmark && "dark:opacity-60 opacity-70"}`}
     >
       {/* image and name */}
       <td className={`flex flex-row p-4 pr-0 text-sm gap-x-4`}>

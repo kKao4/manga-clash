@@ -4,7 +4,6 @@ import UserDropdown from "./UserDropdown"
 import { UserResponse } from "@/type"
 import Button from "./Button"
 import dynamic from "next/dynamic"
-import { motion } from "framer-motion"
 const DynamicAdminToggleButton = dynamic(() => import("./ToggleAdminModeButton"), {
   ssr: false
 })
