@@ -1,6 +1,4 @@
 import { Order } from "@/features/GlobalSlice"
-import { motion } from "framer-motion"
-import { useRouter } from "next/router"
 import Link from "next/link"
 
 export default function MenuButton({
@@ -14,7 +12,6 @@ export default function MenuButton({
   href: string,
   handleOnClick: (value: Order) => void
 }) {
-  const router = useRouter()
   return (
     <Link
       href={href}
