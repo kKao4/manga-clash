@@ -8,10 +8,10 @@ export default function MangaBox({ manga }: { manga: MangaType }) {
   return (
     <div className="flex flex-row col-span-2 md:col-span-1 gap-x-5">
       {/* image */}
-      <ImageMangaBox manga={manga} width="w-[100px]" height="h-[144px]" />
+      <ImageMangaBox manga={manga} width="w-[100px]" height="h-[144px]" showPeek />
       <div className="flex flex-col w-full gap-y-2">
         {/* name */}
-        <Name manga={manga} fontSize="text-base" />
+        <Name manga={manga} fontSize="text-base leading-[1.375rem]" />
         {/* star */}
         <RatingStar manga={manga} starSize="h-3.5" fontSize="text-xs" />
         {/* 2 chapters */}

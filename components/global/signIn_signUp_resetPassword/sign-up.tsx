@@ -55,7 +55,8 @@ export default function SignUp() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="z-50 px-4 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center"
+          className="z-50 px-4 w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center"
+          style={{ height: "100dvh" }}
         >
           {!signedUp ? (
             <form
@@ -129,7 +130,7 @@ export default function SignUp() {
                 disabled={!usernameValid || !passwordValid || !emailValid || isLoading}
               >
                 {isLoading ? (
-                  <PropagateLoader className="absolute left-1/2 -top-1 -translate-x-1/2" color="#ffffff" size={10} />
+                  <PropagateLoader className="absolute -translate-x-1/2 left-1/2 -top-1" color="#ffffff" size={10} />
                 ) : <p>Đăng ký</p>}
               </motion.button>
               <div>
@@ -162,7 +163,7 @@ export default function SignUp() {
             >
               <CloseButton handleOnClick={() => dispatch(toggleSignUp(false))} />
               <p className="text-2xl font-bold text-center">Đã đăng ký thành công!</p>
-              <p className="text-center">Vùi lòng <span className="font-bold cursor-pointer text-main-green hover:text-third-green transition-colors" onClick={() => {
+              <p className="text-center">Vùi lòng <span className="font-bold transition-colors cursor-pointer text-main-green hover:text-third-green" onClick={() => {
                 dispatch(toggleSignUp(false))
                 setTimeout(() => {
                   dispatch(toggleSignIn(true))

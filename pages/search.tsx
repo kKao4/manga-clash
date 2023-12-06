@@ -143,7 +143,7 @@ const Page = ({ mangasRes, userRes }: InferGetServerSidePropsType<typeof getServ
               )}
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center pb-8">
             {mangasRes.length ? (
               <Paginate mangasLength={mangasRes.length} page="search" />
             ) : ""}

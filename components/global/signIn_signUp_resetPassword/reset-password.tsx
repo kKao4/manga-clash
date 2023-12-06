@@ -42,7 +42,8 @@ export default function ResetPassword() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-4 w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
+          className="px-4 w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
+          style={{ height: "100dvh" }}
         >
           <form
             ref={formRef}
@@ -89,7 +90,7 @@ export default function ResetPassword() {
                   disabled={!emailValid}
                 >
                   {isLoading ? (
-                    <PropagateLoader className="absolute left-1/2 -top-1 -translate-x-1/2" color="#ffffff" size={10} />
+                    <PropagateLoader className="absolute -translate-x-1/2 left-1/2 -top-1" color="#ffffff" size={10} />
                   ) : "Gửi email cho tôi"}
                 </motion.button>
               </>

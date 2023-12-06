@@ -64,7 +64,11 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   bottom: 4px !important;
 }
 
-/* TODO: add small mangas when hover manga image and add nav button in reading page and add information tab for interview and add animation when update user's account info */
+/* .summary * {
+  line-height: 0.75rem !important;
+} */
+
+/* TODO: add nav button in reading page and add information tab for interview */
 .slideInBottom {
   animation: slideInBottom 0.3s ease-out both;
 }

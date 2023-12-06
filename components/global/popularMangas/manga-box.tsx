@@ -1,6 +1,5 @@
 import { MangaType } from "@/models/manga"
 import RowChapter from "@/components/global/mangaBox/RowChapter"
-import Link from "next/link"
 import ImageMangaBox from "@/components/global/mangaBox/ImageMangaBox"
 import Name from "@/components/global/mangaBox/Name"
 

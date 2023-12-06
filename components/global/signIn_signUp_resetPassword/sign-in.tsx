@@ -44,7 +44,8 @@ export default function SignIn() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-4 ease-out w-full h-screen fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
+          className="px-4 ease-out w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50"
+          style={{ height: "100dvh" }}
         >
           <form
             ref={formRef}
@@ -109,7 +110,7 @@ export default function SignIn() {
                 disabled={!passwordValid || !emailValid || isLoading}
               >
                 {isLoading ? (
-                  <PulseLoader className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3" color="#ffffff" size={10} margin={4} />
+                  <PulseLoader className="absolute -translate-x-1/2 top-1/2 left-1/2 -translate-y-1/3" color="#ffffff" size={10} margin={4} />
                 ) : <p>Đăng nhập</p>}
               </motion.button>
             </div>
