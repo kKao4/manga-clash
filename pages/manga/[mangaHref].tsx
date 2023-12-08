@@ -3,7 +3,7 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Navigation from "@/components/global/navigation/navigation";
 import MenuFootBox from "@/components/global/box/MenuFootBox";
 import BodyBox from "@/components/global/box/BodyBox";
-import { useMemo, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import UserMenu from "@/components/global/userMenu/UserMenu";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
@@ -112,19 +112,19 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chaptersOrder])
   // scroll to comments
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (commentsRef.current) {
       commentsRef.current.scrollIntoView({ behavior: "smooth" })
     }
-  }
+  }, [])
   // Title For Page
   const title = useMemo(() => {
     return `Đọc ${mangaState?.name} - Manga Clash`
   }, [mangaState?.name])
 
-  const handleChangeChaptersOrder = () => {
+  const handleChangeChaptersOrder = useCallback(() => {
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")
-  }
+  }, [])
   if (mangaState) {
     return (
       <>

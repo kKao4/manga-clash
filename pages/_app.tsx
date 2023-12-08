@@ -21,10 +21,14 @@ import { useWindowSize } from 'usehooks-ts'
 import { Variants } from "framer-motion";
 import { ToastContainer, toast, Zoom, cssTransition } from 'react-toastify';
 import { useDarkMode } from "usehooks-ts";
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
+import { DndProvider } from 'react-dnd'
+import { isMobile } from "react-device-detect"
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
-const DynamicFooter = dynamic(() => import("@/components/global/footer/footer"))
+const DynamicFooter = dynamic(() => import("@/components/global/footer/Footer"))
 const DynamicButtonScrollToTop = dynamic(() => import("@/components/global/buttonScrollToTop/buttonScrollToTop"))
 
 const openSans = Open_Sans({
@@ -86,42 +90,44 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [router])
   return (
     <Provider store={store}>
-      <main className={`${openSans.className} w-full`}>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </Head>
-        <DarkMode>
-          <div className="min-h-[84vh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
-            <DynamicSignUp />
-            <DynamicSignIn />
-            <DynamicResetPassword />
-            <Menu />
-            <DynamicButtonScrollToTop />
-            <ToastContainer
-              position={width >= 768 ? "bottom-right" : "top-center"}
-              autoClose={4000}
-              limit={4}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss={true}
-              draggable={true}
-              draggablePercent={40}
-              pauseOnHover={true}
-              theme={isDarkMode ? "dark" : "light"}
-              transition={Slide}
-            />
-            {/* <div className="fixed left-18 top-32 z-20">
+      <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+        <main className={`${openSans.className} w-full`}>
+          <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+          </Head>
+          <DarkMode>
+            <div className="min-h-[84vh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
+              <DynamicSignUp />
+              <DynamicSignIn />
+              <DynamicResetPassword />
+              <Menu />
+              <DynamicButtonScrollToTop />
+              <ToastContainer
+                position={width >= 768 ? "bottom-right" : "top-center"}
+                autoClose={4000}
+                limit={4}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={true}
+                draggable={true}
+                draggablePercent={40}
+                pauseOnHover={true}
+                theme={isDarkMode ? "dark" : "light"}
+                transition={Slide}
+              />
+              {/* <div className="fixed left-18 top-32 z-20">
               <button className="absolute z-30 w-12 h-12 bg-main-green rounded-full" onClick={() => setIsOpenDetail(prevState => !prevState)} />
               <motion.div className="bg-white m-4" animate={isOpenDetail ? "open" : "close"} variants={detailVariants}></motion.div>
             </div> */}
-            {getLayout(<Component {...pageProps} />)}
-            <Analytics />
-          </div>
-          <DynamicFooter />
-        </DarkMode>
-      </main>
+              {getLayout(<Component {...pageProps} />)}
+              <Analytics />
+            </div>
+            <DynamicFooter />
+          </DarkMode>
+        </main>
+      </DndProvider>
     </Provider >
   )
 }

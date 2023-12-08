@@ -24,6 +24,8 @@ import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
 import { useIntersectionObserver } from 'usehooks-ts'
 import { toast } from "react-toastify"
+import { dndItemTypes } from "@/type"
+import { useDrag, useDrop } from "react-dnd"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -207,12 +209,44 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const title = useMemo(() => {
     return `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
   }, [router.query.chapterNum, chaptersRes.data?.name])
+
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: dndItemTypes.QUICK_MENU,
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging()
+    })
+  }))
+  const changeKnightPosition = (x?: number, y?: number) => {
+    // console.log("🚀 ~ file: [chapterNum].tsx:220 ~ changeKnightPosition ~ y:", y)
+    // console.log("🚀 ~ file: [chapterNum].tsx:220 ~ changeKnightPosition ~ x:", x)
+    if (x && y) {
+      setKnightPosition({ x, y })
+    }
+  }
+  const [_, drop] = useDrop(() => ({
+    accept: dndItemTypes.QUICK_MENU,
+    drop(_, monitor) {
+      const delta = monitor.getClientOffset()
+      changeKnightPosition(delta?.x, delta?.y)
+    },
+    // collect: (monitor) => ({
+    //   isOver: !!monitor.isOver(),
+    //   mouseDnd: monitor.getDifferenceFromInitialOffset()
+    // })
+  }), [])
+  const [knightPosition, setKnightPosition] = useState<{ x: number, y: number }>({ x: 96, y: 400 })
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
       <UserMenu user={userState} />
+      {/* <button onClick={() => changeKnightPosition(mouseDnd.x, mouseDnd.y)}>Click me</button> */}
+      <div
+        ref={drag}
+        className={`w-12 h-12 bg-green-400 fixed z-50 rounded-full cursor-pointer ${isDragging ? "hidden" : "block"}`}
+        style={{ left: knightPosition.x + "px", top: knightPosition.y + "px" }}
+      />
       <NavBar
         ref={scrollProgressBarRef}
         isScrollInToView={imagesEntry?.isIntersecting ?? false}
@@ -222,7 +256,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
         prevChapter={prevChapter}
         nextChapter={nextChapter}
       />
-      <div className="bg-neutral-800">
+      <div ref={drop} className="bg-neutral-800">
         <BodyBox>
           <div className="basis-full">
             {/* title  */}

@@ -198,6 +198,10 @@ export const tagsArray = [
   },
 ];
 
+export const dndItemTypes = {
+  QUICK_MENU: "quick_menu"
+}
+
 export const usernameReg = /^[a-zA-Z0-9 ]{4,50}$/g;
 export const passwordReg = /[\S]{8,50}/g;
 export const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
