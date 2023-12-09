@@ -4,8 +4,9 @@ import { useReadLocalStorage } from "usehooks-ts"
 import Link from "next/link"
 import { usePopper } from "react-popper"
 import { ChapterResponse, ChaptersResponse } from "@/type"
+import { isMobile } from "react-device-detect"
 
-const QuickMenu = forwardRef(function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: { quickMenuCord: any, isDragging: boolean, drag: any, chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, prevChapter: string, nextChapter: string }) {
+export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: { quickMenuCord: any, isDragging: boolean, drag: any, chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, prevChapter: string, nextChapter: string }) {
   const quickMenuMode = useReadLocalStorage("quickMenuMode")
   const [isOpenChaptersQuickMenu, setIsOpenChaptersQuickMenu] = useState<boolean>(false)
   const [isOpenDetailQuickMenu, setIsOpenDetailQuickMenu] = useState<boolean>(false)
@@ -17,7 +18,8 @@ const QuickMenu = forwardRef(function QuickMenu({ quickMenuCord, isDragging, dra
     strategy: "fixed",
     modifiers: [
       { name: 'arrow', options: { element: arrowElement } },
-      { name: "offset", options: { offset: [-2.5, 28] } }
+      { name: "offset", options: { offset: [-2.5, isMobile ? 12 : 24] } },
+      { name: "flip", options: { fallbackPlacements: ["left"] } },
     ],
   });
   useEffect(() => {
@@ -115,11 +117,13 @@ const QuickMenu = forwardRef(function QuickMenu({ quickMenuCord, isDragging, dra
                                   </Link>
                                 )
                               })}
-                              <div
-                                ref={setArrowElement as any}
-                                style={styles.arrow}
-                                className="w-0 h-0 -left-4 border-8 border-transparent border-r-neutral-700"
-                              />
+                              {!isMobile && (
+                                <div
+                                  ref={setArrowElement as any}
+                                  style={styles.arrow}
+                                  className={`w-0 h-0 -left-4 border-8 border-transparent border-r-neutral-700`}
+                                />
+                              )}
                             </motion.div>
                           </div>
                         )}
@@ -156,6 +160,4 @@ const QuickMenu = forwardRef(function QuickMenu({ quickMenuCord, isDragging, dra
       </div>
     </>
   )
-})
-
-export default QuickMenu;
+}
