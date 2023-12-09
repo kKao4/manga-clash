@@ -19,13 +19,13 @@ import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
-import { useEventListener, useDarkMode } from 'usehooks-ts'
+import { useEventListener, useDarkMode, useIntersectionObserver, useReadLocalStorage, useLocalStorage } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
-import { useIntersectionObserver } from 'usehooks-ts'
 import { toast } from "react-toastify"
 import { dndItemTypes } from "@/type"
 import { useDrag, useDrop } from "react-dnd"
+import QuickMenu from "@/components/chapterNum/QuickMenu"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -72,7 +72,6 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
   const [showNavChapter, setShowNavChapter] = useState<boolean>(false)
-  const [readingStyle, setReadingStyle] = useState<"full" | "single">()
   const [index, setIndex] = useState<number>(0)
   const imagesBoxRef = useRef<HTMLDivElement>(null)
   const imagesRef = useRef<HTMLDivElement>(null)
@@ -88,11 +87,11 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     rootMargin: "-180px",
     freezeOnceVisible: false
   })
-  // if (imagesEntry) {
-  //   console.log("🚀 ~ file: [chapterNum].tsx:87 ~ entry:", imagesEntry.isIntersecting)
-  // }
-  // console.log("🚀 ~ file: [chapterNum].tsx:80 ~ directionScroll:", directionScroll)
-  // console.log("🚀 ~ file: [chapterNum].tsx:78 ~ percentScroll:", percentScroll)
+  const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: 120, y: 240 })
+  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
+  const readingStyle = useReadLocalStorage("readingStyle")
+  const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])
+
   // Set User
   useEffect(() => {
     if (userRes.data) {
@@ -109,15 +108,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   useEffect(() => {
     setIndex(0)
   }, [router.query])
-  // set localStorage for reading style 
-  useEffect(() => {
-    // console.log("🚀 ~ file: [chapterNum].tsx:143 ~ useEffect ~ localStorage:", localStorage.getItem("readingStyle"))
-    if (localStorage.getItem("readingStyle")) {
-      setReadingStyle(localStorage.getItem("readingStyle") as any)
-    } else {
-      setReadingStyle("full")
-    }
-  }, [])
+
   // scroll to top when change chapter
   useEffect(() => {
     if (divRef.current && router.query && readingStyle === "single") {
@@ -126,17 +117,10 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   }, [router.query, readingStyle])
   // Set/Update localStorage For This Manga
   useEffect(() => {
-    const array = localStorage.getItem(`${chapterRes.data?.href}`)
-    if (array && chapterRes.data) {
-      let newArray: string[] = JSON.parse(array)
-      if (!newArray.includes(chapterRes.data.chapter.num.toString())) {
-        newArray.push(chapterRes.data.chapter.num.toString())
-        localStorage.setItem(`${chapterRes.data?.href}`, JSON.stringify(newArray))
-      }
-    } else {
-      localStorage.setItem(`${chapterRes.data?.href}`, JSON.stringify([chapterRes.data?.chapter.num.toString()]))
+    if (!readChapters.includes(chapterRes.data!.chapter.num)) {
+      setReadChapters(prevState => [...prevState, chapterRes.data!.chapter.num])
     }
-  }, [chapterRes])
+  }, [chapterRes.data, readChapters, setReadChapters])
   // set prev/next chapter
   useEffect(() => {
     const index = chaptersRes.data!.chapters.findIndex(obj => obj.num === chapterRes.data!.chapter.num)
@@ -191,6 +175,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     }
     // console.log("🚀 ~ file: [chapterNum].tsx:189 ~ useEffect ~ 100 - percentScroll:", 100 - percentScroll)
   }, [percentScroll])
+  // single reading style set page function
   const nextPage = useCallback(() => {
     if (index === chapterRes.data!.chapter.imagesPath.length - 1) {
       router.push(`/manga/${chapterRes.data?.href}/chapter-${nextChapter}`)
@@ -207,45 +192,46 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   }, [chapterRes, index, prevChapter, router])
   // title for page
   const title = useMemo(() => {
-    return `Chapter ${(router.query.chapterNum as string).split("-")[1]} - ${chaptersRes.data?.name}`
-  }, [router.query.chapterNum, chaptersRes.data?.name])
-
+    return `Chapter ${chapterRes.data?.chapter.num} - ${chaptersRes.data?.name}`
+  }, [chapterRes.data?.chapter.num, chaptersRes.data?.name])
+  // set quick menu cord function
+  const changeQuickMenuCord = useCallback((x?: number, y?: number) => {
+    if (x && y) {
+      setQuickMenuCord({ x, y })
+    }
+  }, [])
+  // dnd drag hook
   const [{ isDragging }, drag] = useDrag(() => ({
     type: dndItemTypes.QUICK_MENU,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
   }))
-  const changeKnightPosition = (x?: number, y?: number) => {
-    // console.log("🚀 ~ file: [chapterNum].tsx:220 ~ changeKnightPosition ~ y:", y)
-    // console.log("🚀 ~ file: [chapterNum].tsx:220 ~ changeKnightPosition ~ x:", x)
-    if (x && y) {
-      setKnightPosition({ x, y })
-    }
-  }
+  // dnd drop hook
   const [_, drop] = useDrop(() => ({
     accept: dndItemTypes.QUICK_MENU,
     drop(_, monitor) {
       const delta = monitor.getClientOffset()
-      changeKnightPosition(delta?.x, delta?.y)
+      changeQuickMenuCord(delta?.x, delta?.y)
     },
-    // collect: (monitor) => ({
-    //   isOver: !!monitor.isOver(),
-    //   mouseDnd: monitor.getDifferenceFromInitialOffset()
-    // })
+
   }), [])
-  const [knightPosition, setKnightPosition] = useState<{ x: number, y: number }>({ x: 96, y: 400 })
+
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
       <UserMenu user={userState} />
-      {/* <button onClick={() => changeKnightPosition(mouseDnd.x, mouseDnd.y)}>Click me</button> */}
-      <div
-        ref={drag}
-        className={`w-12 h-12 bg-green-400 fixed z-50 rounded-full cursor-pointer ${isDragging ? "hidden" : "block"}`}
-        style={{ left: knightPosition.x + "px", top: knightPosition.y + "px" }}
+      {/* QUICK MENU */}
+      <QuickMenu
+        drag={drag}
+        quickMenuCord={quickMenuCord}
+        isDragging={isDragging}
+        chapterRes={chapterRes}
+        chaptersRes={chaptersRes}
+        prevChapter={prevChapter}
+        nextChapter={nextChapter}
       />
       <NavBar
         ref={scrollProgressBarRef}
@@ -266,8 +252,8 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
               <Navigation manga={chapterRes.data} />
             </div>
             <div className="flex flex-row items-center">
-              {/* bookmark/theme button */}
-              <div className="mb-2 md:mb-3 mr-auto space-x-2 shrink-0">
+              {/* bookmark/theme button and quick menu toggle */}
+              <div className="mb-2 md:mb-3 mr-auto gap-x-2 shrink-0 flex flex-row">
                 <button
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
                   title="Bookmark this manga"
@@ -292,24 +278,27 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                 >
                   <svg className="block h-4 mx-auto transition-colors fill-second-green group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" /></svg>
                 </button>
+                <button
+                  className={`flex flex-row items-center gap-x-2 px-2.5 py-1 ${!quickMenuMode && "pl-7"} transition-all duration-300 relative rounded-full`}
+                  onClick={() => setQuickMenuMode(prevState => !prevState)}
+                >
+                  <div className={`${quickMenuMode ? "w-full h-full bg-main-green" : "w-[21px] h-[21px]"} absolute left-0 border-2 border-main-green rounded-full transition-all duration-300`} />
+                  <span className="text-neutral-100 text-[15px] z-10 font-medium">Quick Menu</span>
+                </button>
               </div>
               {adminMode && (
                 <DynamicAdminDeleteChapter chapter={chapterRes} prevChapter={prevChapter} />
               )}
             </div>
             <div ref={divRef}>
-              {readingStyle && (
-                <Menu
-                  chapters={chaptersRes.data}
-                  prevChapter={prevChapter}
-                  nextChapter={nextChapter}
-                  readingStyle={readingStyle}
-                  setReadingStyle={setReadingStyle}
-                  index={index}
-                  setIndex={setIndex}
-                  chapter={chapterRes.data}
-                />
-              )}
+              <Menu
+                chapters={chaptersRes.data}
+                prevChapter={prevChapter}
+                nextChapter={nextChapter}
+                index={index}
+                setIndex={setIndex}
+                chapter={chapterRes.data}
+              />
             </div>
             {/* images chapter */}
             <div
@@ -343,18 +332,14 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                 </div>
               )}
             </div>
-            {readingStyle && (
-              <Menu
-                chapters={chaptersRes.data}
-                prevChapter={prevChapter}
-                nextChapter={nextChapter}
-                readingStyle={readingStyle}
-                setReadingStyle={setReadingStyle}
-                index={index}
-                setIndex={setIndex}
-                chapter={chapterRes.data}
-              />
-            )}
+            <Menu
+              chapters={chaptersRes.data}
+              prevChapter={prevChapter}
+              nextChapter={nextChapter}
+              index={index}
+              setIndex={setIndex}
+              chapter={chapterRes.data}
+            />
             {/* comments */}
             <div className="mt-6 sm:mt-12">
               <Title content={`BÌNH LUẬN CHO "Chapter ${chapterRes.data?.chapter.num}"`} order={false} forceDarkMode={true} />
@@ -367,4 +352,4 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   )
 }
 
-export default Page
+export default Page;

@@ -28,6 +28,7 @@ import Summary from "@/components/mangaHref/Summary"
 import Chapters from "@/components/mangaHref/Chapters"
 import { useDarkMode } from "usehooks-ts";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+// import { usePopper } from "react-popper";
 
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
   await dbConnect()
@@ -125,6 +126,18 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   const handleChangeChaptersOrder = useCallback(() => {
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")
   }, [])
+
+  // const [referenceElement, setReferenceElement] = useState(null);
+  // const [popperElement, setPopperElement] = useState(null);
+  // const [arrowElement, setArrowElement] = useState(null);
+  // const { styles, attributes } = usePopper(referenceElement, popperElement, {
+  //   placement: "right",
+  //   strategy: "absolute",
+  //   modifiers: [
+  //     { name: 'arrow', options: { element: arrowElement, padding: 4 } },
+  //     { name: "offset", options: { offset: [0, 10] } }
+  //   ],
+  // });
   if (mangaState) {
     return (
       <>
@@ -140,6 +153,14 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
         </Head>
         {/* user menu */}
         <UserMenu user={userState} />
+        {/* <button className="bg-[rgb(184,134,253)] w-40 h-40 font-bold text-black" type="button" ref={setReferenceElement as any}>
+          Reference
+        </button>
+
+        <div ref={setPopperElement as any} style={styles.popper} {...attributes.popper} className="w-[100px] h-[200px] bg-white text-black font-bold flex justify-center items-center z-50 rounded">
+          Popper
+          <div ref={setArrowElement as any} style={styles.arrow} className="w-0 h-0 -left-4 border-8 border-transparent border-r-white" />
+        </div> */}
         <main>
           <MenuFootBox>
             <Navigation manga={mangaState} />

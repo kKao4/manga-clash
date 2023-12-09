@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import GreenStar from "./GreenStar";
 
 export default function Title({

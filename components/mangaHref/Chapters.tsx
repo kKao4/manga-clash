@@ -6,6 +6,7 @@ import { MangaType } from "@/models/manga"
 import Chapter from "./Chapter"
 import ShowMore from "./ShowMoreButton"
 import dynamic from "next/dynamic"
+import { useReadLocalStorage } from "usehooks-ts"
 const DynamicAdminAddChapterButton = dynamic(() => import("./admin/admin-add-chapter-button"), {
   ssr: false,
 })
@@ -25,19 +26,10 @@ export default function Chapters({
   const showMoreChaptersRef = useRef<HTMLDivElement>(null)
   const [isOpenAddChapter, setIsOpenAddChapter] = useState<boolean>(false)
   const [showMoreChapter, setShowMoreChapter] = useState<boolean>(false)
-  const [readChapters, setReadChapters] = useState<string[]>()
   const [checkedChapters, setCheckedChapters] = useState<string[]>([])
   const [isDeletingChapters, setIsDeletingChapters] = useState<boolean>(false)
-  // Get localStorage For This Manga
-  useEffect(() => {
-    const storedArray = localStorage.getItem(`${mangaState.href}`)
-    if (storedArray) {
-      const array: string[] | null = JSON.parse(storedArray)
-      if (array) {
-        setReadChapters(array)
-      }
-    }
-  }, [mangaState])
+  const readChapters = useReadLocalStorage(mangaState.href)
+
   return (
     <>
       <Title content="CHAPTERS" order={false}>
@@ -85,7 +77,7 @@ export default function Chapters({
               <Chapter
                 key={chapter.num}
                 chapter={chapter}
-                readChapters={readChapters}
+                readChapters={readChapters as any}
                 mangaHref={mangaState.href}
                 checked={checkedChapters.includes(chapter.num)}
                 handleOnChange={() => setCheckedChapters(prevCheckedChapters => {
