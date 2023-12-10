@@ -26,6 +26,7 @@ import { toast } from "react-toastify"
 import { dndItemTypes } from "@/type"
 import { useDrag, useDrop } from "react-dnd"
 import QuickMenu from "@/components/chapterNum/QuickMenu"
+import { isMobile } from "react-device-detect"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -87,7 +88,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     rootMargin: "-180px",
     freezeOnceVisible: false
   })
-  const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: 120, y: 240 })
+  const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
   const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
   const readingStyle = useReadLocalStorage("readingStyle")
   const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])

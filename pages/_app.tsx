@@ -25,6 +25,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { DndProvider } from 'react-dnd'
 import { isMobile } from "react-device-detect"
+import Guide from "@/components/Guide/Guide";
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
@@ -52,7 +53,6 @@ NProgress.configure({
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false)
   const { isDarkMode } = useDarkMode()
   const { width, height } = useWindowSize()
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -117,10 +117,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 theme={isDarkMode ? "dark" : "light"}
                 transition={Slide}
               />
-              {/* <div className="fixed left-18 top-32 z-20">
-              <button className="absolute z-30 w-12 h-12 bg-main-green rounded-full" onClick={() => setIsOpenDetail(prevState => !prevState)} />
-              <motion.div className="bg-white m-4" animate={isOpenDetail ? "open" : "close"} variants={detailVariants}></motion.div>
-            </div> */}
+              {/* <Guide /> */}
               {getLayout(<Component {...pageProps} />)}
               <Analytics />
             </div>

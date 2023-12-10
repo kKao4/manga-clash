@@ -104,10 +104,10 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
   // Sort Chapters
   useEffect(() => {
     if (chaptersOrder === "latest" && chapters) {
-      const sortedChapters = [...chapters].sort((a, b) => Number(b.num) - Number(a.num))
+      const sortedChapters = chapters.toSorted((a, b) => Number(b.num) - Number(a.num))
       setChapters(sortedChapters as any)
     } else if (chaptersOrder === "earliest" && chapters) {
-      const sortedChapters = [...chapters].sort((a, b) => Number(a.num) - Number(b.num))
+      const sortedChapters = chapters.toSorted((a, b) => Number(a.num) - Number(b.num))
       setChapters(sortedChapters as any)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,17 +127,6 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")
   }, [])
 
-  // const [referenceElement, setReferenceElement] = useState(null);
-  // const [popperElement, setPopperElement] = useState(null);
-  // const [arrowElement, setArrowElement] = useState(null);
-  // const { styles, attributes } = usePopper(referenceElement, popperElement, {
-  //   placement: "right",
-  //   strategy: "absolute",
-  //   modifiers: [
-  //     { name: 'arrow', options: { element: arrowElement, padding: 4 } },
-  //     { name: "offset", options: { offset: [0, 10] } }
-  //   ],
-  // });
   if (mangaState) {
     return (
       <>
@@ -153,14 +142,6 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
         </Head>
         {/* user menu */}
         <UserMenu user={userState} />
-        {/* <button className="bg-[rgb(184,134,253)] w-40 h-40 font-bold text-black" type="button" ref={setReferenceElement as any}>
-          Reference
-        </button>
-
-        <div ref={setPopperElement as any} style={styles.popper} {...attributes.popper} className="w-[100px] h-[200px] bg-white text-black font-bold flex justify-center items-center z-50 rounded">
-          Popper
-          <div ref={setArrowElement as any} style={styles.arrow} className="w-0 h-0 -left-4 border-8 border-transparent border-r-white" />
-        </div> */}
         <main>
           <MenuFootBox>
             <Navigation manga={mangaState} />

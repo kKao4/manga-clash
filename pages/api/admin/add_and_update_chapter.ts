@@ -71,7 +71,6 @@ export default async function handler(
                     imagesPath: arrayImages,
                   });
                   // console.log("🚀 ~ file: add_and_update_chapter.ts:62 ~ chapter:", chapter.chapters)
-                  await chapter.save();
                   // sort chapter desc
                   chapter.chapters.sort(
                     (
@@ -81,6 +80,7 @@ export default async function handler(
                       return Number(b.num) - Number(a.num);
                     }
                   );
+                  await chapter.save();
                   // set 2 latest chapters for manga collection
                   manga.chapters = chapter.chapters.slice(0, 2);
                   await manga.save();

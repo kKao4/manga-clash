@@ -1,5 +1,5 @@
 import { Variants, motion, AnimatePresence } from "framer-motion"
-import { forwardRef, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useReadLocalStorage } from "usehooks-ts"
 import Link from "next/link"
 import { usePopper } from "react-popper"
@@ -33,11 +33,11 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
     show: { opacity: 1, scale: 1, transition: { scale: { type: "spring", bounce: 0.5, duration: 0.6 } } }
   }
   const quickMenuVariants: Variants = {
-    hidden: { backgroundColor: "rgba(0,0,0,0)", transition: { delay: 0.4 } },
+    hidden: { backgroundColor: "rgba(0,0,0,0)" },
     show: { backgroundColor: "rgba(0,0,0,0.3)" },
   }
   const quickMenuButtonVariants: Variants = {
-    hidden: { y: -10, opacity: 0, transition: { duration: 0.15 } },
+    hidden: { y: -12, opacity: 0, transition: { duration: 0.25 } },
     show: { y: 0, opacity: 1 }
   }
   return (
@@ -57,13 +57,14 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                 variants={quickMenuVariants}
                 className="w-18 py-2 pb-2.5 rounded-lg flex flex-col gap-y-2"
               >
-                <button
+                <motion.button
                   className={`w-13 h-13 mx-auto mb-1 bg-main-green hover:bg-[#337a6c] transition-colors flex justify-center items-center shadow-lg rounded-full cursor-pointer ${isDragging ? "opacity-70" : ""}`}
                   ref={drag}
                   onClick={() => setIsOpenDetailQuickMenu(prevState => !prevState)}
+                  whileTap={{ scale: 0.92 }}
                 >
                   <svg className="fill-neutral-100 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" /></svg>
-                </button>
+                </motion.button>
                 {/* menu button */}
                 <AnimatePresence>
                   {isOpenDetailQuickMenu && (
@@ -72,7 +73,9 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                       initial="hidden"
                       animate="show"
                       exit="hidden"
-                      transition={{ staggerChildren: 0.08, delayChildren: 0.2 }}
+                      variants={{
+                        show: { transition: { staggerChildren: 0.05 } }
+                      }}
                     >
                       <motion.button
                         variants={quickMenuButtonVariants}
@@ -91,7 +94,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                         className="w-12 h-12 bg-neutral-700 hover:bg-neutral-600 transition-colors rounded-full mx-auto flex justify-center items-center font-medium text-lg relative"
                         onClick={() => setIsOpenChaptersQuickMenu(prevState => !prevState)}
                       >
-                        <span className="mb-0.5">121</span>
+                        <span className="mb-0.5">{chapterRes.data?.chapter.num}</span>
                       </motion.button>
                       <AnimatePresence>
                         {isOpenChaptersQuickMenu && (
@@ -101,9 +104,9 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                             {...attributes.popper}
                           >
                             <motion.div
-                              initial={{ opacity: 0, x: -16 }}
+                              initial={{ opacity: 0, x: -14 }}
                               animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -16 }}
+                              exit={{ opacity: 0, x: -14 }}
                               className="bg-neutral-700 rounded-md overflow-y-auto max-h-[400px] w-56 px-1.5 py-2.5 chaptersBox flex flex-col"
                             >
                               {chaptersRes.data?.chapters.map((chapter: any) => {
