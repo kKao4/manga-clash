@@ -78,7 +78,7 @@ export default function ImageAndDetailManga({
           if (mangaRes.data) {
             dispatch(addOrUpdateManga(mangaRes.data))
             setIsUpdating(false)
-            dispatch(toggleAdminMode())
+            dispatch(toggleAdminMode(false))
             toast.success(`Cập nhật truyện thành công`)
           }
           router.replace(`/manga/${res.data.href}`, "", { scroll: false, shallow: true })

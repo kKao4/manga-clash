@@ -40,57 +40,67 @@ export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasRe
   await dbConnect()
   let { pageChart, pageBookmark, pageHistory, nameBookmark, nameChart, nameHistory, time } = query
   const { _id } = req.headers
-  pageChart = pageChart ?? "1"
-  pageBookmark = pageBookmark ?? "1"
-  pageHistory = pageHistory ?? "1"
-  nameBookmark = nameBookmark ?? ""
-  nameHistory = nameHistory ?? ""
-  nameChart = nameChart ?? ""
-  time = time ?? "oneWeek"
-  const user = await User.findById(_id)
-  const [popularMangas, { bookmarkMangas, bookmarkMangasLength }, { historyMangas, historyMangasLength }] = await Promise.all([
-    getAllPopularMangas(),
-    getAllMangasBookmarks({ pageBookmark, nameBookmark, bookmarks: user.bookmarks } as GetAllMangasBookmarks),
-    getAllMangasHistory({ pageHistory, nameHistory, history: user.history } as GetAllMangasHistory)
-  ])
-  const popularMangasRes = JSON.parse(JSON.stringify({
-    message: "Fetched Popular Mangas",
-    data: popularMangas
-  }))
-  const bookmarkRes = JSON.parse(JSON.stringify({
-    message: "Fetched Bookmark Mangas",
-    data: bookmarkMangas,
-    length: bookmarkMangasLength
-  }))
-  const historyRes = JSON.parse(JSON.stringify({
-    message: "Fetched History Mangas",
-    data: historyMangas,
-    length: historyMangasLength
-  }))
-  let chartRes = JSON.parse(JSON.stringify({
-    message: "User Unverified",
-    data: [],
-    length: 0
-  }))
-  const userRes = JSON.parse(JSON.stringify({
-    message: "Fetched User",
-    data: user
-  }))
-  const { chartMangas, chartMangasLength, trendingManga } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
-  chartRes = JSON.parse(JSON.stringify({
-    message: "Fetched Chart Mangas",
-    data: chartMangas,
-    length: chartMangasLength,
-    trendingManga
-  }))
-  console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
-  console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
-  console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
-  console.log("🚀 ~ file: user-settings.tsx:76 ~ chartRes.message:", chartRes.message)
-  console.log("🚀 ~ file: user-settings.tsx:81 ~ userRes.message:", userRes.message)
-  return {
-    props: {
-      popularMangasRes, bookmarkRes, historyRes, chartRes, userRes
+  if (!_id) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  } else {
+
+    pageChart = pageChart ?? "1"
+    pageBookmark = pageBookmark ?? "1"
+    pageHistory = pageHistory ?? "1"
+    nameBookmark = nameBookmark ?? ""
+    nameHistory = nameHistory ?? ""
+    nameChart = nameChart ?? ""
+    time = time ?? "oneWeek"
+    const user = await User.findById(_id)
+    const [popularMangas, { bookmarkMangas, bookmarkMangasLength }, { historyMangas, historyMangasLength }] = await Promise.all([
+      getAllPopularMangas(),
+      getAllMangasBookmarks({ pageBookmark, nameBookmark, bookmarks: user.bookmarks } as GetAllMangasBookmarks),
+      getAllMangasHistory({ pageHistory, nameHistory, history: user.history } as GetAllMangasHistory)
+    ])
+    const popularMangasRes = JSON.parse(JSON.stringify({
+      message: "Fetched Popular Mangas",
+      data: popularMangas
+    }))
+    const bookmarkRes = JSON.parse(JSON.stringify({
+      message: "Fetched Bookmark Mangas",
+      data: bookmarkMangas,
+      length: bookmarkMangasLength
+    }))
+    const historyRes = JSON.parse(JSON.stringify({
+      message: "Fetched History Mangas",
+      data: historyMangas,
+      length: historyMangasLength
+    }))
+    let chartRes = JSON.parse(JSON.stringify({
+      message: "User Unverified",
+      data: [],
+      length: 0
+    }))
+    const userRes = JSON.parse(JSON.stringify({
+      message: "Fetched User",
+      data: user
+    }))
+    const { chartMangas, chartMangasLength, trendingManga } = await getAllMangasChart({ time, pageChart, nameChart } as GetAllMangasChart)
+    chartRes = JSON.parse(JSON.stringify({
+      message: "Fetched Chart Mangas",
+      data: chartMangas,
+      length: chartMangasLength,
+      trendingManga
+    }))
+    console.log("🚀 ~ file: user-settings.tsx:58 ~ popularMangasRes.message:", popularMangasRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:64 ~ bookmarkRes.message:", bookmarkRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:70 ~ historyRes.message:", historyRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:76 ~ chartRes.message:", chartRes.message)
+    console.log("🚀 ~ file: user-settings.tsx:81 ~ userRes.message:", userRes.message)
+    return {
+      props: {
+        popularMangasRes, bookmarkRes, historyRes, chartRes, userRes
+      }
     }
   }
 }

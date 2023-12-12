@@ -28,7 +28,7 @@ export default function AdminDeleteMangaModal({
             console.log("🚀 ~ file: name.tsx:39 ~ onSubmit={ ~ res:", res)
             if (res.message) {
               router.replace("/")
-              toast.success(`Đã xóa truyện ${mangaState.name}`)
+              toast.success(`Đã xóa truyện "${mangaState.name}"`)
             } else if (res.error) {
               alert(res.error)
             }

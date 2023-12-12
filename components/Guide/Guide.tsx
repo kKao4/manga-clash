@@ -1,18 +1,33 @@
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import Scrollbar from 'smooth-scrollbar';
 import OverscrollPlugin from 'smooth-scrollbar/plugins/overscroll';
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import { selectGuide, toggleGuide } from "@/features/GlobalSlice";
+import { useOnClickOutside } from "usehooks-ts";
+import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
+import CloseButton from "../global/signIn_signUp_resetPassword/close-button";
 
 export default function Guide() {
+  const dispatch = useDispatch()
+  const showGuide = useSelector(selectGuide)
   useEffect(() => {
-    Scrollbar.use(OverscrollPlugin)
-    Scrollbar.initAll({
-      plugins: {
-        overscroll: "bounce"
-      }
-    })
-  }, [])
+    if (showGuide) {
+      Scrollbar.use(OverscrollPlugin)
+      Scrollbar.initAll({
+        plugins: {
+          overscroll: "bounce"
+        },
+        alwaysShowTracks: true,
+        renderByPixels: false,
+      })
+    }
+  }, [showGuide])
+  useKeyPressEscape(() => dispatch(toggleGuide(false)))
+  const myRef = useRef<HTMLDivElement>(null)
+  useOnClickOutside(myRef, () => dispatch(toggleGuide(false)))
   const codeString = useMemo(() => {
     return `"dependencies": {
   "@cloudinary/react": "^1.11.2",
@@ -90,43 +105,83 @@ export default function Guide() {
 }
 `
   }, [])
+  const revealVariants: Variants = useMemo(() => {
+    return {
+      hidden: { opacity: 0, y: 18 },
+      show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+    }
+  }, [])
   return (
-    <div className="mx-auto fixed bg-neutral-800 shadow-md z-50 top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 rounded">
-      <div data-scrollbar className="overflow-auto max-h-[580px] w-[980px] px-8 py-6 flex flex-row">
-        <div className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green">
-          <h2>Giới thiệu về website</h2>
-          <p>Trang web sử dụng các thư viện chính sau:</p>
-          <ol>
-            <li>NextJS 13.4.19 (Page router)</li>
-            <li>Tailwind CSS 3.3.3</li>
-            <li>NodeJS 20.5.8</li>
-            <li>Redux Toolkit 1.9.5</li>
-            <li>Mongodb 6.1.0</li>
-            <li>Typescript 5.2.2</li>
-          </ol>
-          <p>Sau đây là danh sách chi tiết các thư viện được sử dụng.</p>
-          <SyntaxHighlighter
-            language="json"
-            style={atomOneDark}
-            customStyle={{
-              padding: "12px 18px"
-            }}
-          >
-            {codeString}
-          </SyntaxHighlighter>
-          <p>Trang web được dùng cho cả admin và user. Với user, trang web sẽ có đầy đủ các tính năng mà 1 trang web đọc truyện có, với admin sẽ có thêm các tính năng quản lý truyện.</p>
-          <p>TK admin:</p>
-          <ul>
-            <li>Gmail: admin@gmail.com</li>
-            <li>Password: admin123</li>
-          </ul>
-          <p>TK user:</p>
-          <ul>
-            <li>Gmail: user@gmail.com</li>
-            <li>Password: user123</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {showGuide && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="px-4 ease-out w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50 top-0"
+          style={{ height: "100dvh" }}
+        >
+          <div ref={myRef} data-scrollbar className="bg-neutral-100 overflow-auto max-h-[640px] w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
+            <CloseButton handleOnClick={() => dispatch(toggleGuide(false))} />
+            <div className="px-8 py-5 pr-9">
+              <motion.div
+                initial="hidden"
+                whileInView="show"
+                variants={revealVariants}
+                viewport={{ margin: "-120px", once: true }}
+                className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green prose-p:my-4 prose-h2:mb-5">
+                <h2
+
+                >
+                  Giới thiệu về website
+                </h2>
+                <strong className="inline-block">Github: <a href="https://github.com/kKao4/manga-clash" target="_blank">https://github.com/kKao4/manga-clash</a></strong>
+                <div>
+                  <p>Trang web được dùng cho cả admin và user. Với user, trang web sẽ có đầy đủ các tính năng mà 1 trang web đọc truyện có, với admin sẽ có thêm các tính năng quản lý truyện.</p>
+                  <p><b>Tính năng cho user:</b> Đăng ký, Đăng nhập, Lấy lại mật khẩu, Đọc truyện, Chế độ đọc truyện Full/Single, Chế độ điều hướng nhanh khi đọc truyện, Thanh tiến trình đọc truyện, Bình luận truyện, Đánh giá truyện, Theo dõi truyện, Lọc truyện, Tìm kiếm truyện nâng cao, Thay đổi chế độ sáng/tối, Cập nhật thông tin tài khoản như: sửa tên, đổi ảnh đại diện,..., Lưu lịch sử đọc chapter/truyện.</p>
+                  <p><b>Tính năng bổ sung cho admin:</b> Xem thống kê lượt đọc truyện, Tạo truyện mới, Chỉnh sửa thông tin truyện, Thêm chapter cho truyện, Xóa chapter truyện, Xóa truyện.</p>
+                </div>
+                <div className="flex flex-row">
+                  <div className="basis-1/2">
+                    <p className="my-3">TK admin:</p>
+                    <ul className="whitespace-pre">
+                      <li>gmail:  admin@gmail.com</li>
+                      <li>password:  admin123</li>
+                    </ul>
+                  </div>
+                  <div className="basis-1/2">
+                    <p className="my-3">TK user:</p>
+                    <ul className="whitespace-pre">
+                      <li>gmail:  user@gmail.com</li>
+                      <li>password:  user123</li>
+                    </ul>
+                  </div>
+                </div>
+                <b>Trang web sử dụng các thư viện chính sau:</b>
+                <ol>
+                  <li>NextJS 13.4.19 (Page router)</li>
+                  <li>Tailwind CSS 3.3.3</li>
+                  <li>NodeJS 20.5.8</li>
+                  <li>Redux Toolkit 1.9.5</li>
+                  <li>Mongodb 6.1.0</li>
+                  <li>Typescript 5.2.2</li>
+                </ol>
+                <b>Sau đây là danh sách chi tiết toàn bộ các thư viện được sử dụng.</b>
+                <SyntaxHighlighter
+                  language="json"
+                  style={atomOneDark}
+                  customStyle={{
+                    padding: "12px 18px"
+                  }}
+                >
+                  {codeString}
+                </SyntaxHighlighter>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

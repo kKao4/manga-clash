@@ -92,7 +92,7 @@ export default function AdminDetailManga({
             setTags(mangaState.tags)
             setCompleted(mangaState.completed)
             setDescription(mangaState.description)
-            dispatch(toggleAdminMode())
+            dispatch(toggleAdminMode(false))
             setFile(undefined)
           }}
         >

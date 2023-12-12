@@ -74,11 +74,17 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   bottom: 4px !important;
 }
 
+.dark .scrollbar-track {
+  @apply bg-neutral-800 !important;
+}
+.dark .scrollbar-thumb {
+  @apply bg-neutral-600 !important;
+}
+
 /* .summary * {
   line-height: 0.75rem !important;
 } */
 
-/* TODO: add nav button in reading page and add information tab for interview */
 .slideInBottom {
   animation: slideInBottom 0.3s ease-out both;
 }

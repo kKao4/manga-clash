@@ -107,7 +107,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                               initial={{ opacity: 0, x: -14 }}
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0, x: -14 }}
-                              className="bg-neutral-700 rounded-md overflow-y-auto max-h-[400px] w-56 px-1.5 py-2.5 chaptersBox flex flex-col"
+                              className="bg-neutral-700 rounded-md overflow-y-auto max-h-[400px] w-56 p-1.5 chaptersBox flex flex-col"
                             >
                               {chaptersRes.data?.chapters.map((chapter: any) => {
                                 return (

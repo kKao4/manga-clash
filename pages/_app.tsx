@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import NProgress from "nprogress"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/router"
 import DarkMode from "@/components/global/darkMode/DarkMode"
 import { Analytics } from '@vercel/analytics/react';
@@ -25,12 +25,13 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { DndProvider } from 'react-dnd'
 import { isMobile } from "react-device-detect"
-import Guide from "@/components/Guide/Guide";
+import ButtonGuide from "@/components/button-guide/ButtonGuide";
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
 const DynamicFooter = dynamic(() => import("@/components/global/footer/Footer"))
 const DynamicButtonScrollToTop = dynamic(() => import("@/components/global/buttonScrollToTop/buttonScrollToTop"))
+const DynamicGuide = dynamic(() => import("@/components/Guide/Guide"))
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -96,7 +97,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
           </Head>
           <DarkMode>
-            <div className="min-h-[84vh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
+            <div className="min-h-[84.5dvh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
               <DynamicSignUp />
               <DynamicSignIn />
               <DynamicResetPassword />
@@ -117,7 +118,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 theme={isDarkMode ? "dark" : "light"}
                 transition={Slide}
               />
-              {/* <Guide /> */}
+              <ButtonGuide />
+              <DynamicGuide />
               {getLayout(<Component {...pageProps} />)}
               <Analytics />
             </div>
