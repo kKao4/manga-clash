@@ -122,9 +122,16 @@ export default function Guide() {
           className="px-4 ease-out w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50 top-0"
           style={{ height: "100dvh" }}
         >
-          <div ref={myRef} data-scrollbar className="bg-neutral-100 overflow-auto max-h-[640px] w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
+          <motion.div initial={{ display: "grid" }} animate={{ display: "none" }} transition={{ delay: 0.65 }} className="h-[640px] w-[1000px] overflow-hidden grid place-content-center">
+            <motion.div
+              initial={{ clipPath: "circle(2% at 50% 35%)" }}
+              animate={{ clipPath: "circle(100% at 50% 35%)" }}
+              transition={{ duration: 1, delay: 0.12 }}
+              className="bg-neutral-800 z-20 h-[1200px] w-[1200px] text-center rounded-full grid place-content-center" />
+          </motion.div>
+          <motion.div initial={{ display: "none" }} animate={{ display: "block" }} transition={{ delay: 0.65 }} ref={myRef} data-scrollbar className="bg-neutral-100 overflow-y-auto overflow-x-hidden h-[640px] w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
             <CloseButton handleOnClick={() => dispatch(toggleGuide(false))} />
-            <div className="px-8 py-5 pr-9">
+            <div className="px-8 py-6 pr-9">
               <motion.div
                 initial="hidden"
                 whileInView="show"
@@ -179,7 +186,7 @@ export default function Guide() {
                 </SyntaxHighlighter>
               </motion.div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
