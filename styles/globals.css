@@ -23,9 +23,8 @@
     @apply bg-neutral-700;
   }
   .chaptersBox::-webkit-scrollbar-thumb {
-    @apply bg-neutral-500 rounded-full
+    @apply bg-neutral-500 rounded-full;
   }
-  
 }
 * {
   -webkit-tap-highlight-color: transparent;
@@ -75,10 +74,10 @@ div[data-="true"]:hover svg[data-hidden="true"] {
 }
 
 .dark .scrollbar-track {
-  @apply bg-neutral-800 !important;
+  @apply bg-neutral-800 w-1 md:w-2 !important;
 }
 .dark .scrollbar-thumb {
-  @apply bg-neutral-600 !important;
+  @apply bg-neutral-600 w-1 md:w-2 !important;
 }
 
 /* .summary * {
@@ -152,3 +151,14 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   }
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-200;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-500 rounded-full hover:bg-second-green transition-colors;
+}

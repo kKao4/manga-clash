@@ -5,7 +5,7 @@ import Input from "./input"
 import { useState, useEffect, useRef } from "react"
 import { setUser } from "@/features/UserSlice"
 import { PulseLoader } from "react-spinners"
-import { useOnClickOutside } from 'usehooks-ts'
+import { useOnClickOutside, useLockedBody } from 'usehooks-ts'
 import CloseButton from "./close-button"
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
 import { toast } from "react-toastify"
@@ -21,6 +21,10 @@ export default function SignIn() {
   const [wrongInformation, setWrongInformation] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const [locked, setLocked] = useLockedBody(false, "root")
+  useEffect(() => {
+    setLocked(showSignIn)
+  }, [setLocked, showSignIn])
   useOnClickOutside(formRef, () => dispatch(toggleSignIn(false)))
   const emailChange = (value: string) => {
     setEmail(value)

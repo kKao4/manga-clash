@@ -7,7 +7,7 @@ import { NormalResponse } from "@/type";
 import Input from "./input";
 import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
-import { useOnClickOutside } from 'usehooks-ts'
+import { useOnClickOutside, useLockedBody } from 'usehooks-ts'
 import CloseButton from "./close-button";
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
 import { toast } from "react-toastify";
@@ -27,6 +27,10 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
+  const [locked, setLocked] = useLockedBody(false, "root")
+  useEffect(() => {
+    setLocked(showSignUp)
+  }, [setLocked, showSignUp])
   useOnClickOutside(formRef, () => dispatch(toggleSignUp(false)))
   useOnClickOutside(divRef, () => dispatch(toggleSignUp(false)))
   const usernameChange = (value: string) => {

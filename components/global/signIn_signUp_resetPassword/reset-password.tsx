@@ -5,7 +5,7 @@ import Input from "./input"
 import { emailReg } from "@/type"
 import CloseButton from "./close-button"
 import { PropagateLoader } from "react-spinners"
-import { useOnClickOutside } from 'usehooks-ts'
+import { useOnClickOutside, useLockedBody } from 'usehooks-ts'
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -18,6 +18,10 @@ export default function ResetPassword() {
   const [emailNotFound, setEmailNotFound] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const [locked, setLocked] = useLockedBody(false, "root")
+  useEffect(() => {
+    setLocked(showResetPassword)
+  }, [setLocked, showResetPassword])
   useOnClickOutside(formRef, () => dispatch(toggleResetPassword(false)))
   const emailChange = (value: string) => {
     setEmail(value)

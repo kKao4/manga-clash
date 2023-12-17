@@ -6,13 +6,17 @@ import OverscrollPlugin from 'smooth-scrollbar/plugins/overscroll';
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { selectGuide, toggleGuide } from "@/features/GlobalSlice";
-import { useOnClickOutside } from "usehooks-ts";
+import { useOnClickOutside, useLockedBody } from "usehooks-ts";
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
 import CloseButton from "../global/signIn_signUp_resetPassword/close-button";
 
 export default function Guide() {
   const dispatch = useDispatch()
   const showGuide = useSelector(selectGuide)
+  const [locked, setLocked] = useLockedBody(false, "root")
+  useEffect(() => {
+    setLocked(showGuide)
+  }, [setLocked, showGuide])
   useEffect(() => {
     if (showGuide) {
       Scrollbar.use(OverscrollPlugin)
@@ -119,27 +123,26 @@ export default function Guide() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="px-4 ease-out w-full fixed bg-[rgba(0,0,0,0.6)] grid py-14 md:py-0 justify-items-center items-start md:place-items-center z-50 top-0"
+          className="ease-out w-full fixed bg-[rgba(0,0,0,0.6)] grid md:py-14 justify-items-center items-start md:place-items-center z-50 top-0"
           style={{ height: "100dvh" }}
         >
-          <motion.div initial={{ display: "grid" }} animate={{ display: "none" }} transition={{ delay: 0.65 }} className="h-[640px] w-[1000px] overflow-hidden grid place-content-center">
+          <motion.div initial={{ display: "grid" }} animate={{ display: "none" }} transition={{ delay: 0.6 }} className="max-h-[640px] max-w-[1000px] overflow-hidden grid place-content-center">
             <motion.div
               initial={{ clipPath: "circle(2% at 50% 35%)" }}
               animate={{ clipPath: "circle(100% at 50% 35%)" }}
               transition={{ duration: 1, delay: 0.12 }}
               className="bg-neutral-800 z-20 h-[1200px] w-[1200px] text-center rounded-full grid place-content-center" />
           </motion.div>
-          <motion.div initial={{ display: "none" }} animate={{ display: "block" }} transition={{ delay: 0.65 }} ref={myRef} data-scrollbar className="bg-neutral-100 overflow-y-auto overflow-x-hidden h-[640px] w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
+          <motion.div initial={{ display: "none" }} animate={{ display: "block" }} transition={{ delay: 0.6 }} ref={myRef} data-scrollbar className="bg-neutral-100 overflow-y-auto overflow-x-hidden max-h-[640px] max-w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
             <CloseButton handleOnClick={() => dispatch(toggleGuide(false))} />
-            <div className="px-8 py-6 pr-9">
+            <div className="px-4 py-3 md:px-8 md:py-6 md:pr-9">
               <motion.div
                 initial="hidden"
                 whileInView="show"
                 variants={revealVariants}
                 viewport={{ margin: "-120px", once: true }}
-                className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green prose-p:my-4 prose-h2:mb-5">
+                className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green prose-p:my-4 prose-h2:mb-5 overflow-auto">
                 <h2
-
                 >
                   Giới thiệu về website
                 </h2>
@@ -149,7 +152,7 @@ export default function Guide() {
                   <p><b>Tính năng cho user:</b> Đăng ký, Đăng nhập, Lấy lại mật khẩu, Đọc truyện, Chế độ đọc truyện Full/Single, Chế độ điều hướng nhanh khi đọc truyện, Thanh tiến trình đọc truyện, Bình luận truyện, Đánh giá truyện, Theo dõi truyện, Lọc truyện, Tìm kiếm truyện nâng cao, Thay đổi chế độ sáng/tối, Cập nhật thông tin tài khoản như: sửa tên, đổi ảnh đại diện,..., Lưu lịch sử đọc chapter/truyện.</p>
                   <p><b>Tính năng bổ sung cho admin:</b> Xem thống kê lượt đọc truyện, Tạo truyện mới, Chỉnh sửa thông tin truyện, Thêm chapter cho truyện, Xóa chapter truyện, Xóa truyện.</p>
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-col md:flex-row">
                   <div className="basis-1/2">
                     <p className="my-3">TK admin:</p>
                     <ul className="whitespace-pre">
@@ -179,8 +182,11 @@ export default function Guide() {
                   language="json"
                   style={atomOneDark}
                   customStyle={{
-                    padding: "12px 18px"
+                    padding: "12px 18px",
+                    marginBottom: "24px",
+                    overflow: "auto"
                   }}
+                  wrapLongLines
                 >
                   {codeString}
                 </SyntaxHighlighter>
