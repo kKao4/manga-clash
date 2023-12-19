@@ -19,25 +19,29 @@ export default function ResetPassword() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const [locked, setLocked] = useLockedBody(false, "root")
+  // Khóa scroll page khi mở modal reset password
   useEffect(() => {
     setLocked(showResetPassword)
   }, [setLocked, showResetPassword])
+  // Đóng modal khi click bên ngoài modal
   useOnClickOutside(formRef, () => dispatch(toggleResetPassword(false)))
   const emailChange = (value: string) => {
     setEmail(value)
     setEmailValid(() => value.match(emailReg) ? true : false)
   }
-  const handleClose = () => {
-    dispatch(toggleResetPassword(false))
-    setEmailSent(false)
-    setEmail("")
-  }
+  // Xóa lỗi email not found khi người dùng nhập lại email
   useEffect(() => {
     if (email) {
       setEmailNotFound(false)
     }
   }, [email])
+  // Thoát modal khi nhấn escape
   useKeyPressEscape(() => dispatch(toggleResetPassword(false)))
+  const handleClose = () => {
+    dispatch(toggleResetPassword(false))
+    setEmailSent(false)
+    setEmail("")
+  }
   return (
     <AnimatePresence>
       {showResetPassword && (

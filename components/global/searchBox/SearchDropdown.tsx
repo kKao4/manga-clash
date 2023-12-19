@@ -10,7 +10,7 @@ export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }:
   const searchState = useSelector(selectSearchState)
   const debounceSearchName = useDebounce<string>(searchState.name, 400)
   const [searchedMangas, setSearchedMangas] = useState<MangaType[]>()
-  // fetch searched mangas
+  // Fetch API cho tìm kiếm
   useEffect(() => {
     const fetchSearchedMangas = async () => {
       if (debounceSearchName) {
@@ -28,7 +28,7 @@ export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }:
     }
     fetchSearchedMangas()
   }, [debounceSearchName, setIsLoadingMangas])
-  // reset searched mangas
+  // Tự động xóa kết quả tìm kiếm khi xóa hết text trong input
   useEffect(() => {
     if (!searchState.name) {
       setSearchedMangas(undefined)

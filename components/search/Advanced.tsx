@@ -16,6 +16,7 @@ export default function Advanced({ setSearched }: { setSearched: Dispatch<SetSta
   const searchState = useSelector(selectSearchState)
   const [query, setQuery] = useState<string>()
   const router = useRouter()
+  // Thiết lập search query cho url
   useEffect(() => {
     let searchQuery = "";
     searchQuery = `name=${searchState.name}&author=${searchState.author}&completed=${searchState.completed}`

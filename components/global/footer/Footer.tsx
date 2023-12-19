@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 export default function Footer() {
   const router = useRouter()
   const [forceDarkMode, setForceDarkMode] = useState<boolean>(false)
+  // Nếu là page đọc chapter thì bắt buộc footer mặc định là chế độ tối
   useEffect(() => {
     setForceDarkMode(router.query.chapterNum ? true : false)
   }, [router.query.chapterNum])

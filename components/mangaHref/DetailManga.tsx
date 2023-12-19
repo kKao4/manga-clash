@@ -1,7 +1,7 @@
 import { MangaResponse, StarType, UserRatingResponse, UserResponse } from "@/type"
 import TagsDetailManga from "./TagsDetailManga";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSignIn } from "@/features/GlobalSlice";
 import Star from "./Star";
@@ -24,24 +24,29 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
   const myRef = useRef<HTMLDivElement>(null)
   const userState = useSelector(selectUserState)
   const userRatingState = useSelector((state: RootState) => selectUserRating(state, manga.href))
-  const [bookmark, setBookmark] = useState<boolean>(false)
+  const [bookmarked, setBookmarked] = useState<boolean>(false)
   const [yourRating, setYourRating] = useState<StarType>(1)
   const [isLoadingUserRating, setIsLoadingUserRating] = useState<boolean>(false)
   const [isLoadingBookmark, setIsLoadingBookmark] = useState<boolean>(false)
   const [visibility, setVisibility] = useState<string>("invisible")
+
+  // Hiện spinner khi fetching rating api
   useEffect(() => {
     if (isLoadingUserRating) {
       setVisibility("visible")
     }
   }, [isLoadingUserRating])
+  // Thay đổi UI phần theo dõi truyện dựa theo việc user đã theo dõi truyện chưa
   useEffect(() => {
     if (userState) {
-      setBookmark(userState.bookmarks.includes(manga!._id as any))
+      setBookmarked(userState.bookmarks.includes(manga!._id as any))
     } else {
-      setBookmark(false)
+      setBookmarked(false)
     }
   }, [manga, userState])
-  const handleBookmark = async () => {
+
+  // Fetch API theo dõi truyện
+  const handleBookmark = useCallback(async () => {
     setIsLoadingBookmark(true)
     const result = await fetch(`/api/user/actions/bookmark/${router.query.mangaHref}`);
     const res = await result.json()
@@ -50,19 +55,21 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       dispatch(toggleSignIn(true))
       toast.error("Vui lòng đăng nhập để tiếp tục")
     } else {
-      setBookmark(b => !b)
-      if (!bookmark) {
+      setBookmarked(b => !b)
+      if (!bookmarked) {
         toast.success(`Theo dõi truyện thành công`)
       } else {
         toast.success(`Bỏ theo dõi truyện thành công`)
       }
     }
     setIsLoadingBookmark(false)
-  }
+  }, [bookmarked, dispatch, router.query.mangaHref])
+  // Hiện UI để đánh giá truyện khi hover
   const handleHoverStar = (num: StarType) => {
     setYourRating(num)
   }
-  const handleRating = async (num: StarType) => {
+  // Fetch API đánh giá
+  const handleRating = useCallback(async (num: StarType) => {
     setIsLoadingUserRating(true)
     const result = await fetch(`/api/user/actions/rating/star`, {
       method: "POST",
@@ -89,7 +96,8 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
       dispatch(toggleSignIn(true))
     }
     setIsLoadingUserRating(false)
-  }
+  }, [dispatch, manga.href, router.query.mangaHref])
+  
   return (
     <>
       {/* manga's rating */}
@@ -215,13 +223,13 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
             {/* bookmarks information */}
             <div className="flex flex-col basis-1/2 gap-y-3">
               <div className="w-full">
-                {bookmark ? (
+                {bookmarked ? (
                   <svg className={`${isLoadingBookmark ? "opacity-50" : "opacity-100"} block h-8 px-2 mx-auto cursor-pointer fill-second-green`} onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
                 ) : (
                   <svg className={`${isLoadingBookmark ? "opacity-50" : "opacity-100"} block h-8 px-2 mx-auto cursor-pointer fill-second-green`} onClick={handleBookmark} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" /></svg>
                 )}
               </div>
-              {bookmark ? (
+              {bookmarked ? (
                 <p className="text-sm text-center select-none">Bạn đã theo dõi truyện</p>
               ) : (
                 <p className="text-sm text-center select-none">{manga.bookmarks} người theo dõi truyện</p>

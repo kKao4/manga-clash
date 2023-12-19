@@ -151,14 +151,3 @@ div[data-="true"]:hover svg[data-hidden="true"] {
   }
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-neutral-200;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-neutral-500 rounded-full hover:bg-second-green transition-colors;
-}

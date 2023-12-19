@@ -1,13 +1,13 @@
 import { Variants, motion, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
-import { useReadLocalStorage } from "usehooks-ts"
+import { useLocalStorage } from "usehooks-ts"
 import Link from "next/link"
 import { usePopper } from "react-popper"
 import { ChapterResponse, ChaptersResponse } from "@/type"
 import { isMobile } from "react-device-detect"
 
 export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: { quickMenuCord: any, isDragging: boolean, drag: any, chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, prevChapter: string, nextChapter: string }) {
-  const quickMenuMode = useReadLocalStorage("quickMenuMode")
+  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
   const [isOpenChaptersQuickMenu, setIsOpenChaptersQuickMenu] = useState<boolean>(false)
   const [isOpenDetailQuickMenu, setIsOpenDetailQuickMenu] = useState<boolean>(false)
   const [referenceElement, setReferenceElement] = useState(null);
@@ -22,6 +22,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
       { name: "flip", options: { fallbackPlacements: ["left"] } },
     ],
   });
+  // Tự động đóng chapter popper khi đóng detail quick menu hoặc tắt quick menu mode
   useEffect(() => {
     if (!quickMenuMode || !isOpenDetailQuickMenu) {
       setIsOpenChaptersQuickMenu(false)

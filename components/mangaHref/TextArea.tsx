@@ -2,7 +2,7 @@ import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { Dispatch, SetStateAction, useEffect } from "react"
 
 export default function TextArea({ mangaState, description, setDescription }: { mangaState?: typeof initialMangaState[number], description: string, setDescription: Dispatch<SetStateAction<string>> }) {
-  // set description of manga
+  // Set tóm tắt
   useEffect(() => {
     if (mangaState) {
       setDescription(mangaState.description)

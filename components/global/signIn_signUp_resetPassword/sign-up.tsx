@@ -28,28 +28,35 @@ export default function SignUp() {
   const formRef = useRef<HTMLFormElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const [locked, setLocked] = useLockedBody(false, "root")
+  // Khóa scroll khi mở modal sign up
   useEffect(() => {
     setLocked(showSignUp)
   }, [setLocked, showSignUp])
+  // Đóng modal khi click bên ngoài form đăng nhập
   useOnClickOutside(formRef, () => dispatch(toggleSignUp(false)))
+  // Đóng modal khi click bên ngoài khung chuyển hướng đăng nhập
   useOnClickOutside(divRef, () => dispatch(toggleSignUp(false)))
   const usernameChange = (value: string) => {
     setUsername(value)
     setUsernameValid(() => value.match(usernameReg) ? true : false)
   }
+  // Xóa lỗi email không hợp lệ khi người dùng nhập lại 
   const emailChange = (value: string) => {
     setEmail(value)
     setEmailValid(() => value.match(emailReg) ? true : false)
   }
+  // Xóa lỗi password không hợp lệ khi người dùng nhập lại
   const passwordChange = (value: string) => {
     setPassword(value)
     setPasswordValid(() => value.match(passwordReg) ? true : false)
   }
+  // Xóa lỗi email đẵ tồn tại lúc đăng ký khi nhập lại
   useEffect(() => {
     if (email) {
       setEmailExits(false)
     }
   }, [email])
+  // Thoát modal khi nhấn escape
   useKeyPressEscape(() => dispatch(toggleSignUp(false)))
   return (
     <AnimatePresence>

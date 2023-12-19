@@ -14,6 +14,7 @@ export default function Menu({
   const [isFirstChapter, setIsFirstChapter] = useState<boolean>(false)
   const [isLastChapter, setIsLastChapter] = useState<boolean>(false)
   const [readingStyle, setReadingStyle] = useLocalStorage("readingStyle", "full")
+  // Nhận biết xem chapter đang truy cập có phải là chapter đầu/cuối hay ko
   useEffect(() => {
     setIsFirstChapter(chapter?.chapter.num === (chapters?.chapters[chapters.chapters.length - 1].num?.toString()))
     setIsLastChapter(chapter?.chapter.num === (chapters?.chapters[0].num?.toString()))

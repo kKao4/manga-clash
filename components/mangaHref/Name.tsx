@@ -12,7 +12,7 @@ export default function Name({ mangaState }: { mangaState: typeof initialMangaSt
   const adminMode = useSelector(selectAdminMode)
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   const [countdown, setCountdown] = useState<number>(5)
-  // set countdown for submit button
+  // Thiết lập countdown 5s cho button xóa truyện
   useEffect(() => {
     if (isOpenDeleteModal && countdown >= 0) {
       const timeOut = setTimeout(() => {

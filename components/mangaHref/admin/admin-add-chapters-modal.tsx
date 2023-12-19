@@ -21,7 +21,7 @@ export default function AdminAddChapterModal({
   const [signatureRes, setSignatureRes] = useState<SignatureResponse["data"]>();
   const [arrayImages, setArrayImages] = useState<{ name: string, url: string, publicId: string }[]>([]);
   const [uploadedImages, setUploadImages] = useState<boolean>(false)
-  // set valid num message
+  // Thiết lập thông báo lỗi chapter khi thêm chap
   useEffect(() => {
     if (!num || Number(num) < 0) {
       setValidChapterMessage("Không hợp lệ")
@@ -31,7 +31,7 @@ export default function AdminAddChapterModal({
       setValidChapterMessage("")
     }
   }, [num, chapters])
-  // set biggest number chapter is default value
+  // Đặt chapter mới nhất là chapter default khi thêm chap
   useEffect(() => {
     if (chapters && chapters.length) {
       if (chaptersOrder === "latest") {
@@ -43,7 +43,7 @@ export default function AdminAddChapterModal({
       setNum("")
     }
   }, [chapters, chaptersOrder])
-  // take api key for signed upload
+  // Lấy API KEY cho singed upload cloudinary
   useEffect(() => {
     if (num) {
       const fetchSignature = async () => {
@@ -56,7 +56,7 @@ export default function AdminAddChapterModal({
       fetchSignature();
     }
   }, [mangaState, num]);
-  // uploading images
+  // Tải ảnh lên cloudinary
   useEffect(() => {
     cloudinaryRef.current = (window as any).cloudinary;
     if (cloudinaryRef.current && signatureRes) {
@@ -103,7 +103,7 @@ export default function AdminAddChapterModal({
     setIsAddingChapter,
     isDarkMode
   ]);
-  // post create chapter
+  // Tải chapter lên server
   useEffect(() => {
     if (uploadedImages) {
       const addChapter = async () => {

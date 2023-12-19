@@ -14,9 +14,12 @@ export default function Guide() {
   const dispatch = useDispatch()
   const showGuide = useSelector(selectGuide)
   const [locked, setLocked] = useLockedBody(false, "root")
+  const myRef = useRef<HTMLDivElement>(null)
+  // Khóa scroll khi mở modal guide
   useEffect(() => {
     setLocked(showGuide)
   }, [setLocked, showGuide])
+  // Cấu hình smooth scrollbar
   useEffect(() => {
     if (showGuide) {
       Scrollbar.use(OverscrollPlugin)
@@ -29,8 +32,9 @@ export default function Guide() {
       })
     }
   }, [showGuide])
+  // Thoát modal khi nhấn escape
   useKeyPressEscape(() => dispatch(toggleGuide(false)))
-  const myRef = useRef<HTMLDivElement>(null)
+  // Thoát modal khi nhấn bên ngoài
   useOnClickOutside(myRef, () => dispatch(toggleGuide(false)))
   const codeString = useMemo(() => {
     return `"dependencies": {

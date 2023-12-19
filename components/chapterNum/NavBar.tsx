@@ -1,8 +1,8 @@
 import { ChapterResponse, ChaptersResponse } from "@/type"
+import { useLocalStorage } from "@uidotdev/usehooks"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ForwardedRef, forwardRef } from "react"
-import { useReadLocalStorage } from "usehooks-ts"
 
 const NavBar = forwardRef(
   function NavBar({
@@ -11,7 +11,7 @@ const NavBar = forwardRef(
     showNavChapter: boolean, chapter: ChapterResponse["data"], chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, isScrollInToView: boolean
   }, ref: ForwardedRef<HTMLDivElement>) {
     const router = useRouter()
-    const quickMenuMode = useReadLocalStorage("quickMenuMode")
+    const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
     return (
       <div className="fixed bottom-0 z-20 w-full">
         {/* scroll reading progress bar */}
@@ -38,7 +38,7 @@ const NavBar = forwardRef(
                 <div className="relative w-full h-full overflow-hidden">
                   <select
                     value={chapter?.chapter.num}
-                    className="w-full h-full px-0 py-2 text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis md:px-4 md:text-lg bg-neutral-700 focus:outline-none" id="select-chapter"
+                    className="w-full h-full px-0 py-2 text-white transition-colors rounded-md select-none sm:px-2 text-ellipsis md:px-4 md:text-lg bg-neutral-700 focus:outline-none cursor-pointer" id="select-chapter"
                     onChange={(e) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
                     style={{ appearance: "none", textAlignLast: "center" }}
                   >

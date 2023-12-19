@@ -19,9 +19,9 @@ import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
-import { useEventListener, useDarkMode, useIntersectionObserver, useReadLocalStorage, useLocalStorage } from 'usehooks-ts'
+import { useEventListener, useDarkMode, useIntersectionObserver, useLocalStorage } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
-import { useDetectDirectionScrollY } from "@/hooks/useDetectDirectionScrollY"
+import { useDetectDirectionScroll } from "@/hooks/useDetectDirectionScroll"
 import { toast } from "react-toastify"
 import { dndItemTypes } from "@/type"
 import { useDrag, useDrop } from "react-dnd"
@@ -81,7 +81,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const mouse = useMouse(imagesBoxRef, { fps: 60 });
   const [directionArrow, setDirectionArrow] = useState<"right" | "left">()
   const percentScroll = usePercentScrollYOfElement(imagesRef)
-  const directionScroll = useDetectDirectionScrollY()
+  const directionScroll = useDetectDirectionScroll()
   const imagesEntry = useIntersectionObserver(imagesRef, {
     threshold: 0,
     root: null,
@@ -90,7 +90,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   })
   const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
   const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
-  const readingStyle = useReadLocalStorage("readingStyle")
+  const [readingStyle, setReadingStyle] = useLocalStorage("readingStyle", "full")
   const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])
 
   // Set User

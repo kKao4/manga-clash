@@ -22,23 +22,29 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const [locked, setLocked] = useLockedBody(false, "root")
+  // Khóa scroll khi mở modal sign in
   useEffect(() => {
     setLocked(showSignIn)
   }, [setLocked, showSignIn])
+  // Đóng modal khi click bên ngoài
   useOnClickOutside(formRef, () => dispatch(toggleSignIn(false)))
+  // Xóa lỗi email không hợp lệ khi nhập lại email
   const emailChange = (value: string) => {
     setEmail(value)
     setEmailValid(() => value.match(emailReg) ? true : false)
   }
+  // Xóa lỗi password không hợp lệ khi nhập lại password
   const passwordChange = (value: string) => {
     setPassword(value)
     setPasswordValid(() => value.match(passwordReg) ? true : false)
   }
+  // Xóa lỗi sai thông tin đặng nhập khi nhập lại 1 trong 2 input
   useEffect(() => {
     if (email || password) {
       setWrongInformation(false)
     }
   }, [email, password])
+  // Thoát modal khi nhấn escape
   useKeyPressEscape(() => dispatch(toggleSignIn(false)))
   return (
     <AnimatePresence>

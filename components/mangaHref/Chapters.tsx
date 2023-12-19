@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import Title from "../global/Title/Title"
 import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"

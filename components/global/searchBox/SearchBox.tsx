@@ -20,6 +20,7 @@ export default function SearchBox({
   const [isLoadingMangas, setIsLoadingMangas] = useState<boolean>(false)
   const [strIndex, setStrIndex] = useState<number>(0)
   const myRef = useRef<HTMLDivElement>(null)
+  // Style transition cho max height search box
   useEffect(() => {
     if (myRef.current) {
       if (showSearchBox) {
@@ -30,11 +31,13 @@ export default function SearchBox({
       }
     }
   }, [showSearchBox])
+  // Tạo interval để text tự động thay đổi luân hồi
   useInterval(() => {
     setStrIndex(prevState => {
       return prevState === str.length - 1 ? 0 : prevState + 1
     })
   }, 4000)
+
   const strVariants: Variants = useMemo(() => {
     return {
       hidden: { opacity: 0 },
