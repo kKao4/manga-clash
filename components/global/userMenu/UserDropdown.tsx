@@ -44,15 +44,16 @@ export default function UserDropdown({ user }: { user: UserResponse["data"] }) {
           <LinkDropdown
             content="Đăng Xuất"
             handleOnClick={async () => {
-              const result = await fetch(`/api/user/log_out`)
-              const res = await result.json()
-              console.log("🚀 ~ file: user-menu.tsx:15:", res)
-              if (res.message === "Logged Out") {
-                if (router.pathname === "/user-settings") {
-                  router.push("/")
-                }
-                dispatch(setUser(initialUserState))
+              document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              // const result = await fetch(`/api/user/log_out`)
+              // const res = await result.json()
+              // console.log("🚀 ~ file: user-menu.tsx:15:", res)
+              // if (res.message === "Logged Out") {
+              if (router.pathname === "/user-settings") {
+                router.push("/")
+                // }
               }
+              dispatch(setUser(initialUserState))
             }}
           />
         </div>

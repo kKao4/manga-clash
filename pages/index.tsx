@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse,
     getAllMangas({ page, sort } as GetALlMangas),
     getAllPopularMangas(),
     getUser(_id as string),
-    getAllMangasChart({ time: "oneDay", nameChart: "", pageChart: "1" })
+    getAllMangasChart({ time: "oneDay", nameChart: "", pageChart: "1", num: 8 })
   ])
   const mangasRes = JSON.parse(JSON.stringify({
     message: "Fetched Mangas",

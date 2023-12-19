@@ -8,12 +8,14 @@ export interface GetAllMangasChart {
   time: string;
   nameChart: string;
   pageChart: string;
+  num?: number;
 }
 
 export const getAllMangasChart = async ({
   time,
   nameChart,
   pageChart,
+  num,
 }: GetAllMangasChart) => {
   const views = await View.find({});
   let chartMangas: any[] = [];
@@ -51,7 +53,7 @@ export const getAllMangasChart = async ({
   // get array length
   const chartMangasLength = chartMangas.length;
   // slice mangas for 1 page
-  chartMangas = sliceMangas(chartMangas, Number(pageChart));
+  chartMangas = sliceMangas(chartMangas, Number(pageChart), num);
   return {
     chartMangas,
     chartMangasLength,
