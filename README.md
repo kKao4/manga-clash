@@ -1,6 +1,6 @@
 # Giới thiệu về website
 
-__Website được tạo nên bởi kKao4__
+Website được tạo nên bởi __kKao4__
 
 Trang web được dùng cho cả admin và user. Với user, trang web sẽ có đầy đủ các tính năng mà 1 trang web đọc truyện có, với admin sẽ có thêm các tính năng quản lý truyện.
 
