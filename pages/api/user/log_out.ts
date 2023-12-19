@@ -11,8 +11,8 @@ export default async function handler(
     const method = req.method;
     switch (method) {
       case "GET": {
-        // console.log(req.cookies);
-        res.setHeader("Set-Cookie", "token=; HttpOnly; Path=/; Max-Age=0;");
+        console.log(req.cookies);
+        res.setHeader("Set-Cookie", "token=; Path=/; Max-Age=0;");
         res.status(200).json({ message: "Logged Out" });
       }
     }

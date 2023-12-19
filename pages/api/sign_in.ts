@@ -45,10 +45,10 @@ export default async function handler(
               if (fields.remember && fields.remember[0] === "on") {
                 res.setHeader(
                   "Set-Cookie",
-                  `token=${token}; Path=/; HttpOnly; Max-Age=86400`
+                  `token=${token}; Path=/; Max-Age=86400`
                 );
               } else {
-                res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly`);
+                res.setHeader("Set-Cookie", `token=${token}; Path=/`);
               }
               res.status(200).json({ message: "Logged In" });
             } else {
