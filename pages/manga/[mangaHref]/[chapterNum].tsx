@@ -89,7 +89,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     freezeOnceVisible: false
   })
   const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
-  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
+  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
   const [readingStyle, setReadingStyle] = useLocalStorage("readingStyle", "full")
   const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])
 

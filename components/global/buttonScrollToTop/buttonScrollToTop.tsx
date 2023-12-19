@@ -7,7 +7,7 @@ import { useLocalStorage } from "usehooks-ts";
 export default function ButtonScrollToTop() {
   const router = useRouter()
   const directionScroll = useDetectDirectionScroll()
-  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
+  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
   const variants: Variants = {
     hidden: {
       opacity: 0,

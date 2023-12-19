@@ -11,7 +11,7 @@ const NavBar = forwardRef(
     showNavChapter: boolean, chapter: ChapterResponse["data"], chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, isScrollInToView: boolean
   }, ref: ForwardedRef<HTMLDivElement>) {
     const router = useRouter()
-    const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", false)
+    const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
     return (
       <div className="fixed bottom-0 z-20 w-full">
         {/* scroll reading progress bar */}
