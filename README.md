@@ -1,5 +1,7 @@
 # Giới thiệu về website
 
+__Website được tạo nên bởi kKao4__
+
 Trang web được dùng cho cả admin và user. Với user, trang web sẽ có đầy đủ các tính năng mà 1 trang web đọc truyện có, với admin sẽ có thêm các tính năng quản lý truyện.
 
 Tính năng cho user: Đăng ký, Đăng nhập, Lấy lại mật khẩu, Đọc truyện, Chế độ đọc truyện Full/Single, Chế độ điều hướng nhanh khi đọc truyện, Thanh tiến trình đọc truyện, Bình luận truyện, Đánh giá truyện, Theo dõi truyện, Lọc truyện, Tìm kiếm truyện nâng cao, Thay đổi chế độ sáng/tối, Cập nhật thông tin tài khoản như: sửa tên, đổi ảnh đại diện,..., Lưu lịch sử đọc chapter/truyện.
