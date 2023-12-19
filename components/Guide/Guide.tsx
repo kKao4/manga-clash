@@ -181,7 +181,7 @@ export default function Guide() {
                   <li>Mongodb 6.1.0</li>
                   <li>Typescript 5.2.2</li>
                 </ol>
-                <b>Sau đây là danh sách chi tiết toàn bộ các thư viện được sử dụng.</b>
+                <b>Sau đây là danh sách chi tiết toàn bộ các thư viện được sử dụng:</b>
                 <SyntaxHighlighter
                   language="json"
                   style={atomOneDark}
