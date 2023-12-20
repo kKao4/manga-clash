@@ -22,7 +22,7 @@ TK user:
 
 Trang web sử dụng các thư viện chính sau:
 
-1. NextJS 13.4.19 (Page router)
+1. NextJS 14.0.4 (Page router)
 2. Tailwind CSS 3.3.3
 3. NodeJS 20.5.8
 4. Redux Toolkit 1.9.5

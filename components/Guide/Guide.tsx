@@ -48,30 +48,29 @@ export default function Guide() {
   "@uidotdev/usehooks": "^2.4.1",
   "@vercel/analytics": "^1.1.1",
   "autoprefixer": "10.4.15",
-  "bootstrap-icons": "^1.11.2",
   "cloudinary": "^1.41.0",
   "cookie": "^0.5.0",
   "disqus-react": "^1.1.5",
   "eslint": "8.48.0",
-  "eslint-config-next": "13.4.19",
+  "eslint-config-next": "^14.0.4",
   "framer-motion": "^10.16.9",
   "html-react-parser": "^4.2.2",
   "jose": "^4.14.6",
   "jsonwebtoken": "^9.0.2",
   "mongodb": "^6.1.0",
-  "next": "13.4.19",
+  "next": "^14.0.4",
   "next-auth": "^4.24.5",
   "next-csrf": "^0.2.1",
   "nodemailer": "^6.9.5",
   "nprogress": "^0.2.0",
   "numeral": "^2.0.6",
   "postcss": "8.4.29",
-  "react": "18.2.0",
+  "react": "^18.2.0",
   "react-device-detect": "^2.2.3",
   "react-dnd": "^16.0.1",
   "react-dnd-html5-backend": "^16.0.1",
   "react-dnd-touch-backend": "^16.0.1",
-  "react-dom": "18.2.0",
+  "react-dom": "^18.2.0",
   "react-popper": "^2.3.0",
   "react-ripples": "^2.2.1",
   "react-scroll": "^1.9.0",
@@ -135,9 +134,9 @@ export default function Guide() {
               initial={{ clipPath: "circle(2% at 50% 35%)" }}
               animate={{ clipPath: "circle(100% at 50% 35%)" }}
               transition={{ duration: 1, delay: 0.12 }}
-              className="bg-neutral-800 z-20 h-[1200px] w-[1200px] text-center rounded-full grid place-content-center" />
+              className="bg-white dark:bg-neutral-800 z-20 h-[1200px] w-[1200px] text-center rounded-full grid place-content-center" />
           </motion.div>
-          <motion.div initial={{ display: "none" }} animate={{ display: "block" }} transition={{ delay: 0.6 }} ref={myRef} data-scrollbar className="bg-neutral-100 overflow-y-auto overflow-x-hidden max-h-[640px] max-w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
+          <motion.div initial={{ display: "none" }} animate={{ display: "block" }} transition={{ delay: 0.6 }} ref={myRef} data-scrollbar className="bg-white overflow-y-auto overflow-x-hidden max-h-[640px] max-w-[1000px] dark:bg-neutral-800 shadow-lg rounded-md">
             <CloseButton handleOnClick={() => dispatch(toggleGuide(false))} />
             <div className="px-4 py-3 md:px-8 md:py-6 md:pr-9">
               <motion.div
@@ -145,11 +144,9 @@ export default function Guide() {
                 whileInView="show"
                 variants={revealVariants}
                 viewport={{ margin: "-120px", once: true }}
-                className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green prose-p:my-4 prose-h2:mb-5 overflow-auto">
-                <h2
-                >
-                  Giới thiệu về website
-                </h2>
+                className="prose max-w-full dark:prose-invert prose-a:no-underline prose-a:font-bold prose-a:text-third-green prose-p:my-4 prose-h2:mb-5 overflow-auto prose-neutral"
+              >
+                <h2>Giới thiệu về website</h2>
                 <strong className="inline-block">Github: <a href="https://github.com/kKao4/manga-clash" target="_blank">https://github.com/kKao4/manga-clash</a></strong>
                 <div>
                   <p>Trang web được dùng cho cả admin và user. Với user, trang web sẽ có đầy đủ các tính năng mà 1 trang web đọc truyện có, với admin sẽ có thêm các tính năng quản lý truyện.</p>
@@ -174,7 +171,7 @@ export default function Guide() {
                 </div>
                 <b>Trang web sử dụng các thư viện chính sau:</b>
                 <ol>
-                  <li>NextJS 13.4.19 (Page router)</li>
+                  <li>NextJS 14.0.4 (Page router)</li>
                   <li>Tailwind CSS 3.3.3</li>
                   <li>NodeJS 20.5.8</li>
                   <li>Redux Toolkit 1.9.5</li>
