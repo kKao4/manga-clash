@@ -158,14 +158,14 @@ export default function Guide() {
                     <p className="my-3">TK admin:</p>
                     <ul className="whitespace-pre">
                       <li>gmail:  admin@gmail.com</li>
-                      <li>password:  admin123</li>
+                      <li>password:  admin1234</li>
                     </ul>
                   </div>
                   <div className="basis-1/2">
                     <p className="my-3">TK user:</p>
                     <ul className="whitespace-pre">
                       <li>gmail:  user@gmail.com</li>
-                      <li>password:  user123</li>
+                      <li>password:  user1234</li>
                     </ul>
                   </div>
                 </div>
