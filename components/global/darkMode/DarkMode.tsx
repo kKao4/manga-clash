@@ -1,9 +1,10 @@
+import { useDarkMode } from '@/hooks/useDarkMode';
 import { useEffect } from 'react'
-import { useDarkMode, useIsClient } from 'usehooks-ts'
 
 export default function DarkMode({ children }: { children: React.ReactNode }) {
   const { isDarkMode } = useDarkMode()
-  const isClient = useIsClient()
+
+  // TODO: fix localStorage
   // tạo kiểu cho scroll bar của html sáng/tối
   useEffect(() => {
     const scrollbarStyles = isDarkMode ? `::-webkit-scrollbar {
@@ -42,11 +43,10 @@ export default function DarkMode({ children }: { children: React.ReactNode }) {
       document.head.removeChild(styleSheet);
     };
   }, [isDarkMode])
-  if (isClient) {
-    return (
-      <div className={`${isDarkMode ? "dark" : "light"}`}>
-        {children}
-      </div>
-    )
-  }
+
+  return (
+    <div className={`${isDarkMode ? "dark" : "light"}`}>
+      {children}
+    </div>
+  )
 }

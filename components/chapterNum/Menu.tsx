@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react"
 import Select from "./Select";
 import { motion } from "framer-motion";
-import { useLocalStorage } from "usehooks-ts";
+import { useReadingStyle } from "@/hooks/useReadingStyle";
+
 
 export default function Menu({
   chapters, prevChapter, nextChapter, index, setIndex, chapter
@@ -13,7 +14,7 @@ export default function Menu({
   const router = useRouter()
   const [isFirstChapter, setIsFirstChapter] = useState<boolean>(false)
   const [isLastChapter, setIsLastChapter] = useState<boolean>(false)
-  const [readingStyle, setReadingStyle] = useLocalStorage("readingStyle", "full")
+  const { readingStyle, toggleReadingStyle } = useReadingStyle()
   // Nhận biết xem chapter đang truy cập có phải là chapter đầu/cuối hay ko
   useEffect(() => {
     setIsFirstChapter(chapter?.chapter.num === (chapters?.chapters[chapters.chapters.length - 1].num?.toString()))
@@ -45,7 +46,7 @@ export default function Menu({
             width="w-fit"
             value={readingStyle}
             handleOnChange={(e: any) => {
-              setReadingStyle(e.target.value)
+              toggleReadingStyle(e.target.value)
             }}
           >
             <option value="full">Full Page</option>

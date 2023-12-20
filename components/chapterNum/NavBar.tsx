@@ -1,5 +1,5 @@
+import { useQuickMenuMode } from "@/hooks/useQuickMenuMode"
 import { ChapterResponse, ChaptersResponse } from "@/type"
-import { useLocalStorage } from "@uidotdev/usehooks"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ForwardedRef, forwardRef } from "react"
@@ -11,7 +11,7 @@ const NavBar = forwardRef(
     showNavChapter: boolean, chapter: ChapterResponse["data"], chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, isScrollInToView: boolean
   }, ref: ForwardedRef<HTMLDivElement>) {
     const router = useRouter()
-    const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
+    const { quickMenuMode, toggleQuickMenuMode } = useQuickMenuMode()
     return (
       <div className="fixed bottom-0 z-20 w-full">
         {/* scroll reading progress bar */}

@@ -2,12 +2,12 @@ import { useDetectDirectionScroll } from "@/hooks/useDetectDirectionScroll";
 import { useRouter } from "next/router";
 import { CSSTransition } from 'react-transition-group';
 import { Variants, motion, AnimatePresence } from "framer-motion";
-import { useLocalStorage } from "usehooks-ts";
+import { useQuickMenuMode } from "@/hooks/useQuickMenuMode";
 
 export default function ButtonScrollToTop() {
   const router = useRouter()
   const directionScroll = useDetectDirectionScroll()
-  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
+  const { quickMenuMode } = useQuickMenuMode()
   const variants: Variants = {
     hidden: {
       opacity: 0,

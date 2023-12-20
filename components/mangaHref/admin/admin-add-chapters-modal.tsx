@@ -1,10 +1,10 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
+import { useDarkMode } from "@/hooks/useDarkMode"
 import { MangaType } from "@/models/manga"
 import { SignatureResponse } from "@/type"
 import { useEffect, useRef, useState } from "react"
 import { PacmanLoader } from "react-spinners"
 import { toast } from "react-toastify"
-import { useDarkMode } from "usehooks-ts"
 
 export default function AdminAddChapterModal({
   isOpenAddChapter, mangaState, chapters, chaptersOrder, setChapters

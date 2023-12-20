@@ -8,6 +8,9 @@ export const initialGlobalState: {
   showResetPassword: boolean;
   adminMode: boolean;
   showGuide: boolean;
+  darkMode: boolean;
+  quickMenuMode: boolean;
+  readingStyle: "full" | "single";
 } = {
   sort: "latest",
   showSignUp: false,
@@ -15,6 +18,9 @@ export const initialGlobalState: {
   showResetPassword: false,
   adminMode: false,
   showGuide: false,
+  darkMode: true,
+  quickMenuMode: true,
+  readingStyle: "full",
 };
 
 export type Order = (typeof initialGlobalState)["sort"];
@@ -53,17 +59,29 @@ export const globalSlice = createSlice({
         (typeof initialGlobalState)["adminMode"] | undefined
       >
     ) => {
-      if (action.payload) {
-        state.adminMode = action.payload;
-      } else {
-        state.adminMode = !state.adminMode;
-      }
+      state.adminMode = action.payload ?? !state.adminMode;
     },
     toggleGuide: (
       state,
       action: PayloadAction<(typeof initialGlobalState)["showGuide"]>
     ) => {
       state.showGuide = action.payload;
+    },
+    setDarkMode: (state, action: PayloadAction<boolean | undefined>) => {
+      state.darkMode = action.payload ?? !state.darkMode;
+    },
+    setQuickMenuMode: (state, action: PayloadAction<boolean | undefined>) => {
+      state.quickMenuMode = action.payload ?? !state.quickMenuMode;
+    },
+    setReadingStyle: (
+      state,
+      action: PayloadAction<"full" | "single" | undefined>
+    ) => {
+      if (action.payload) {
+        state.readingStyle = action.payload;
+      } else {
+        state.readingStyle = state.readingStyle === "full" ? "single" : "full";
+      }
     },
   },
 });
@@ -75,6 +93,9 @@ export const {
   toggleResetPassword,
   toggleAdminMode,
   toggleGuide,
+  setDarkMode,
+  setQuickMenuMode,
+  setReadingStyle,
 } = globalSlice.actions;
 
 export const selectSort = (state: RootState) => state.global.sort;

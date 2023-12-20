@@ -58,7 +58,7 @@ export default function SearchBox({
     <>
       <div
         ref={myRef}
-        className={`w-full px-2 md:px-4 transition-all duration-400 overflow-hidden ${showSearchBox ? "py-2 md:py-4 opacity-100" : "py-0 opacity-0"}`}
+        className={`w-full px-2 md:px-4 transition-all duration-400 overflow-hidden max-h-0 ${showSearchBox ? "py-2 md:py-4 opacity-100" : "py-0 opacity-0"}`}
       >
         <form className="relative flex flex-row justify-center mx-auto max-w-fit" onSubmit={(e) => {
           e.preventDefault()

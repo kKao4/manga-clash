@@ -1,13 +1,13 @@
 import { Variants, motion, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
-import { useLocalStorage } from "usehooks-ts"
 import Link from "next/link"
 import { usePopper } from "react-popper"
 import { ChapterResponse, ChaptersResponse } from "@/type"
 import { isMobile } from "react-device-detect"
+import { useQuickMenuMode } from "@/hooks/useQuickMenuMode"
 
 export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: { quickMenuCord: any, isDragging: boolean, drag: any, chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, prevChapter: string, nextChapter: string }) {
-  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
+  const { quickMenuMode } = useQuickMenuMode()
   const [isOpenChaptersQuickMenu, setIsOpenChaptersQuickMenu] = useState<boolean>(false)
   const [isOpenDetailQuickMenu, setIsOpenDetailQuickMenu] = useState<boolean>(false)
   const [referenceElement, setReferenceElement] = useState(null);

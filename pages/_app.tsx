@@ -17,15 +17,12 @@ import DarkMode from "@/components/global/darkMode/DarkMode"
 import { Analytics } from '@vercel/analytics/react';
 import dynamic from "next/dynamic"
 import Head from "next/head"
-import { useWindowSize } from 'usehooks-ts'
-import { Variants } from "framer-motion";
-import { ToastContainer, toast, Zoom, cssTransition } from 'react-toastify';
-import { useDarkMode } from "usehooks-ts";
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { DndProvider } from 'react-dnd'
 import { isMobile } from "react-device-detect"
 import ButtonGuide from "@/components/button-guide/ButtonGuide";
+import Toastify from "@/components/Toastify/Toastify";
 const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
 const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
 const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
@@ -54,29 +51,8 @@ NProgress.configure({
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter()
-  const { isDarkMode } = useDarkMode()
-  const { width, height } = useWindowSize()
   const getLayout = Component.getLayout ?? ((page) => page)
-  const Slide = cssTransition({
-    enter: width >= 768 ? "slideInBottom" : "scaleUp",
-    exit: "scaleDown"
-  })
-  const detailVariants: Variants = {
-    close: {
-      width: 0,
-      height: "32px",
-    },
-    open: {
-      width: "400px",
-      height: "200px",
-      transition: {
-        duration: 0.3,
-        height: {
-          delay: 0.3
-        }
-      }
-    }
-  }
+  
   // start animation progress bar
   useEffect(() => {
     const start = () => NProgress.start()
@@ -89,6 +65,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     router.events.on("routeChangeComplete", done)
     return () => router.events.off("routeChangeStart", done)
   }, [router])
+  
   return (
     <Provider store={store}>
       <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
@@ -98,26 +75,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           </Head>
           <DarkMode>
             <div className="min-h-[84.5dvh] bg-white dark:bg-dark-main-black dark:text-neutral-100">
+              <Toastify />
               <DynamicSignUp />
               <DynamicSignIn />
               <DynamicResetPassword />
               <Menu />
               <DynamicButtonScrollToTop />
-              <ToastContainer
-                position={width >= 768 ? "bottom-right" : "top-center"}
-                autoClose={4000}
-                limit={4}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={true}
-                draggable={true}
-                draggablePercent={40}
-                pauseOnHover={true}
-                theme={isDarkMode ? "dark" : "light"}
-                transition={Slide}
-              />
               <ButtonGuide />
               <DynamicGuide />
               {getLayout(<Component {...pageProps} />)}

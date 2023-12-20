@@ -19,7 +19,7 @@ import { GetChapter, getChapter } from "@/lib/getServerSideProps/getChapter"
 import dbConnect from "@/lib/dbConnect"
 import { GetAllChapters, getAllChapters } from "@/lib/getServerSideProps/getAllChapters"
 import { getUser } from "@/lib/getServerSideProps/getUser"
-import { useEventListener, useDarkMode, useIntersectionObserver, useLocalStorage } from 'usehooks-ts'
+import { useEventListener, useIntersectionObserver, useLocalStorage } from 'usehooks-ts'
 import { usePercentScrollYOfElement } from "@/hooks/usePercentScrollOfElement"
 import { useDetectDirectionScroll } from "@/hooks/useDetectDirectionScroll"
 import { toast } from "react-toastify"
@@ -27,6 +27,9 @@ import { dndItemTypes } from "@/type"
 import { useDrag, useDrop } from "react-dnd"
 import QuickMenu from "@/components/chapterNum/QuickMenu"
 import { isMobile } from "react-device-detect"
+import { useDarkMode } from "@/hooks/useDarkMode"
+import { useQuickMenuMode } from "@/hooks/useQuickMenuMode"
+import { useReadingStyle } from "@/hooks/useReadingStyle"
 const DynamicAdminDeleteChapter = dynamic(() => import("@/components/chapterNum/admin-delete-chapter"), {
   ssr: false,
 })
@@ -68,7 +71,6 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
   const dispatch = useDispatch()
   const userState = useSelector(selectUserState)
   const adminMode = useSelector(selectAdminMode)
-  const { toggle } = useDarkMode()
   const [bookmark, setBookmark] = useState<boolean>(false)
   const [prevChapter, setPrevChapter] = useState<string>("1")
   const [nextChapter, setNextChapter] = useState<string>("1")
@@ -89,9 +91,10 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     freezeOnceVisible: false
   })
   const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
-  const [quickMenuMode, setQuickMenuMode] = useLocalStorage("quickMenuMode", true)
-  const [readingStyle, setReadingStyle] = useLocalStorage("readingStyle", "full")
+  const { quickMenuMode, toggleQuickMenuMode } = useQuickMenuMode()
+  const { readingStyle } = useReadingStyle()
   const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])
+  const { toggleDarkMode } = useDarkMode()
 
   // Set User
   useEffect(() => {
@@ -274,14 +277,14 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
                 </button>
                 <button
                   className="w-8 h-8 transition-colors bg-gray-100 rounded-full group hover:bg-second-green"
-                  onClick={() => toggle()}
+                  onClick={() => toggleDarkMode()}
                   title="Dark/Light theme"
                 >
                   <svg className="block h-4 mx-auto transition-colors fill-second-green group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" /></svg>
                 </button>
                 <button
                   className={`flex flex-row items-center gap-x-2 px-2.5 py-1 ${!quickMenuMode && "pl-7"} transition-all duration-300 relative rounded-full`}
-                  onClick={() => setQuickMenuMode(prevState => !prevState)}
+                  onClick={() => toggleQuickMenuMode()}
                 >
                   <div className={`${quickMenuMode ? "w-full h-full bg-main-green" : "w-[21px] h-[21px]"} absolute left-0 border-2 border-main-green rounded-full transition-all duration-300`} />
                   <span className="text-neutral-100 text-[15px] z-10 font-medium">Quick Menu</span>

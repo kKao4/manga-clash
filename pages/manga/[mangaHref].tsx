@@ -26,9 +26,8 @@ import { selectAdminMode } from "@/features/GlobalSlice";
 import Comments from "@/components/mangaHref/Comments"
 import Summary from "@/components/mangaHref/Summary"
 import Chapters from "@/components/mangaHref/Chapters"
-import { useDarkMode } from "usehooks-ts";
+import { useDarkMode } from "@/hooks/useDarkMode";
 const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
-// import { usePopper } from "react-popper";
 
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
   await dbConnect()
