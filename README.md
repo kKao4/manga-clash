@@ -13,12 +13,12 @@ Tính năng bổ sung cho admin: Xem thống kê lượt đọc truyện, Tạo
 TK admin:
 
 - gmail: admin\@gmail.com
-- password: admin123
+- password: admin1234
 
 TK user:
 
 - gmail: user\@gmail.com
-- password: user123
+- password: user1234
 
 Trang web sử dụng các thư viện chính sau:
 
