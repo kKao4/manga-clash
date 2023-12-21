@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 export default function DarkMode({ children }: { children: React.ReactNode }) {
   const { isDarkMode } = useDarkMode()
 
-  // TODO: fix localStorage
   // tạo kiểu cho scroll bar của html sáng/tối
   useEffect(() => {
     const scrollbarStyles = isDarkMode ? `::-webkit-scrollbar {

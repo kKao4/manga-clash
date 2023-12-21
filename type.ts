@@ -3,99 +3,79 @@ import { MangaType } from "./models/manga";
 import { ChapterType } from "./models/chapter";
 import { initialSearchState } from "./features/search/SearchSlice";
 
-export type MangasResponse = {
-  length?: number;
+export interface NormalResponse {
   message?: string;
+  error?: string;
+}
+
+export interface MangasResponse extends NormalResponse {
   data?: MangaType[];
-  error?: string
-};
-
-export type HistoryResponse = {
   length?: number;
-  message?: string;
+}
+
+export interface HistoryResponse extends NormalResponse {
+  length?: number;
   data?: {
-    manga: MangaType,
-    chapter: string,
-    createdAt: string
+    manga: MangaType;
+    chapter: string;
+    createdAt: string;
   }[];
-  error?: string
 }
 
-export type MangaResponse = {
-  message?: string;
-  error?: string;
+export interface MangaResponse extends NormalResponse {
   data?: MangaType;
-};
-
-export type ChapterResponse = {
-  message?: string,
-  error?: string,
-  data?: {
-    name: string,
-    _id: string,
-    href: string,
-    chapter: ChapterType["chapters"][number]
-  }
 }
 
-export type ChaptersResponse = {
-  message?: string,
-  error?: string,
+export interface ChapterResponse extends NormalResponse {
   data?: {
-    name: string,
-    href: string,
-    chapters: { num: string; description: string }[]
-  }
+    name: string;
+    _id: string;
+    href: string;
+    chapter: ChapterType["chapters"][number];
+  };
 }
 
-export type UserResponse = {
-  message?: string;
-  error?: string;
+export interface ChaptersResponse extends NormalResponse {
+  data?: {
+    name: string;
+    href: string;
+    chapters: { num: string; description: string }[];
+  };
+}
+
+export interface UserResponse extends NormalResponse {
   data?: Omit<UserType, "password">;
-};
-
-export type UserRatingResponse = {
-  message?: string;
-  error?: string;
-  data?: number
 }
 
-export type ChartResponse = {
-  message?: string,
-  error?: string,
-  length?: number
-  data?: MangaType[],
-  trendingManga?: MangaType
+export interface UserRatingResponse extends NormalResponse {
+  data?: number;
 }
 
-export type NormalResponse = {
-  message?: string;
-  error?: string
-};
+export interface ChartResponse extends NormalResponse {
+  length?: number;
+  data?: MangaType[];
+  trendingManga?: MangaType;
+}
 
-export type UpdateMangaResponse = {
-  message?: string,
-  error?: string,
+export interface UpdateMangaResponse extends NormalResponse {
   data?: {
-    href: string
-  }
+    href: string;
+  };
 }
 
-export type SignatureResponse = {
-  message?: string,
-  error?: string,
+export interface SignatureResponse extends NormalResponse {
   data?: {
-    timestamp: number,
-    signature: string,
-    apiKey: string
-  }
+    timestamp: number;
+    signature: string;
+    apiKey: string;
+  };
 }
-
-export type StarType = 1 | 2 | 3 | 4 | 5
-
-export const shortName = "manga-clash-disqus-com"
 
 export type MangasLength = { length: number };
+
+export type StarType = 1 | 2 | 3 | 4 | 5;
+
+export const shortName = "manga-clash-disqus-com";
 
 export const mangasPerPage = 12;
 
@@ -199,14 +179,14 @@ export const tagsArray = [
 ];
 
 export const dndItemTypes = {
-  QUICK_MENU: "quick_menu"
-}
+  QUICK_MENU: "quick_menu",
+};
 
 export const usernameReg = /^[a-zA-Z0-9 ]{4,50}$/g;
 export const passwordReg = /[\S]{8,50}/g;
 export const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-export function searchQueryFn(search: (typeof initialSearchState)) {
+export function searchQueryFn(search: typeof initialSearchState) {
   let searchQuery: string = "";
   searchQuery = `name=${search.name}&author=${search.author}&completed=${search.completed}`;
   if (search.tags.length) {

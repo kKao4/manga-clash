@@ -92,7 +92,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                       <motion.button
                         ref={setReferenceElement as any}
                         variants={quickMenuButtonVariants}
-                        className="w-12 h-12 bg-neutral-700 hover:bg-neutral-600 transition-colors rounded-full mx-auto flex justify-center items-center font-medium text-lg relative"
+                        className="w-12 h-12 bg-neutral-700 hover:bg-neutral-600 transition-colors rounded-full mx-auto flex justify-center items-center font-medium text-lg relative text-neutral-100"
                         onClick={() => setIsOpenChaptersQuickMenu(prevState => !prevState)}
                       >
                         <span className="mb-0.5">{chapterRes.data?.chapter.num}</span>
