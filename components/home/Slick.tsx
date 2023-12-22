@@ -14,7 +14,7 @@ export default function Slick({ mangas }: { mangas: MangasResponse["data"] }) {
         slidesToScroll={1}
         arrows={false}
         autoplay={true}
-        autoplaySpeed={4000}
+        autoplaySpeed={2800}
         easing="ease-out"
         lazyLoad="progressive"
         pauseOnDotsHover={true}
