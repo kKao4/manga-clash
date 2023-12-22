@@ -1,7 +1,8 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import Image from "next/image"
+import { ChangeEvent } from "react"
 
-export default function AdminImage({ handleOnChange, file, mangaState }: { handleOnChange: any, file: File | undefined, mangaState: typeof initialMangaState[number] }) {
+export default function AdminImage({ handleOnChange, file, mangaState }: { handleOnChange: (e: ChangeEvent<HTMLInputElement>) => void, file: File | undefined, mangaState: typeof initialMangaState[number] }) {
   return (
     <>
       <label

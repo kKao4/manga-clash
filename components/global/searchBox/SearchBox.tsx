@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import SearchDropdown from "./SearchDropdown"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react"
 import { BarLoader } from "react-spinners"
 import { useRouter } from "next/router"
 import { Variants, motion } from "framer-motion"
@@ -12,7 +12,7 @@ export default function SearchBox({
   setShowSearchBox
 }: {
   showSearchBox: boolean,
-  setShowSearchBox: any
+  setShowSearchBox: Dispatch<SetStateAction<boolean>>
 }) {
   const router = useRouter()
   const searchState = useSelector(selectSearchState)
@@ -38,21 +38,15 @@ export default function SearchBox({
     })
   }, 4000)
 
-  const strVariants: Variants = useMemo(() => {
-    return {
-      hidden: { opacity: 0 },
-      show: { opacity: 1, transition: { staggerChildren: 0.06, duration: 0.4, delay: 0.4, delayChildren: 0.4, repeat: 1, repeatDelay: 2.8, repeatType: "reverse" } }
-    }
-  }, [])
-  const charVariants: Variants = useMemo(() => {
-    return {
-      hidden: { opacity: 0, y: -4 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.04 } },
-    }
-  }, [])
-  const str = useMemo(() => {
-    return ["Bạn đang cần tìm truyện gì...?", "Nhập tên truyện bạn cần tìm...?"]
-  }, [])
+  const strVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.06, duration: 0.4, delay: 0.4, delayChildren: 0.4, repeat: 1, repeatDelay: 2.8, repeatType: "reverse" } }
+  }
+  const charVariants: Variants = {
+    hidden: { opacity: 0, y: -4 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.04 } },
+  }
+  const str = ["Bạn đang cần tìm truyện gì...?", "Nhập tên truyện bạn cần tìm...?"]
 
   return (
     <>

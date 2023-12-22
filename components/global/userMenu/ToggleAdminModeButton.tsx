@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function ToggleAdminModeButton({ adminMode, handleOnClick }: { adminMode: boolean, handleOnClick: any }) {
+export default function ToggleAdminModeButton({ adminMode, handleOnClick }: { adminMode: boolean, handleOnClick: () => void }) {
   return (
     <div className={`w-[76px] h-7 ${adminMode ? "bg-second-green" : "bg-gray-200"} rounded-full flex flex-row  shrink-0 ${adminMode ? "justify-end" : "justify-start"} cursor-pointer transition-all duration-200 px-[3px] relative`} onClick={handleOnClick}>
       <motion.div

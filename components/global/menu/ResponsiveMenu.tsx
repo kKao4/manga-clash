@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ResponsiveMenu({
   showModalMenu, handleOnClick, handleOnClickLink
 }: {
-  showModalMenu: boolean, handleOnClick: any, handleOnClickLink: any
+  showModalMenu: boolean, handleOnClick: () => void, handleOnClickLink: () => void
 }) {
   const myRef = useRef<HTMLDivElement>(null)
   useOnClickOutside(myRef, handleOnClick)

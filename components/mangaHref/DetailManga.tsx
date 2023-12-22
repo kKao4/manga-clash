@@ -18,7 +18,7 @@ import { RootState } from "@/store";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
-export default function DetailManga({ manga, chapters, handleScroll }: { manga: MangaType, chapters: MangaType["chapters"] | undefined, handleScroll: () => void }) {
+export default function DetailManga({ manga, chapters, handleScroll }: { manga: Omit<MangaType, "chapters">, chapters: MangaType["chapters"] | undefined, handleScroll: () => void }) {
   const router = useRouter()
   const dispatch = useDispatch()
   const myRef = useRef<HTMLDivElement>(null)
@@ -97,7 +97,7 @@ export default function DetailManga({ manga, chapters, handleScroll }: { manga: 
     }
     setIsLoadingUserRating(false)
   }, [dispatch, manga.href, router.query.mangaHref])
-  
+
   return (
     <>
       {/* manga's rating */}

@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-export default function LinkDropdown({ content, href, handleOnClick, isLink = true }: { content: string, href?: string, handleOnClick: any, isLink?: boolean }) {
+export default function LinkDropdown({ content, href, handleOnClick, isLink = true }: { content: string, href?: string, handleOnClick: () => void, isLink?: boolean }) {
   if (isLink && href) {
     return (
       <Link

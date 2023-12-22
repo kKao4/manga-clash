@@ -10,7 +10,7 @@ import RowChapter from "@/components/global/mangaBox/RowChapter";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
-export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }, ref: any) {
+export default function TableRow({ manga, mangasLength }: { manga: MangaType, mangasLength: number }) {
   const dispatch = useDispatch()
   const router = useRouter()
   const bookmarkState = useSelector(selectBookmarkState)

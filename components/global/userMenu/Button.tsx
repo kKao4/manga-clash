@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-export default function Button({ content, handleOnClick }: { content: string, handleOnClick: any }) {
+export default function Button({ content, handleOnClick }: { content: string, handleOnClick: () => void }) {
   return (
     <motion.button
       whileTap={{ scale: 0.95 }}

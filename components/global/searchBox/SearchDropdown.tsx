@@ -1,12 +1,12 @@
 import { selectSearchState } from "@/features/search/SearchSlice"
 import { MangaType } from "@/models/manga"
 import { MangasResponse } from "@/type"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useDebounce } from 'usehooks-ts'
 import RowSearchDropdown from "./RowSearchDropdown"
 
-export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }: { setIsLoadingMangas: any, setShowSearchBox: any }) {
+export default function SearchDropdown({ setIsLoadingMangas, setShowSearchBox }: { setIsLoadingMangas: Dispatch<SetStateAction<boolean>>, setShowSearchBox: Dispatch<SetStateAction<boolean>> }) {
   const searchState = useSelector(selectSearchState)
   const debounceSearchName = useDebounce<string>(searchState.name, 400)
   const [searchedMangas, setSearchedMangas] = useState<MangaType[]>()

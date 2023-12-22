@@ -19,7 +19,7 @@ export default function OrderButton({
   const sort = useSelector(selectSort)
   const searchState = useSelector(selectSearchState)
   const [query, setQuery] = useState<string>()
-  const hoverRef = useRef<any>(null)
+  const hoverRef = useRef<HTMLAnchorElement>(null)
   const isHover = useHover(hoverRef)
   // Tạo ra query cho url dựa theo redux state
   useEffect(() => {

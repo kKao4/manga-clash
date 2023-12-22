@@ -2,14 +2,14 @@ import { initialMangaState } from "@/features/mangaHref/MangaSlice"
 import { useDarkMode } from "@/hooks/useDarkMode"
 import { MangaType } from "@/models/manga"
 import { SignatureResponse } from "@/type"
-import { useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { PacmanLoader } from "react-spinners"
 import { toast } from "react-toastify"
 
 export default function AdminAddChapterModal({
   isOpenAddChapter, mangaState, chapters, chaptersOrder, setChapters
 }: {
-  isOpenAddChapter: boolean, mangaState: typeof initialMangaState[number], chapters: MangaType["chapters"], chaptersOrder: "earliest" | "latest", setChapters: any
+  isOpenAddChapter: boolean, mangaState: typeof initialMangaState[number], chapters: MangaType["chapters"], chaptersOrder: "earliest" | "latest", setChapters: Dispatch<SetStateAction<MangaType["chapters"] | undefined>>
 }) {
   const { isDarkMode } = useDarkMode()
   const [num, setNum] = useState<string>("")

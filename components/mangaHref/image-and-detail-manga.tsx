@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react"
+import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from "react"
 import { MangaType } from "@/models/manga"
 import { MangaResponse } from "@/type"
 import { useDispatch, useSelector } from "react-redux"
@@ -23,7 +23,7 @@ const DynamicAdminDetailManga = dynamic(() => import("./admin/admin-detail-manga
 export default function ImageAndDetailManga({
   mangaState, chapters, description, setDescription, handleScroll
 }: {
-  mangaState: MangaType | Omit<MangaType, "chapters">, chapters: MangaType["chapters"] | undefined, description: string, setDescription: Dispatch<SetStateAction<string>>, handleScroll: () => void
+  mangaState: Omit<MangaType, "chapters">, chapters: MangaType["chapters"] | undefined, description: string, setDescription: Dispatch<SetStateAction<string>>, handleScroll: () => void
 }) {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -94,7 +94,7 @@ export default function ImageAndDetailManga({
             <DynamicAdminImage
               file={file}
               mangaState={mangaState}
-              handleOnChange={(e: any) => {
+              handleOnChange={(e: ChangeEvent<HTMLInputElement>) => {
                 if (e.target.files) {
                   setFile(e.target.files[0])
                 }
@@ -139,7 +139,7 @@ export default function ImageAndDetailManga({
         )}
         {/* user mode */}
         <div className={`${!adminMode ? "block" : "hidden"}`}>
-          <DetailManga manga={mangaState as any} chapters={chapters} handleScroll={handleScroll} />
+          <DetailManga manga={mangaState} chapters={chapters} handleScroll={handleScroll} />
         </div>
       </div>
     </form>

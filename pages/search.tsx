@@ -117,9 +117,7 @@ const Page = ({ mangasRes, userRes }: InferGetServerSidePropsType<typeof getServ
       setShowAdvanced(true)
     }
   }, [router])
-  const title = useMemo(() => {
-    return `Tìm kiếm cho ${searchState.name} - Manga Clash`
-  }, [searchState.name])
+  const title = `Tìm kiếm cho ${searchState.name} - Manga Clash`
   return (
     <>
       <Head>

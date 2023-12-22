@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { tagsArray } from "@/type"
 
-export default function GenreButton({ tag, handleOnClick }: { tag: typeof tagsArray[number], handleOnClick: any }) {
+export default function GenreButton({ tag, handleOnClick }: { tag: typeof tagsArray[number], handleOnClick: () => void }) {
   return (
     <Link
       href={`/manga/?page=1&sort=latest&tags=${tag.id}`}

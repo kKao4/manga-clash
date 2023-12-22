@@ -1,16 +1,22 @@
-import { ChapterResponse, ChaptersResponse } from "@/type";
+import { ChapterResponse, ChaptersResponse, ReadingStyle } from "@/type";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent, SetStateAction, Dispatch } from "react"
 import Select from "./Select";
 import { motion } from "framer-motion";
 import { useReadingStyle } from "@/hooks/useReadingStyle";
 
+interface Props {
+  chapters: ChaptersResponse["data"],
+  prevChapter: string,
+  nextChapter: string,
+  index: number,
+  setIndex: Dispatch<SetStateAction<number>>,
+  chapter: ChapterResponse["data"]
+}
 
 export default function Menu({
   chapters, prevChapter, nextChapter, index, setIndex, chapter
-}: {
-  chapters: ChaptersResponse["data"], prevChapter: string, nextChapter: string, index: number, setIndex: any, chapter: ChapterResponse["data"]
-}) {
+}: Props) {
   const router = useRouter()
   const [isFirstChapter, setIsFirstChapter] = useState<boolean>(false)
   const [isLastChapter, setIsLastChapter] = useState<boolean>(false)
@@ -27,7 +33,7 @@ export default function Menu({
         <Select
           width="w-full md:w-[320px] xl:w-[400px]"
           value={chapter!.chapter.num}
-          handleOnChange={(e: any) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
+          handleOnChange={(e: ChangeEvent<HTMLSelectElement>) => router.push(`/manga/${router.query.mangaHref}/chapter-${e.target.value}`)}
         >
           {chapters?.chapters.map(chapter => {
             return (
@@ -45,8 +51,8 @@ export default function Menu({
           <Select
             width="w-fit"
             value={readingStyle}
-            handleOnChange={(e: any) => {
-              toggleReadingStyle(e.target.value)
+            handleOnChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              toggleReadingStyle(e.target.value as ReadingStyle)
             }}
           >
             <option value="full">Full Page</option>
@@ -57,7 +63,7 @@ export default function Menu({
               <Select
                 width="w-[88px]"
                 value={(index + 1).toString()}
-                handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+                handleOnChange={(e: ChangeEvent<HTMLSelectElement>) => setIndex(Number(e.target.value) - 1)}
                 contentCenter={true}
               >
                 {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {
@@ -76,7 +82,7 @@ export default function Menu({
               <Select
                 width="w-[88px]"
                 value={(index + 1).toString()}
-                handleOnChange={(e: any) => setIndex(Number(e.target.value) - 1)}
+                handleOnChange={(e: ChangeEvent<HTMLSelectElement>) => setIndex(Number(e.target.value) - 1)}
                 contentCenter={true}
               >
                 {Array.from({ length: chapter!.chapter.imagesPath.length }, (_, i) => i + 1).map(i => {

@@ -2,11 +2,22 @@ import { Variants, motion, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePopper } from "react-popper"
-import { ChapterResponse, ChaptersResponse } from "@/type"
+import { ChapterResponse, ChaptersResponse, QuickMenuCord } from "@/type"
 import { isMobile } from "react-device-detect"
 import { useQuickMenuMode } from "@/hooks/useQuickMenuMode"
+import { ConnectDragSource } from "react-dnd"
 
-export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: { quickMenuCord: any, isDragging: boolean, drag: any, chapterRes: ChapterResponse, chaptersRes: ChaptersResponse, prevChapter: string, nextChapter: string }) {
+interface Props {
+  quickMenuCord: QuickMenuCord,
+  isDragging: boolean,
+  drag: ConnectDragSource,
+  chapterRes: ChapterResponse,
+  chaptersRes: ChaptersResponse,
+  prevChapter: string,
+  nextChapter: string
+}
+
+export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: Props) {
   const { quickMenuMode } = useQuickMenuMode()
   const [isOpenChaptersQuickMenu, setIsOpenChaptersQuickMenu] = useState<boolean>(false)
   const [isOpenDetailQuickMenu, setIsOpenDetailQuickMenu] = useState<boolean>(false)
@@ -45,7 +56,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
     <>
       <div className="fixed z-50" style={{ left: quickMenuCord.x + "px", top: quickMenuCord.y + "px" }}>
         <AnimatePresence>
-          {quickMenuMode as any && (
+          {quickMenuMode && (
             <motion.div
               initial="hidden"
               animate="show"
@@ -110,7 +121,7 @@ export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes,
                               exit={{ opacity: 0, x: -14 }}
                               className="bg-neutral-700 rounded-md overflow-y-auto max-h-[400px] w-56 p-1.5 chaptersBox flex flex-col"
                             >
-                              {chaptersRes.data?.chapters.map((chapter: any) => {
+                              {chaptersRes.data?.chapters.map((chapter) => {
                                 return (
                                   <Link
                                     key={chapter.num + "-quick-menu"}

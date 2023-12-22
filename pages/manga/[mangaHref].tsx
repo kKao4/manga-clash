@@ -112,20 +112,17 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chaptersOrder])
   // scroll to comments
-  const handleScroll = useCallback(() => {
+  const handleScroll = () => {
     if (commentsRef.current) {
       commentsRef.current.scrollIntoView({ behavior: "smooth" })
     }
-  }, [])
+  }
   // Title For Page
-  const title = useMemo(() => {
-    return `Đọc ${mangaState?.name} - Manga Clash`
-  }, [mangaState?.name])
+  const title = `Đọc ${mangaState?.name} - Manga Clash`
 
-  const handleChangeChaptersOrder = useCallback(() => {
+  const handleChangeChaptersOrder = () => {
     setChaptersOrder(prevChaptersOrder => prevChaptersOrder === "earliest" ? "latest" : "earliest")
-  }, [])
-
+  }
   if (mangaState) {
     return (
       <>
@@ -165,7 +162,7 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
               />
               {/* chapters */}
               <Chapters
-                mangaState={mangaState as any}
+                mangaState={mangaState}
                 chaptersOrder={chaptersOrder}
                 chapters={chapters as any}
                 handleChangeChaptersOrder={handleChangeChaptersOrder}
@@ -182,5 +179,4 @@ const Page = ({ mangaRes, popularMangasRes, userRes, userRatingRes }: InferGetSe
     )
   }
 }
-
 export default Page;

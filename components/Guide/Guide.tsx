@@ -36,8 +36,7 @@ export default function Guide() {
   useKeyPressEscape(() => dispatch(toggleGuide(false)))
   // Thoát modal khi nhấn bên ngoài
   useOnClickOutside(myRef, () => dispatch(toggleGuide(false)))
-  const codeString = useMemo(() => {
-    return `"dependencies": {
+  const codeString = `"dependencies": {
   "@cloudinary/react": "^1.11.2",
   "@cloudinary/url-gen": "^1.12.0",
   "@popperjs/core": "^2.11.8",
@@ -111,13 +110,10 @@ export default function Guide() {
   "react-redux": "^8.1.2"
 }
 `
-  }, [])
-  const revealVariants: Variants = useMemo(() => {
-    return {
-      hidden: { opacity: 0, y: 18 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-    }
-  }, [])
+  const revealVariants: Variants = {
+    hidden: { opacity: 0, y: 18 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+  }
   return (
     <AnimatePresence>
       {showGuide && (

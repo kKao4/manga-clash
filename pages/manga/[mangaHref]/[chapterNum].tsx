@@ -5,7 +5,7 @@ import Image from "next/image"
 import Menu from "@/components/chapterNum/Menu"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { InferGetServerSidePropsType, GetServerSideProps } from "next"
-import { ChapterResponse, ChaptersResponse, UserResponse } from "@/type"
+import { ChapterResponse, ChaptersResponse, QuickMenuCord, UserResponse } from "@/type"
 import UserMenu from "@/components/global/userMenu/UserMenu"
 import { useSelector, useDispatch } from "react-redux"
 import Title from "@/components/global/Title/Title"
@@ -90,7 +90,7 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     rootMargin: "-180px",
     freezeOnceVisible: false
   })
-  const [quickMenuCord, setQuickMenuCord] = useState<{ x: number, y: number }>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
+  const [quickMenuCord, setQuickMenuCord] = useState<QuickMenuCord>({ x: isMobile ? 0 : 120, y: isMobile ? 0 : 240 })
   const { quickMenuMode, toggleQuickMenuMode } = useQuickMenuMode()
   const { readingStyle } = useReadingStyle()
   const [readChapters, setReadChapters] = useLocalStorage(chapterRes.data!.href, [] as string[])
@@ -195,15 +195,13 @@ const Page = ({ chapterRes, chaptersRes, userRes }: InferGetServerSidePropsType<
     }
   }, [chapterRes, index, prevChapter, router])
   // title for page
-  const title = useMemo(() => {
-    return `Chapter ${chapterRes.data?.chapter.num} - ${chaptersRes.data?.name}`
-  }, [chapterRes.data?.chapter.num, chaptersRes.data?.name])
+  const title = `Chapter ${chapterRes.data?.chapter.num} - ${chaptersRes.data?.name}`
   // set quick menu cord function
-  const changeQuickMenuCord = useCallback((x?: number, y?: number) => {
+  const changeQuickMenuCord = (x?: number, y?: number) => {
     if (x && y) {
       setQuickMenuCord({ x, y })
     }
-  }, [])
+  }
   // dnd drag hook
   const [{ isDragging }, drag] = useDrag(() => ({
     type: dndItemTypes.QUICK_MENU,

@@ -1,7 +1,8 @@
+import { MangaType } from "@/models/manga"
 import { MangaResponse } from "@/type"
 import Link from "next/link"
 
-export default function TagsDetailManga({ manga }: { manga: MangaResponse["data"] }) {
+export default function TagsDetailManga({ manga }: { manga: Omit<MangaType, "chapters"> }) {
   return (
     <>
       {manga!.tags.length ? (

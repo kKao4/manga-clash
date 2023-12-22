@@ -1,12 +1,13 @@
 import { initialMangaState } from "@/features/mangaHref/MangaSlice"
-import { useState } from "react"
+import { MangaType } from "@/models/manga"
+import { Dispatch, SetStateAction, useState } from "react"
 import { PulseLoader } from "react-spinners"
 import { toast } from "react-toastify"
 
 export default function AdminDeleteChapters({
   setIsDeletingChapters, checkedChapters, setCheckedChapters, setChapters, isDeletingChapters, mangaState
 }: {
-  setIsDeletingChapters: any, checkedChapters: string[], setCheckedChapters: any, setChapters: any, isDeletingChapters: boolean, mangaState: typeof initialMangaState[number]
+  setIsDeletingChapters: Dispatch<SetStateAction<boolean>>, checkedChapters: string[], setCheckedChapters: any, setChapters: Dispatch<SetStateAction<MangaType["chapters"] | undefined>>, isDeletingChapters: boolean, mangaState: typeof initialMangaState[number]
 }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false)
   return (

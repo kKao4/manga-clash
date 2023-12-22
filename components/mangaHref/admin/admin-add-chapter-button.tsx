@@ -1,4 +1,6 @@
-export default function AdminAddChapterButton({ setIsOpenAddChapter }: { setIsOpenAddChapter: any }) {
+import { Dispatch, SetStateAction } from "react";
+
+export default function AdminAddChapterButton({ setIsOpenAddChapter }: { setIsOpenAddChapter: Dispatch<SetStateAction<boolean>> }) {
   return (
     <div className="relative col-span-1">
       <button

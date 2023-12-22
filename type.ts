@@ -3,77 +3,73 @@ import { MangaType } from "./models/manga";
 import { ChapterType } from "./models/chapter";
 import { initialSearchState } from "./features/search/SearchSlice";
 
-export interface NormalResponse {
+export interface NormalResponse<T = undefined> {
   message?: string;
   error?: string;
+  data?: T;
 }
 
-export interface MangasResponse extends NormalResponse {
-  data?: MangaType[];
+export interface MangasResponse extends NormalResponse<MangaType[]> {
   length?: number;
 }
 
-export interface HistoryResponse extends NormalResponse {
+export interface HistoryResponse
+  extends NormalResponse<
+    {
+      manga: MangaType;
+      chapter: string;
+      createdAt: string;
+    }[]
+  > {
   length?: number;
-  data?: {
-    manga: MangaType;
-    chapter: string;
-    createdAt: string;
-  }[];
 }
 
-export interface MangaResponse extends NormalResponse {
-  data?: MangaType;
-}
+export interface MangaResponse extends NormalResponse<MangaType> {}
 
-export interface ChapterResponse extends NormalResponse {
-  data?: {
+export interface ChapterResponse
+  extends NormalResponse<{
     name: string;
     _id: string;
     href: string;
     chapter: ChapterType["chapters"][number];
-  };
-}
+  }> {}
 
-export interface ChaptersResponse extends NormalResponse {
-  data?: {
+export interface ChaptersResponse
+  extends NormalResponse<{
     name: string;
     href: string;
     chapters: { num: string; description: string }[];
-  };
-}
+  }> {}
 
-export interface UserResponse extends NormalResponse {
-  data?: Omit<UserType, "password">;
-}
+export interface UserResponse
+  extends NormalResponse<Omit<UserType, "password">> {}
 
-export interface UserRatingResponse extends NormalResponse {
-  data?: number;
-}
+export interface UserRatingResponse extends NormalResponse<number> {}
 
-export interface ChartResponse extends NormalResponse {
+export interface ChartResponse extends NormalResponse<MangaType[]> {
   length?: number;
-  data?: MangaType[];
   trendingManga?: MangaType;
 }
 
-export interface UpdateMangaResponse extends NormalResponse {
-  data?: {
+export interface UpdateMangaResponse
+  extends NormalResponse<{
     href: string;
-  };
-}
+  }> {}
 
-export interface SignatureResponse extends NormalResponse {
-  data?: {
+export interface SignatureResponse
+  extends NormalResponse<{
     timestamp: number;
     signature: string;
     apiKey: string;
-  };
-}
+  }> {}
 
 export type MangasLength = { length: number };
 
 export type StarType = 1 | 2 | 3 | 4 | 5;
+
+export type ReadingStyle = "full" | "single";
+
+export type QuickMenuCord = { x: number; y: number };
 
 export const shortName = "manga-clash-disqus-com";
 

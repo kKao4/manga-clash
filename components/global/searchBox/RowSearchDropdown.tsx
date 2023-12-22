@@ -4,9 +4,10 @@ import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { vi } from "date-fns/locale"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { Dispatch, SetStateAction } from "react"
 import { useDispatch } from "react-redux"
 
-export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: MangaType, setShowSearchBox: any }) {
+export default function RowSearchDropdown({ manga, setShowSearchBox }: { manga: MangaType, setShowSearchBox: Dispatch<SetStateAction<boolean>> }) {
   const router = useRouter()
   const dispatch = useDispatch()
   return (

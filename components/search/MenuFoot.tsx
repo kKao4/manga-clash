@@ -3,11 +3,11 @@ import MenuFootBox from "../global/box/MenuFootBox"
 import { selectSearchState, setSearchName } from "@/features/search/SearchSlice"
 import { useRouter } from "next/router"
 import { MyRipples } from "../global/ButtonRipple"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import dynamic from "next/dynamic";
 const DynamicAdvanced = dynamic(() => import("@/components/search/Advanced"))
 
-export default function MenuFoot({ setSearched }: { setSearched: any }) {
+export default function MenuFoot({ setSearched }: { setSearched: Dispatch<SetStateAction<boolean>> }) {
   const router = useRouter()
   const dispatch = useDispatch()
   const searchState = useSelector(selectSearchState)

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import Title from "../global/Title/Title"
 import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
@@ -20,7 +20,7 @@ const DynamicAdminDeleteChapters = dynamic(() => import("./admin/admin-delete-ch
 export default function Chapters({
   mangaState, chaptersOrder, chapters, handleChangeChaptersOrder, setChapters
 }: {
-  mangaState: MangaType, chaptersOrder: "latest" | "earliest", chapters: MangaType["chapters"], handleChangeChaptersOrder: () => void, setChapters: any
+  mangaState: Omit<MangaType, "chapters">, chaptersOrder: "latest" | "earliest", chapters: MangaType["chapters"], handleChangeChaptersOrder: () => void, setChapters: Dispatch<SetStateAction<MangaType["chapters"] | undefined>>
 }) {
   const adminMode = useSelector(selectAdminMode)
   const showMoreChaptersRef = useRef<HTMLDivElement>(null)
@@ -77,7 +77,7 @@ export default function Chapters({
               <Chapter
                 key={chapter.num}
                 chapter={chapter}
-                readChapters={readChapters as any}
+                readChapters={readChapters as string[]}
                 mangaHref={mangaState.href}
                 checked={checkedChapters.includes(chapter.num)}
                 handleOnChange={() => setCheckedChapters(prevCheckedChapters => {
