@@ -5,18 +5,21 @@ export default function MenuButton({
   content,
   sort,
   href,
-  handleOnClick
+  handleOnClick,
+  role
 }: {
   content: string,
   sort: Order,
   href: string,
   handleOnClick: (value: Order) => void
+  role?: string;
 }) {
   return (
     <Link
       href={href}
       className="px-4 py-3 cursor-pointer group"
       onClick={() => handleOnClick(sort)}
+      role={role}
     >
       <div className="relative uppercase text-white text-sm font-bold">
         {content}

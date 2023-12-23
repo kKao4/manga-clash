@@ -44,7 +44,7 @@ export default function DarkMode({ children }: { children: React.ReactNode }) {
   }, [isDarkMode])
 
   return (
-    <div className={`${isDarkMode ? "dark" : "light"}`}>
+    <div className={`${isDarkMode ? "dark" : "light"}`} data-darkmode={isDarkMode} role='theme-container'>
       {children}
     </div>
   )

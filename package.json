@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --watch"
   },
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
@@ -32,6 +33,7 @@
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "next-csrf": "^0.2.1",
+    "next-router-mock": "^0.9.11",
     "nodemailer": "^6.9.5",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
@@ -60,10 +62,14 @@
   "devDependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@tailwindcss/typography": "^0.5.10",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie": "^0.5.2",
     "@types/express-fileupload": "^1.4.2",
     "@types/formidable": "^3.4.3",
+    "@types/jest": "^29.5.11",
     "@types/multiparty": "^0.0.33",
     "@types/nodemailer": "^6.4.10",
     "@types/nprogress": "^0.2.1",
@@ -77,6 +83,8 @@
     "bcrypt": "^5.1.1",
     "date-fns": "^2.30.0",
     "formidable": "^3.5.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "moongose": "^1.0.0",
     "react-paginate": "^8.2.0",
     "react-redux": "^8.1.2"
