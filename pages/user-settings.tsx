@@ -34,7 +34,7 @@ const DynamicAddManga = dynamic(() => import("@/components/user-settings/add-man
 const DynamicChart = dynamic(() => import("@/components/user-settings/chart/Chart"), {
   loading: () => <DotLoaderComponent size={40} />
 })
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/MangaBoxes"))
 
 export const getServerSideProps: GetServerSideProps<{ popularMangasRes: MangasResponse, bookmarkRes: MangasResponse, historyRes: HistoryResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ req, query }) => {
   await dbConnect()

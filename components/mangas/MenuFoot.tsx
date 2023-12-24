@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import MenuFootBox from "../global/box/MenuFootBox"
 import { tagsArray } from "@/type"
-import Navigation from "../global/navigation/navigation"
+import Navigation from "../global/navigation/Navigation"
 import dynamic from "next/dynamic"
 const DynamicGenreButton = dynamic(() => import("./GenreButton"))
 

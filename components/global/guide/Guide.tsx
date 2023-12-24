@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectGuide, toggleGuide } from "@/features/GlobalSlice";
 import { useOnClickOutside, useLockedBody } from "usehooks-ts";
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
-import CloseButton from "../global/signIn_signUp_resetPassword/close-button";
+import CloseButton from "../signIn_signUp_resetPassword/CloseButton";
 
 export default function Guide() {
   const dispatch = useDispatch()

@@ -15,7 +15,7 @@ import dbConnect from "@/lib/dbConnect"
 import Slick from "@/components/home/Slick"
 import { getAllMangasChart } from "@/lib/getServerSideProps/getAllMangasChart"
 import TrendingManga from "@/components/home/TrendingManga"
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
+import MangasBoxesPopular from "@/components/global/popularMangas/MangaBoxes"
 
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse, chartRes: ChartResponse }> = async ({ query, req }) => {
   await dbConnect()

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
-import Title from "../global/Title/Title"
+import Title from "../global/title/Title"
 import { useSelector } from "react-redux"
 import { selectAdminMode } from "@/features/GlobalSlice"
 import { MangaType } from "@/models/manga"

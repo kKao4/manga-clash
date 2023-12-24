@@ -21,14 +21,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { DndProvider } from 'react-dnd'
 import { isMobile } from "react-device-detect"
-import ButtonGuide from "@/components/button-guide/ButtonGuide";
-import Toastify from "@/components/Toastify/Toastify";
-const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-up"))
-const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/sign-in"))
-const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/reset-password"))
+import ButtonGuide from "@/components/global/guide/ButtonGuide";
+import Toastify from "@/components/global/toastify/Toastify";
+const DynamicSignUp = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/SignUp"))
+const DynamicSignIn = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/SignIn"))
+const DynamicResetPassword = dynamic(() => import("@/components/global/signIn_signUp_resetPassword/ResetPassword"))
 const DynamicFooter = dynamic(() => import("@/components/global/footer/Footer"))
-const DynamicButtonScrollToTop = dynamic(() => import("@/components/global/buttonScrollToTop/buttonScrollToTop"))
-const DynamicGuide = dynamic(() => import("@/components/Guide/Guide"))
+const DynamicButtonScrollToTop = dynamic(() => import("@/components/global/buttonScrollToTop/ButtonScrollToTop"))
+const DynamicGuide = dynamic(() => import("@/components/global/guide/Guide"))
 
 const openSans = Open_Sans({
   subsets: ["latin"],

@@ -1,5 +1,5 @@
 import OrderButton from "./OrderButton"
-import Title from "../Title/Title"
+import Title from "../title/Title"
 import { useDispatch } from "react-redux"
 import { Order, setSort } from "@/features/GlobalSlice"
 import { useRouter } from "next/router"

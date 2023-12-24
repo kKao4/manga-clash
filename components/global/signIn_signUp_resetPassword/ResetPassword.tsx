@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
 import { selectResetPassword, toggleResetPassword } from "@/features/GlobalSlice"
 import { useState, useEffect, useRef } from "react"
-import Input from "./input"
+import Input from "./Input"
 import { emailReg } from "@/type"
-import CloseButton from "./close-button"
+import CloseButton from "./CloseButton"
 import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside, useLockedBody } from 'usehooks-ts'
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape"

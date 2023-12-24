@@ -1,6 +1,6 @@
 import { MangaResponse, MangasResponse, UserRatingResponse, UserResponse } from "@/type";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import Navigation from "@/components/global/navigation/navigation";
+import Navigation from "@/components/global/navigation/Navigation";
 import MenuFootBox from "@/components/global/box/MenuFootBox";
 import BodyBox from "@/components/global/box/BodyBox";
 import { useCallback, useMemo, useRef, useState } from "react"
@@ -27,7 +27,7 @@ import Comments from "@/components/mangaHref/Comments"
 import Summary from "@/components/mangaHref/Summary"
 import Chapters from "@/components/mangaHref/Chapters"
 import { useDarkMode } from "@/hooks/useDarkMode";
-const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/manga-boxes"))
+const DynamicMangasBoxesPopular = dynamic(() => import("@/components/global/popularMangas/MangaBoxes"))
 
 export const getServerSideProps: GetServerSideProps<{ mangaRes: MangaResponse, popularMangasRes: MangasResponse, userRes: UserResponse, userRatingRes: UserRatingResponse }> = async ({ req, query }) => {
   await dbConnect()

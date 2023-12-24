@@ -2,7 +2,7 @@ import { MangaType } from "@/models/manga"
 import Link from "next/link"
 import { useDispatch } from "react-redux"
 import { setSort } from "@/features/GlobalSlice"
-import Row from "./row"
+import Row from "./Row"
 import { motion } from "framer-motion"
 
 export default function MangasBoxesPopular({ mangas }: { mangas: MangaType[] | undefined }) {

@@ -4,11 +4,11 @@ import { selectSignUp } from "@/features/GlobalSlice"
 import { useSelector } from "react-redux"
 import { useState, useEffect, useRef } from "react";
 import { NormalResponse } from "@/type";
-import Input from "./input";
+import Input from "./Input";
 import { usernameReg, passwordReg, emailReg } from "@/type";
 import { PropagateLoader } from "react-spinners"
 import { useOnClickOutside, useLockedBody } from 'usehooks-ts'
-import CloseButton from "./close-button";
+import CloseButton from "./CloseButton";
 import { useKeyPressEscape } from "@/hooks/useKeyPressEscape";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";

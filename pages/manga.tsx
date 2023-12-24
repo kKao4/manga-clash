@@ -18,7 +18,7 @@ import { GetALlMangas, getAllMangas } from "@/lib/getServerSideProps/getAllManga
 import { getAllPopularMangas } from "@/lib/getServerSideProps/getAllPopularMangas";
 import { getUser } from "@/lib/getServerSideProps/getUser";
 import dbConnect from "@/lib/dbConnect";
-import MangasBoxesPopular from "@/components/global/popularMangas/manga-boxes"
+import MangasBoxesPopular from "@/components/global/popularMangas/MangaBoxes"
 
 export const getServerSideProps: GetServerSideProps<{ mangasRes: MangasResponse, popularMangasRes: MangasResponse, userRes: UserResponse }> = async ({ req, query }) => {
   await dbConnect()
