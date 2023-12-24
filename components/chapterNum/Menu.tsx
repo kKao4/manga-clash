@@ -5,7 +5,7 @@ import Select from "./Select";
 import { motion } from "framer-motion";
 import { useReadingStyle } from "@/hooks/useReadingStyle";
 
-interface Props {
+export interface MenuProps {
   chapters: ChaptersResponse["data"],
   prevChapter: string,
   nextChapter: string,
@@ -16,7 +16,7 @@ interface Props {
 
 export default function Menu({
   chapters, prevChapter, nextChapter, index, setIndex, chapter
-}: Props) {
+}: MenuProps) {
   const router = useRouter()
   const [isFirstChapter, setIsFirstChapter] = useState<boolean>(false)
   const [isLastChapter, setIsLastChapter] = useState<boolean>(false)

@@ -1,25 +1,27 @@
 import { Order } from "@/features/GlobalSlice"
 import Link from "next/link"
+import { ComponentProps } from "react";
+
+export type MenuButtonProps = {
+  content: string,
+  sort: Order,
+  href: string,
+  handleOnClick: (value: Order) => void
+} & ComponentProps<typeof Link>
 
 export default function MenuButton({
   content,
   sort,
   href,
   handleOnClick,
-  role
-}: {
-  content: string,
-  sort: Order,
-  href: string,
-  handleOnClick: (value: Order) => void
-  role?: string;
-}) {
+  ...props
+}: MenuButtonProps) {
   return (
     <Link
       href={href}
       className="px-4 py-3 cursor-pointer group"
       onClick={() => handleOnClick(sort)}
-      role={role}
+      {...props}
     >
       <div className="relative uppercase text-white text-sm font-bold">
         {content}

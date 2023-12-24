@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import store from '@/store'
 import mockRouter from "next-router-mock"
 import DarkMode from "@/components/global/darkMode/DarkMode"
-import { secureHeapUsed } from 'crypto'
 
 const menu = (
   <Provider store={store}>
@@ -63,7 +62,7 @@ test("nhấn nút đổi theme để đổi chủ đề", async () => {
   }
 })
 
-test.only("đường dẫn các nút trong menu", async () => {
+test("đường dẫn các nút trong menu", async () => {
   const logoButtonMenu = screen.getByRole("logo-button-menu")
   const homeButtonMenu = screen.getByRole("home-button-menu")
   const mangaLatestButtonMenu = screen.getByRole("manga-latest-button-menu")

@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect"
 import { useQuickMenuMode } from "@/hooks/useQuickMenuMode"
 import { ConnectDragSource } from "react-dnd"
 
-interface Props {
+export interface QuickMenuProps {
   quickMenuCord: QuickMenuCord,
   isDragging: boolean,
   drag: ConnectDragSource,
@@ -17,7 +17,7 @@ interface Props {
   nextChapter: string
 }
 
-export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: Props) {
+export default function QuickMenu({ quickMenuCord, isDragging, drag, chapterRes, chaptersRes, prevChapter, nextChapter }: QuickMenuProps) {
   const { quickMenuMode } = useQuickMenuMode()
   const [isOpenChaptersQuickMenu, setIsOpenChaptersQuickMenu] = useState<boolean>(false)
   const [isOpenDetailQuickMenu, setIsOpenDetailQuickMenu] = useState<boolean>(false)

@@ -1,7 +1,7 @@
 import { ReadingStyle } from "@/type";
 import { ChangeEvent } from "react";
 
-interface Props {
+export interface SelectProps {
   value: string,
   handleOnChange: (e: ChangeEvent<HTMLSelectElement>) => void,
   children: React.ReactNode,
@@ -9,7 +9,7 @@ interface Props {
   contentCenter?: boolean
 }
 
-export default function Select({ value, handleOnChange, children, width, contentCenter = false }: Props) {
+export default function Select({ value, handleOnChange, children, width, contentCenter = false }: SelectProps) {
   return (
     <div className={`relative overflow-hidden ${width}`}>
       <select

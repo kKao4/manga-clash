@@ -85,6 +85,7 @@ export default function SignIn() {
                 setWrongInformation(true)
               }
             }}
+            role="sign-in-form"
           >
             <CloseButton handleOnClick={() => dispatch(toggleSignIn(false))} />
             <p className="text-xl font-bold text-center uppercase">Đăng Nhập</p>
@@ -96,6 +97,7 @@ export default function SignIn() {
               handleOnChange={emailChange}
               valid={emailValid}
               validContent="Email không hợp lệ"
+              role="email-sign-in-input"
             >
               <p className={`${!wrongInformation ? "hidden" : "block"} text-red-500 text-sm`}>Sai tên đăng nhập hoặc mật khẩu</p>
             </Input>
@@ -107,6 +109,7 @@ export default function SignIn() {
               handleOnChange={passwordChange}
               valid={passwordValid}
               validContent="Độ dài tối thiểu là 8 ký tự"
+              role="password-sign-in-input"
             >
               <p className={`${!wrongInformation ? "hidden" : "block"} text-red-500 text-sm`}>Sai tên đăng nhập hoặc mật khẩu</p>
             </Input>
@@ -118,6 +121,7 @@ export default function SignIn() {
                 type="submit"
                 className={`${!passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !passwordValid || !emailValid ? "" : "hover:bg-black"} font-bold rounded-full text-white w-[140px] h-[48px] transition-colors relative`}
                 disabled={!passwordValid || !emailValid || isLoading}
+                role="submit-sing-in-button"
               >
                 {isLoading ? (
                   <PulseLoader className="absolute -translate-x-1/2 top-1/2 left-1/2 -translate-y-1/3" color="#ffffff" size={10} margin={4} />
@@ -132,6 +136,7 @@ export default function SignIn() {
                   dispatch(toggleResetPassword(true))
                 }, 200)
               }}
+              role="reset-password-sign-in-button"
             >
               Quên mật khẩu?
             </button>

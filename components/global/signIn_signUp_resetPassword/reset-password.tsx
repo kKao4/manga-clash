@@ -73,6 +73,7 @@ export default function ResetPassword() {
               setIsLoading(false)
               console.log("🚀 ~ file: lost-password.tsx:33 ~ onSubmit={ ~ res:", res)
             }}
+            role="reset-password-form"
           >
             <CloseButton handleOnClick={handleClose} />
             {!emailSent ? (
