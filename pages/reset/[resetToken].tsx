@@ -1,4 +1,4 @@
-import {  passwordReg } from "@/type"
+import { passwordReg } from "@/type"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Head from "next/head"
@@ -34,7 +34,8 @@ const Page = () => {
               } else if (res.error) {
                 alert(res.error)
               }
-            }}>
+            }}
+            >
               <div className="flex flex-col gap-y-2">
                 <div className="space-x-1">
                   <label htmlFor="newPassword" className="inline-block font-bold">Enter your new password</label>

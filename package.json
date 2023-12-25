@@ -87,6 +87,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "moongose": "^1.0.0",
     "react-paginate": "^8.2.0",
-    "react-redux": "^8.1.2"
+    "react-redux": "^8.1.2",
+    "ts-jest": "^29.1.1"
   }
 }

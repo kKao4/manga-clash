@@ -98,6 +98,7 @@ export default function SignUp() {
                   setEmailExits(true)
                 }
               }}
+              role="sign-up-form"
             >
               <CloseButton handleOnClick={() => {
                 dispatch(toggleSignUp(false))
@@ -112,6 +113,7 @@ export default function SignUp() {
                 handleOnChange={usernameChange}
                 valid={usernameValid}
                 validContent="Độ dài tối thiểu là 4 ký tự và không bao gồm ký tự đặc biệt"
+                role="username-sign-up-input"
               />
               <Input
                 content="Email"
@@ -121,6 +123,7 @@ export default function SignUp() {
                 handleOnChange={emailChange}
                 valid={emailValid}
                 validContent="Email không hợp lệ"
+                role="email-sign-up-input"
               >
                 <p className={`${!emailExits ? "hidden" : "block"} text-red-500 text-sm`}>Email đã đăng ký, vui lòng chuyển qua phần đăng nhập</p>
               </Input>
@@ -132,6 +135,7 @@ export default function SignUp() {
                 handleOnChange={passwordChange}
                 valid={passwordValid}
                 validContent="Độ dài tối thiểu là 8 ký tự"
+                role="password-sign-up-input"
               />
               {/* Sign Up Btn */}
               <motion.button
@@ -139,6 +143,7 @@ export default function SignUp() {
                 type="submit"
                 className={`${!usernameValid || !passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !usernameValid || !passwordValid || !emailValid ? "" : "hover:bg-black"} relative w-full font-bold rounded-full text-white h-[48px] mt-2 transition-colors`}
                 disabled={!usernameValid || !passwordValid || !emailValid || isLoading}
+                role="submit-sign-up-button"
               >
                 {isLoading ? (
                   <PropagateLoader className="absolute -translate-x-1/2 left-1/2 -top-1" color="#ffffff" size={10} />
@@ -151,7 +156,11 @@ export default function SignUp() {
                   setTimeout(() => {
                     dispatch(toggleSignIn(true))
                   }, 200)
-                }}>Đăng nhập</button>
+                }}
+                  role="sign-in-sign-up-button"
+                >
+                  Đăng nhập
+                </button>
                 {/* Lost Password Btn */}
                 <button
                   type="button"
@@ -162,6 +171,7 @@ export default function SignUp() {
                       dispatch(toggleResetPassword(true))
                     }, 200)
                   }}
+                  role="reset-password-sign-up-button"
                 >
                   Quên mật khẩu?
                 </button>
@@ -171,6 +181,7 @@ export default function SignUp() {
             <div
               ref={divRef}
               className="bg-search dark:bg-none dark:bg-neutral-750 w-[650px] px-32 pt-7 pb-12 space-y-4 relative"
+              role="created-account-message"
             >
               <CloseButton handleOnClick={() => dispatch(toggleSignUp(false))} />
               <p className="text-2xl font-bold text-center">Đã đăng ký thành công!</p>

@@ -121,7 +121,7 @@ export default function SignIn() {
                 type="submit"
                 className={`${!passwordValid || !emailValid ? "bg-red-500" : "bg-second-green"} ${isLoading || !passwordValid || !emailValid ? "" : "hover:bg-black"} font-bold rounded-full text-white w-[140px] h-[48px] transition-colors relative`}
                 disabled={!passwordValid || !emailValid || isLoading}
-                role="submit-sing-in-button"
+                role="submit-sign-in-button"
               >
                 {isLoading ? (
                   <PulseLoader className="absolute -translate-x-1/2 top-1/2 left-1/2 -translate-y-1/3" color="#ffffff" size={10} margin={4} />
